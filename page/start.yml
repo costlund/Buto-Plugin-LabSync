@@ -1,0 +1,64 @@
+settings:
+  layout:
+    - html
+    - main
+  title: yml:/plugin/lab/timmar/data/data.yml:title
+content:
+  -
+    type: script
+    innerHTML: rs:json
+  -
+    type: script
+    innerHTML: console.log(app.class)
+  -
+    type: p
+    attribute:
+      id: hidden_class
+      style: 'display:none'
+    innerHTML: '[[class]]'
+  -
+    type: div
+    attribute:
+      id: start
+      style: 'min-height:600px'
+    innerHTML: 'start...'
+  -
+    type: div
+    attribute:
+      id: hidden_div
+      style: 'display:none'
+    innerHTML: ''
+  -
+    type: script
+    innerHTML: |
+      function start(){
+        PluginWfAjax.load('start', '/[[class]]/read');
+      }
+      start();
+  -
+    type: div
+    attribute:
+      class: well
+    innerHTML:
+      -
+        type: widget
+        attribute:
+          id: iframe
+        data:
+          plugin: element/iframe_v1
+          method: iframe
+          data:
+            attribute:
+              class: embed-responsive-item
+              style: 'height:300px;width:600px'
+              name: upload_iframe
+            wrap:
+              enabled: true
+              element:
+                type: div
+                attribute:
+                  class: 'embed-responsive embed-responsive-4by3'
+                  style: 'height:300px'
+      
+
+  

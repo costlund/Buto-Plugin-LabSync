@@ -1,0 +1,123 @@
+settings:
+  path: '2/innerHTML'
+content:
+  -
+    type: style
+    innerHTML: '.wf_form_row{margin-top:10px;}'
+  -
+    type: div
+    attribute:
+      class: 'container-fluid'
+    innerHTML:
+      -
+        type: nav
+        attribute:
+          class: 'navbar navbar-default'
+        innerHTML:
+          -
+            type: div
+            attribute:
+              class: navbar-header
+            innerHTML:
+              -
+                type: button
+                attribute:
+                  type: button
+                  class: 'navbar-toggle collapsed'
+                  data-toggle: collapse
+                  data-target: '#bs-example-navbar-collapse-2'
+                  aria-expanded: 'false'
+                innerHTML:
+                  0:
+                    type: span
+                    attribute:
+                      class: icon-bar
+                  1:
+                    type: span
+                    attribute:
+                      class: icon-bar
+                  3:
+                    type: span
+                    attribute:
+                      class: icon-bar
+              -
+                type: a
+                attribute:
+                  class: navbar-brand
+                  onclick: "start();"
+                innerHTML:
+                  -
+                    type: span
+                    attribute:
+                      class: 'glyphicon glyphicon-fire'
+                      aria-hidden: true
+                  -
+                    type: strong
+                    innerHTML: yml:/plugin/lab/sync/data/data.yml:title
+          -
+            type: div
+            attribute:
+              class: 'collapse navbar-collapse'
+              id: bs-example-navbar-collapse-2
+            innerHTML:
+              -
+                type: ul
+                attribute:
+                  class: 'nav navbar-nav'
+                innerHTML:
+                  -
+                    type: li
+                    innerHTML:
+                      -
+                        type: a
+                        innerHTML:
+                          -
+                            type: span
+                            innerHTML: Local
+                          -
+                            type: span
+                            attribute:
+                              class: badge
+                              id: badge_local
+                            innerHTML: 
+                        attribute:
+                          onclick: "PluginLabSync.upload_all_exist_local(this);"
+                          class: btn btn-default
+                  -
+                    type: li
+                    innerHTML:
+                      -
+                        type: a
+                        innerHTML:
+                          -
+                            type: span
+                            innerHTML: Local newer
+                          -
+                            type: span
+                            attribute:
+                              class: badge
+                              id: badge_local_newer
+                            innerHTML: 
+                        attribute:
+                          onclick: "PluginLabSync.upload_all_localnewer(this);"
+                          class: btn btn-default
+                  -
+                    type: li
+                    innerHTML:
+                      -
+                        type: p
+                        attribute:
+                          class: navbar-text
+                        innerHTML:
+                          -
+                            type: span
+                            attribute:
+                              class: badge
+                              id: badge_remote
+                            innerHTML: 
+  -
+    type: div
+    attribute:
+      class: 'container-fluid'
+    innerHTML:
+      
