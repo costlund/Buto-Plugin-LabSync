@@ -103,9 +103,31 @@ class PluginLabSync{
   private function getWebFolderName(){
     return basename(wfGlobals::getWebDir());
   }
+  private function getSettings(){
+    wfPlugin::includeonce('wf/yml');
+    $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+    if($settings->get('filter/theme')){
+      $item = array();
+      $item[] = array('value' => '/sys/mercury/*');
+      $item[] = array('value' => '/theme/'.$settings->get('filter/theme').'/*');
+      $item[] = array('value' => '/[web_folder]/theme/'.$settings->get('filter/theme').'/*');
+      wfPlugin::includeonce('theme/analysis');
+      $ta = new PluginThemeAnalysis(true);
+      $ta->setData($settings->get('filter/theme'));
+      foreach ($ta->data->get() as $key => $value) {
+        $i = new PluginWfArray($value);
+        $item[] = array('value' => '/plugin/'.$i->get('name').'/*');
+        $item[] = array('value' => '/[web_folder]/plugin/'.$i->get('name').'/*');
+      }
+      $settings->set('filter/item', $item);
+    }
+    return $settings;
+  }
   public function page_start(){
     wfPlugin::includeonce('wf/yml');
+    $settings = $this->getSettings();
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
+    $page->setByTag(array('settings' => wfHelp::getYmlDump($settings->get())));
     /**
      * Insert admin layout from theme.
      */
@@ -131,9 +153,8 @@ class PluginLabSync{
   public function page_read(){
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
-    $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+    $settings = $this->getSettings();
     $element = new PluginWfYml(__DIR__.'/element/read.yml');
-    $element->setByTag(array('settings' => wfHelp::getYmlDump($settings->get())));
     /**
      * Local files.
      */
@@ -309,7 +330,7 @@ class PluginLabSync{
    * Get url.
    */
   private function getUrl($method){
-    $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+    $settings = $this->getSettings();
     return $settings->get('url').'/'.$method;
   }
   /**

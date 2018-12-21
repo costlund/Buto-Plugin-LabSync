@@ -61,8 +61,5 @@
                 - desc
             language:
               url: /plugin/datatable/datatable_1_10_16/i18n/Swedish.json
--
-  type: pre
-  innerHTML: rs:settings
 
               

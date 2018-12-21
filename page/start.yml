@@ -2,7 +2,7 @@ settings:
   layout:
     - html
     - main
-  title: yml:/plugin/lab/timmar/data/data.yml:title
+  title: yml:/plugin/lab/sync/data/data.yml:title
 content:
   -
     type: script
@@ -19,9 +19,34 @@ content:
   -
     type: div
     attribute:
-      id: start
-      style: 'min-height:600px'
-    innerHTML: 'start...'
+      class: row
+    innerHTML:
+      -
+        type: div
+        attribute:
+          class: col-md-4
+        innerHTML:
+          -
+            type: pre
+            attribute:
+              style: 'font-size:smaller'
+            innerHTML: rs:settings
+      -
+        type: div
+        attribute:
+          class: col-md-8
+        innerHTML:
+          -
+            type: div
+            attribute:
+              id: start
+              style: 'min-height:600px'
+            innerHTML:
+              -
+                type: a
+                attribute:
+                  onclick: start()
+                innerHTML: Start sync
   -
     type: div
     attribute:
@@ -34,7 +59,7 @@ content:
       function start(){
         PluginWfAjax.load('start', '/[[class]]/read');
       }
-      start();
+      //start();
   -
     type: div
     attribute:
