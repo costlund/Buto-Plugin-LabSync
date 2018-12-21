@@ -59,31 +59,6 @@ content:
       function start(){
         PluginWfAjax.load('start', '/[[class]]/read');
       }
-      //start();
-  -
-    type: div
-    attribute:
-      class: well
-    innerHTML:
-      -
-        type: widget
-        attribute:
-          id: iframe
-        data:
-          plugin: element/iframe_v1
-          method: iframe
-          data:
-            attribute:
-              class: embed-responsive-item
-              style: 'height:300px;width:600px'
-              name: upload_iframe
-            wrap:
-              enabled: true
-              element:
-                type: div
-                attribute:
-                  class: 'embed-responsive embed-responsive-4by3'
-                  style: 'height:300px'
       
 
   
