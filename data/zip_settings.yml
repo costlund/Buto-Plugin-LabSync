@@ -1,0 +1,8 @@
+theme: _theme_to_replace_
+cache: false
+timezone: Europe/Paris
+error_reporting: E_ALL
+display_errors: 1
+
+
+      

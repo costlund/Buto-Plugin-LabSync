@@ -118,6 +118,9 @@ function PluginLabSync(){
       alert('not yet');
     }
   }
+  this.zip = function(){
+    window.open('zip');
+  }
 }
 var PluginLabSync = new PluginLabSync();
 

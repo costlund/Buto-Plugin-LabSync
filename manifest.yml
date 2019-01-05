@@ -1,0 +1,65 @@
+version: '1.1'
+history:
+  '1.1':
+    date: '2019-01-05'
+    description: 'Zip file download for a theme.'
+  '1.0':
+    date: '2019-01-05'
+    description: 'First version.'
+plugin:
+  -
+    name: wf/form_v2
+    version: '1.4'
+  -
+    name: wf/array
+    version: 1.0.1
+  -
+    name: wf/yml
+    version: '1.1'
+  -
+    name: theme/analysis
+    version: '1.0'
+  -
+    name: server/push
+    version: '1.0'
+  -
+    name: wf/bootstrap
+    version: '1.0'
+  -
+    name: form/form_v1
+    version: '1.14'
+  -
+    name: wf/table
+    version: '1.4'
+  -
+    name: wf/ajax
+    version: '1.0'
+  -
+    name: wf/bootstrapjs
+    version: '1.1'
+  -
+    name: wf/dom
+    version: '1.0'
+  -
+    name: wf/callbackjson
+    version: '1.0'
+  -
+    name: datatable/datatable_1_10_16
+    version: '1.1'
+  -
+    name: element/iframe_v1
+    version: '1.0'
+  -
+    name: wf/embed
+    version: '1.0'
+sys:
+  -
+    name: mercury
+    version:
+      - '1.0'
+php:
+  - '7.2'
+author: null
+links:
+  Github: 'https://github.com'
+description: ''

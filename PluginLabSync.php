@@ -108,9 +108,12 @@ class PluginLabSync{
     $settings = new PluginWfArray(wfPlugin::getModuleSettings());
     if($settings->get('filter/theme')){
       $item = array();
-      $item[] = array('value' => '/sys/mercury/*');
+      $item[] = array('value' => '/sys/*');
       $item[] = array('value' => '/theme/'.$settings->get('filter/theme').'/*');
       $item[] = array('value' => '/[web_folder]/theme/'.$settings->get('filter/theme').'/*');
+      $item[] = array('value' => '/[web_folder]/index.php');
+      $item[] = array('value' => '/[web_folder]/.htaccess');
+      $item[] = array('value' => '/[web_folder]/web.config');
       wfPlugin::includeonce('theme/analysis');
       $ta = new PluginThemeAnalysis(true);
       $ta->setData($settings->get('filter/theme'));
@@ -142,6 +145,78 @@ class PluginLabSync{
      */
     wfDocument::mergeLayout($page->get());
   }
+  public function page_zip(){
+    /**
+     * Settings.
+     */
+    $settings = $this->getSettings();
+    //wfHelp::dump($settings, true);
+    /**
+     * Name of zip-file when download.
+     */
+    $download_name = 'ButoTheme_'.$settings->get('filter/theme').'_'.date('ymdHi').'.zip';
+    /**
+     * Where zip file should be put...
+     */
+    $zip_filename = wfGlobals::getAppDir().'/plugin_lab_sync.zip';
+    /**
+     * Local files.
+     */
+    $this->set_files();
+    $local_files = $this->files;
+    /**
+     * Filter.
+     */
+    foreach ($local_files as $key => $value) {
+      $local_files[$key]['allow'] = false;
+      if($settings->get('filter/item')){
+        foreach ($settings->get('filter/item') as $key2 => $value2) {
+          if($this->match_wildcard($value2['value'], $key)>0){
+            $local_files[$key]['allow'] = true;
+            continue;
+          }
+        }
+      }
+    }
+    /**
+     * Remove files.
+     */
+    foreach ($local_files as $key => $value) {
+      if(!$local_files[$key]['allow']){
+        unset($local_files[$key]);
+      }
+    }
+    /**
+     * Init ZipArchive.
+     */
+    $zip_archive = new ZipArchive();
+    $zip_archive->open($zip_filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+    /**
+     * Add /config/settings.yml.
+     * Copy existing file, edit theme param, save.
+     * This file are to be deleted after zip closed.
+     */
+    $zip_settings_file = __DIR__.'/data/zip_settings_copy.yml';
+    wfFilesystem::copyFile(__DIR__.'/data/zip_settings.yml', $zip_settings_file);
+    $zip_settings_copy = new PluginWfYml($zip_settings_file);
+    $zip_settings_copy->set('theme', $settings->get('filter/theme'));
+    $zip_settings_copy->save();
+    $zip_archive->addFile($zip_settings_file, 'config/settings.yml');
+    /**
+     * Add files to zip archive.
+     */
+    foreach ($local_files as $key => $value) {
+      $zip_archive->addFile(wfGlobals::getAppDir().$this->replaceWebDir($key), substr($this->replaceWebDir($key), 1));
+    }
+    $zip_archive->close();
+    wfFilesystem::delete($zip_settings_file);
+    header("Content-type: application/zip");
+    header("Content-Disposition: attachment; filename=$download_name"); 
+    header("Pragma: no-cache"); 
+    header("Expires: 0"); 
+    readfile("$zip_filename");
+    exit;
+  }
   private function match_wildcard( $wildcard_pattern, $haystack ) {
      $regex = str_replace(
        array("\*", "\?"), // wildcard chars
@@ -149,7 +224,7 @@ class PluginLabSync{
        preg_quote($wildcard_pattern)
      );
      return preg_match('#^'.$regex.'$#is', $haystack);
-  }  
+  }
   public function page_read(){
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
