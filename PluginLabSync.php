@@ -80,7 +80,7 @@ class PluginLabSync{
     $scan = scandir($dir);
     $web_folder_name = $this->getWebFolderName();
     foreach ($scan as $key => $value) {
-      if(substr($value, 0, 1)=='.'){
+      if(substr($value, 0, 1)=='.' && $value!='.htaccess'){
         continue;
       }
       if(is_dir($dir.'/'.$value)){
@@ -106,11 +106,15 @@ class PluginLabSync{
   private function getSettings(){
     wfPlugin::includeonce('wf/yml');
     $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+    /**
+     * If theme is set we set item.
+     */
     if($settings->get('filter/theme')){
+      $theme = $settings->get('filter/theme');
       $item = array();
       $item[] = array('value' => '/sys/*');
-      $item[] = array('value' => '/theme/'.$settings->get('filter/theme').'/*');
-      $item[] = array('value' => '/[web_folder]/theme/'.$settings->get('filter/theme').'/*');
+      $item[] = array('value' => '/theme/'.$theme.'/*');
+      $item[] = array('value' => '/[web_folder]/theme/'.$theme.'/*');
       $item[] = array('value' => '/[web_folder]/index.php');
       $item[] = array('value' => '/[web_folder]/.htaccess');
       $item[] = array('value' => '/[web_folder]/web.config');
@@ -122,6 +126,24 @@ class PluginLabSync{
         $item[] = array('value' => '/plugin/'.$i->get('name').'/*');
         $item[] = array('value' => '/[web_folder]/plugin/'.$i->get('name').'/*');
       }
+      /**
+       * Check for settings in theme config/settings.yml.
+       * plugin:
+          lab:
+            sync:
+              data:
+                external_folders:
+                  - '/[web_folder]/more_content/*'
+       */
+      $external_folders = wfSettings::getSettingsAsObject('/theme/'.$theme.'/config/settings.yml', 'plugin/lab/sync/data/external_folders');
+      if($external_folders){
+        foreach ($external_folders->get() as $key => $value) {
+          $item[] = array('value' => $value);
+        }
+      }
+      /**
+       * 
+       */
       $settings->set('filter/item', $item);
     }
     return $settings;
