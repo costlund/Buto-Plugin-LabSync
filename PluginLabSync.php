@@ -136,7 +136,7 @@ class PluginLabSync{
                   - '/[web_folder]/more_content/*'
        */
       $external_folders = wfSettings::getSettingsAsObject('/theme/'.$theme.'/config/settings.yml', 'plugin/lab/sync/data/external_folders');
-      if($external_folders){
+      if($external_folders->get()){
         foreach ($external_folders->get() as $key => $value) {
           $item[] = array('value' => $value);
         }
