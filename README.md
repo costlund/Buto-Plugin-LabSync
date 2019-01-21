@@ -20,5 +20,5 @@ plugin:
 
 
 
-Files and folder start with "." except ".htaccess" are not included.
+Files and folder start with "." except ".htaccess" are not included. If linked folders has errors warnings a zip file are corrupted.
 
