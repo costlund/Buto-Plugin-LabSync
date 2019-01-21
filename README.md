@@ -9,14 +9,14 @@ Takes all files or files for a theme via parameter filter/theme.
 
 One could add extra folders for a theme via parameter external_folders.
 
-´´´
+```
 plugin:
   lab:
     sync:
       data:
         external_folders:
           - '/[web_folder]/_any_folder_/*'
-´´´
+```
 
 
 
