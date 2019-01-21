@@ -24,6 +24,7 @@ class PluginLabSync{
       wfPlugin::enable('datatable/datatable_1_10_16');
       wfPlugin::enable('element/iframe_v1');
       wfPlugin::enable('wf/embed');
+      wfPlugin::enable('twitter/bootstrap335v');
       /**
        * Only webmaster if not reading files.
        */
