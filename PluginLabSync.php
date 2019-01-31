@@ -107,6 +107,7 @@ class PluginLabSync{
   private function getSettings(){
     wfPlugin::includeonce('wf/yml');
     $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+    $settings->set('url', wfSettings::getSettingsFromYmlString($settings->get('url')));
     /**
      * If theme is set we set item.
      */
