@@ -20,33 +20,28 @@ content:
     type: div
     attribute:
       class: row
+      style: 'min-height:600px'
     innerHTML:
       -
         type: div
         attribute:
-          class: col-md-4
+          class: col-md-12
+        innerHTML:
+          -
+            type: div
+            attribute:
+              id: start
+            innerHTML:
+      -
+        type: div
+        attribute:
+          class: col-md-12
         innerHTML:
           -
             type: pre
             attribute:
               style: 'font-size:smaller'
             innerHTML: rs:settings
-      -
-        type: div
-        attribute:
-          class: col-md-8
-        innerHTML:
-          -
-            type: div
-            attribute:
-              id: start
-              style: 'min-height:600px'
-            innerHTML:
-#              -
-#                type: a
-#                attribute:
-#                  onclick: start()
-#                innerHTML: Start sync
   -
     type: div
     attribute:
