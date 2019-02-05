@@ -108,6 +108,7 @@ class PluginLabSync{
     wfPlugin::includeonce('wf/yml');
     $settings = new PluginWfArray(wfPlugin::getModuleSettings());
     $settings->set('url', wfSettings::getSettingsFromYmlString($settings->get('url')));
+    $settings->set('local_time', wfSettings::getSettingsFromYmlString($settings->get('local_time')));
     /**
      * If theme is set we set item.
      */
