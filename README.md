@@ -14,7 +14,7 @@ Buttons to batch sync files.
 Param admin_layout is optional.
 
 ## Path string
-Params url and local_time can have yml path string.
+Params url, local_time and filter/theme can have yml path string.
 
 ## IP
 Param ip is to protect when remote sync.

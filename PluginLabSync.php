@@ -109,12 +109,13 @@ class PluginLabSync{
     $settings = new PluginWfArray(wfPlugin::getModuleSettings());
     $settings->set('url', wfSettings::getSettingsFromYmlString($settings->get('url')));
     $settings->set('local_time', wfSettings::getSettingsFromYmlString($settings->get('local_time')));
+    $settings->set('filter/theme', wfSettings::getSettingsFromYmlString($settings->get('filter/theme')));
     /**
      * If theme is set we set item.
      */
+    $item = array();
     if($settings->get('filter/theme')){
       $theme = $settings->get('filter/theme');
-      $item = array();
       $item[] = array('value' => '/sys/*');
       $item[] = array('value' => '/theme/'.$theme.'/*');
       $item[] = array('value' => '/[web_folder]/theme/'.$theme.'/*');
@@ -144,11 +145,14 @@ class PluginLabSync{
           $item[] = array('value' => $value);
         }
       }
-      /**
-       * 
-       */
-      $settings->set('filter/item', $item);
+    } else {
+      $item = new PluginWfYml(__DIR__.'/data/item.yml');
+      $item = $item->get();
     }
+    /**
+     * 
+     */
+    $settings->set('filter/item', $item);
     return $settings;
   }
   public function page_start(){

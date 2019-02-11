@@ -1,0 +1,8 @@
+-
+  value: '/sys/*'
+-
+  value: '/plugin/*'
+-
+  value: '/[web_folder]/*'
+-
+  value: '/theme/*'
