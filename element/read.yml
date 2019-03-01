@@ -52,6 +52,21 @@
           id: sync_table
           json:
             paging: true
+            lengthMenu:
+              -
+                - 10
+                - 25
+                - 50
+                - 100
+                - 500
+                - '-1'
+              -
+                - 10
+                - 25
+                - 50
+                - 100
+                - 500
+                - All
             ordering: true
             info: true
             searching: true

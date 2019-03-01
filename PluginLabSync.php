@@ -580,6 +580,9 @@ class PluginLabSync{
         $result->set('success', false);
         $result->set('message', 'File does not exist local.');
       }
+    }else{
+      $result->set('success', false);
+      $result->set('message', 'IP issue.');
     }
     exit(json_encode($result->get()));
   }
