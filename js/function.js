@@ -121,6 +121,14 @@ function PluginLabSync(){
   this.zip = function(){
     window.open('zip');
   }
+  this.theme_select = function(e){
+    /**
+     * Select a theme.
+     */
+    $.getJSON( "theme_select?key="+e.getAttribute('data-key'), function( data ) {
+      location.reload();
+    });
+  }
 }
 var PluginLabSync = new PluginLabSync();
 

@@ -105,26 +105,32 @@ class PluginLabSync{
     return basename(wfGlobals::getWebDir());
   }
   private function getSettings(){
-    wfPlugin::includeonce('wf/yml');
-    $settings = new PluginWfArray(wfPlugin::getModuleSettings());
-    $settings->set('url', wfSettings::getSettingsFromYmlString($settings->get('url')));
-    $settings->set('local_time', wfSettings::getSettingsFromYmlString($settings->get('local_time')));
-    $settings->set('filter/theme', wfSettings::getSettingsFromYmlString($settings->get('filter/theme')));
-    /**
-     * If theme is set we set item.
-     */
-    $item = array();
-    if($settings->get('filter/theme')){
-      $theme = $settings->get('filter/theme');
+    $key = wfUser::getSession()->get('plugin/lab/sync/theme');
+    $theme_active = new PluginWfArray();
+    $theme_active->set('has_theme', false);
+    if(strlen($key)){
+      $user = wfUser::getSession();
+      $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+      $settings->set('theme_active', $key);
+      $settings->set('theme', wfSettings::getSettingsFromYmlString($settings->get('theme')));
+      $theme_active = new PluginWfArray($settings->get("theme/".$settings->get('theme_active')));
+      $theme_active->set('has_theme', false);
+      if(strlen($user->get('plugin/lab/sync/theme'))){
+        $theme_active->set('has_theme', true);
+      }
+      /**
+       * If theme is set we set item.
+       */
+      $item = array();
       $item[] = array('value' => '/sys/*');
-      $item[] = array('value' => '/theme/'.$theme.'/*');
-      $item[] = array('value' => '/[web_folder]/theme/'.$theme.'/*');
+      $item[] = array('value' => '/theme/'.$theme_active->get('theme').'/*');
+      $item[] = array('value' => '/[web_folder]/theme/'.$theme_active->get('theme').'/*');
       $item[] = array('value' => '/[web_folder]/index.php');
       $item[] = array('value' => '/[web_folder]/.htaccess');
       $item[] = array('value' => '/[web_folder]/web.config');
       wfPlugin::includeonce('theme/analysis');
       $ta = new PluginThemeAnalysis(true);
-      $ta->setData($settings->get('filter/theme'));
+      $ta->setData($theme_active->get('theme'));
       foreach ($ta->data->get() as $key => $value) {
         $i = new PluginWfArray($value);
         $item[] = array('value' => '/plugin/'.$i->get('name').'/*');
@@ -139,27 +145,46 @@ class PluginLabSync{
                 external_folders:
                   - '/[web_folder]/more_content/*'
        */
-      $external_folders = wfSettings::getSettingsAsObject('/theme/'.$theme.'/config/settings.yml', 'plugin/lab/sync/data/external_folders');
+      $external_folders = wfSettings::getSettingsAsObject('/theme/'.$theme_active->get('theme').'/config/settings.yml', 'plugin/lab/sync/data/external_folders');
       if($external_folders->get()){
         foreach ($external_folders->get() as $key => $value) {
           $item[] = array('value' => $value);
         }
       }
-    } else {
-      $item = new PluginWfYml(__DIR__.'/data/item.yml');
-      $item = $item->get();
+      /**
+       * 
+       */
+      $theme_active->set('item', $item);
     }
+    return $theme_active;
+  }
+  private function getElementTheme(){
     /**
-     * 
+     * Create element to select theme.
      */
-    $settings->set('filter/item', $item);
-    return $settings;
+    $module_settings = new PluginWfArray(wfPlugin::getModuleSettings());
+    $module_settings->set('theme', wfSettings::getSettingsFromYmlString($module_settings->get('theme')));
+    $element = array();
+    foreach ($module_settings->get('theme') as $key => $value) {
+      $i = new PluginWfArray($value);
+      $element[] = wfDocument::createHtmlElement('a', $i->get('name'), array('class' => 'btn btn-primary', 'onclick' => "PluginLabSync.theme_select(this)", 'data-key' => $key));
+    }
+    return $element;
+  }
+  public function page_theme_select(){
+    /**
+     * Select a theme via ajax.
+     */
+    wfUser::setSession('plugin/lab/sync/theme', wfRequest::get('key'));
+    exit(json_encode(array('success' => true)));
   }
   public function page_start(){
     wfPlugin::includeonce('wf/yml');
     $settings = $this->getSettings();
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
     $page->setByTag(array('settings' => wfHelp::getYmlDump($settings->get())));
+    $page->setByTag($settings->get());
+    $page->setByTag(array('element_theme' => $this->getElementTheme()));
     /**
      * Insert admin layout from theme.
      */
@@ -179,11 +204,10 @@ class PluginLabSync{
      * Settings.
      */
     $settings = $this->getSettings();
-    //wfHelp::dump($settings, true);
     /**
      * Name of zip-file when download.
      */
-    $download_name = 'ButoTheme_'.$settings->get('filter/theme').'_'.date('ymdHi').'.zip';
+    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHi').'.zip';
     /**
      * Where zip file should be put...
      */
@@ -198,8 +222,8 @@ class PluginLabSync{
      */
     foreach ($local_files as $key => $value) {
       $local_files[$key]['allow'] = false;
-      if($settings->get('filter/item')){
-        foreach ($settings->get('filter/item') as $key2 => $value2) {
+      if($settings->get('item')){
+        foreach ($settings->get('item') as $key2 => $value2) {
           if($this->match_wildcard($value2['value'], $key)>0){
             $local_files[$key]['allow'] = true;
             continue;
@@ -228,7 +252,7 @@ class PluginLabSync{
     $zip_settings_file = __DIR__.'/data/zip_settings_copy.yml';
     wfFilesystem::copyFile(__DIR__.'/data/zip_settings.yml', $zip_settings_file);
     $zip_settings_copy = new PluginWfYml($zip_settings_file);
-    $zip_settings_copy->set('theme', $settings->get('filter/theme'));
+    $zip_settings_copy->set('theme', $settings->get('theme'));
     $zip_settings_copy->save();
     $zip_archive->addFile($zip_settings_file, 'config/settings.yml');
     /**
@@ -254,6 +278,9 @@ class PluginLabSync{
      );
      return preg_match('#^'.$regex.'$#is', $haystack);
   }
+  /**
+   * When client ask server for list of files.
+   */
   public function page_read(){
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
@@ -317,8 +344,8 @@ class PluginLabSync{
      */
     foreach ($local_files as $key => $value) {
       $local_files[$key]['allow'] = false;
-      if($settings->get('filter/item')){
-        foreach ($settings->get('filter/item') as $key2 => $value2) {
+      if($settings->get('item')){
+        foreach ($settings->get('item') as $key2 => $value2) {
           if($this->match_wildcard($value2['value'], $key)>0){
             $local_files[$key]['allow'] = true;
             continue;
@@ -504,7 +531,13 @@ class PluginLabSync{
     wfPlugin::includeonce('server/push');
     $push = new PluginServerPush();
     $result = $push->push($url, $params->get());
-    exit(json_encode(unserialize($result)));
+    $json = null;
+    try {
+      $json = json_encode(unserialize($result));
+    } catch (Exception $exc) {
+      exit($result);
+    }
+    exit($json);
   }
   private function replaceWebDir($filename){
     return str_replace('[web_folder]', $this->getWebFolderName(), $filename);

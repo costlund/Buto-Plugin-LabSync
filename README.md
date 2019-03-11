@@ -1,4 +1,5 @@
 # Buto-Plugin-LabSync
+
 Sync files from a web browser instead of using FTP desktop client.
 
 Takes all files or files for a theme via parameter filter/theme.
@@ -26,28 +27,31 @@ Optional param filter/theme is if only sync one theme and all it´ dependencies.
 Param filter/item is when not param filter/theme is in usage.
 
 ## Settings
+
+Param ip is for secure validation when push files to server. This one is IMPORTANT on the remote server settings.
 ```
 plugin_modules:
   sync:
     plugin: 'lab/sync'
     settings:
       admin_layout: /theme/[theme]/layout/main.yml
-      url: 'https://_url_to_remote_sync_/sync'
-      filter:
-        theme: dev/theme
-        item:
-          -
-            value: '/sys/*'
-          -
-            value: '/plugin/*'
-          -
-            value: '/[web_folder]/*'
-          -
-            value: '/theme/*'
+      theme:
+        -
+          name: My domain
+          url: 'https://www._my_domain_.com/sync'
+          local_time: '2018-01-01 22:33:44'
+          theme: my/theme
       ip:
         - 127.0.0.1
-      local_time: '2001-01-01 00:00:00'
+        - '::1'
 ```
+
+
+Param theme could have string to file.
+```
+theme: 'yml:/../buto_data/theme/[theme]/plugin_lab_sync.yml:theme'
+```
+
 
 ## Extra folders
 One could add extra folders for a theme via parameter external_folders.
