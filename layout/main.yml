@@ -13,6 +13,7 @@ content:
         type: nav
         attribute:
           class: 'navbar navbar-default'
+          id: navbar_lab_sync
         innerHTML:
           -
             type: div
@@ -138,6 +139,19 @@ content:
                         attribute:
                           onclick: "PluginLabSync.zip();"
                           class: btn btn-default
+                  -
+                    type: li
+                    innerHTML:
+                      -
+                        type: a
+                        innerHTML:
+                          -
+                            type: span
+                            innerHTML: Deselect
+                        attribute:
+                          onclick: "PluginLabSync.theme_select(this);"
+                          class: btn btn-warning
+                          data-key: ''
   -
     type: div
     attribute:

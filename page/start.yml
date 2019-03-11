@@ -12,6 +12,18 @@ content:
     innerHTML: console.log(app.class)
   -
     type: p
+    settings:
+      disabled: rs:has_theme
+    innerHTML: rs:element_theme
+    
+  -
+    type: script
+    settings:
+      disabled: rs:has_theme
+    innerHTML: $("#navbar_lab_sync").hide();
+    
+  -
+    type: p
     attribute:
       id: hidden_class
       style: 'display:none'

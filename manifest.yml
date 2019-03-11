@@ -1,5 +1,8 @@
-version: '1.5'
+version: '1.6'
 history:
+  '1.6':
+    date: '2019-03-11'
+    description: 'Supporting multiple themes.'
   '1.5':
     date: '2019-02-11'
     description: 'Read yml string for filter/theme.'
