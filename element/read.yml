@@ -7,6 +7,26 @@
     -
       type: span
       innerHTML: rs:remote_files_count
+    -
+      type: button
+      attribute:
+        onclick: "$('#sync_table').DataTable().search('(local)').draw();"
+      innerHTML: (local)
+    -
+      type: button
+      attribute:
+        onclick: "$('#sync_table').DataTable().search('(local_newer)').draw();"
+      innerHTML: (local_newer)
+    -
+      type: button
+      attribute:
+        onclick: "$('#sync_table').DataTable().search('(remote)').draw();"
+      innerHTML: (remote)
+    -
+      type: button
+      attribute:
+        onclick: "$('#sync_table').DataTable().search('').draw();"
+      innerHTML: Clear
 -
   type: table
   attribute:

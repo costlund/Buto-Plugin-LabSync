@@ -1,5 +1,8 @@
-version: '1.6'
+version: '1.7'
 history:
+  '1.7':
+    date: '2019-03-11'
+    description: 'Add filter buttons.'
   '1.6':
     date: '2019-03-11'
     description: 'Supporting multiple themes.'
