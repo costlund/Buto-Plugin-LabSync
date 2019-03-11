@@ -121,34 +121,45 @@ class PluginLabSync{
       /**
        * If theme is set we set item.
        */
-      $item = array();
-      $item[] = array('value' => '/sys/*');
-      $item[] = array('value' => '/theme/'.$theme_active->get('theme').'/*');
-      $item[] = array('value' => '/[web_folder]/theme/'.$theme_active->get('theme').'/*');
-      $item[] = array('value' => '/[web_folder]/index.php');
-      $item[] = array('value' => '/[web_folder]/.htaccess');
-      $item[] = array('value' => '/[web_folder]/web.config');
-      wfPlugin::includeonce('theme/analysis');
-      $ta = new PluginThemeAnalysis(true);
-      $ta->setData($theme_active->get('theme'));
-      foreach ($ta->data->get() as $key => $value) {
-        $i = new PluginWfArray($value);
-        $item[] = array('value' => '/plugin/'.$i->get('name').'/*');
-        $item[] = array('value' => '/[web_folder]/plugin/'.$i->get('name').'/*');
-      }
-      /**
-       * Check for settings in theme config/settings.yml.
-       * plugin:
-          lab:
-            sync:
-              data:
-                external_folders:
-                  - '/[web_folder]/more_content/*'
-       */
-      $external_folders = wfSettings::getSettingsAsObject('/theme/'.$theme_active->get('theme').'/config/settings.yml', 'plugin/lab/sync/data/external_folders');
-      if($external_folders->get()){
-        foreach ($external_folders->get() as $key => $value) {
-          $item[] = array('value' => $value);
+      if($theme_active->get('theme')=='*'){
+        /**
+         * All files.
+         */
+        $item = new PluginWfYml(__DIR__.'/data/item.yml'); 
+        $item = $item->get();        
+      }else{
+        /**
+         * Theme files.
+         */
+        $item = array();
+        $item[] = array('value' => '/sys/*');
+        $item[] = array('value' => '/theme/'.$theme_active->get('theme').'/*');
+        $item[] = array('value' => '/[web_folder]/theme/'.$theme_active->get('theme').'/*');
+        $item[] = array('value' => '/[web_folder]/index.php');
+        $item[] = array('value' => '/[web_folder]/.htaccess');
+        $item[] = array('value' => '/[web_folder]/web.config');
+        wfPlugin::includeonce('theme/analysis');
+        $ta = new PluginThemeAnalysis(true);
+        $ta->setData($theme_active->get('theme'));
+        foreach ($ta->data->get() as $key => $value) {
+          $i = new PluginWfArray($value);
+          $item[] = array('value' => '/plugin/'.$i->get('name').'/*');
+          $item[] = array('value' => '/[web_folder]/plugin/'.$i->get('name').'/*');
+        }
+        /**
+         * Check for settings in theme config/settings.yml.
+         * plugin:
+            lab:
+              sync:
+                data:
+                  external_folders:
+                    - '/[web_folder]/more_content/*'
+         */
+        $external_folders = wfSettings::getSettingsAsObject('/theme/'.$theme_active->get('theme').'/config/settings.yml', 'plugin/lab/sync/data/external_folders');
+        if($external_folders->get()){
+          foreach ($external_folders->get() as $key => $value) {
+            $item[] = array('value' => $value);
+          }
         }
       }
       /**
@@ -615,8 +626,7 @@ class PluginLabSync{
       }
     }else{
       $result->set('success', false);
-      $ip = wfServer::getRemoteAddr();
-      $result->set('message', "IP issue ($ip).");
+      $result->set('message', 'IP issue.');
     }
     exit(json_encode($result->get()));
   }
