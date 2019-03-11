@@ -582,7 +582,8 @@ class PluginLabSync{
       }
     }else{
       $result->set('success', false);
-      $result->set('message', 'IP issue.');
+      $ip = wfServer::getRemoteAddr();
+      $result->set('message', "IP issue ($ip).");
     }
     exit(json_encode($result->get()));
   }
