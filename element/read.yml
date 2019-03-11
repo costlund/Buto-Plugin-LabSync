@@ -1,4 +1,13 @@
 -
+  type: p
+  innerHTML:
+    -
+      type: strong
+      innerHTML: Remote files count
+    -
+      type: span
+      innerHTML: rs:remote_files_count
+-
   type: table
   attribute:
     class: table
