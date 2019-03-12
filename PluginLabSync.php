@@ -699,7 +699,7 @@ class PluginLabSync{
      */
     if(wfUser::hasRole('webmaster')){
       $settings = wfPlugin::getPluginModulesOne('lab/sync');
-      if($settings->get('settings/data_file')){
+      if($settings && $settings->get('settings/data_file')){
         $data_file = new PluginWfYml(wfGlobals::getAppDir().$settings->get('settings/data_file'));
         $data_file->set('webmaster/ip', wfServer::getRemoteAddr());
         $data_file->set('webmaster/date', date('Y-m-d H:i:s'));
