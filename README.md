@@ -44,6 +44,7 @@ plugin_modules:
       ip:
         - 127.0.0.1
         - '::1'
+      data_file: '/../buto_data/theme/my/theme/plugin_lab_sync.yml'
 ```
 
 
@@ -52,6 +53,17 @@ Param theme could have string to file.
 theme: 'yml:/../buto_data/theme/[theme]/plugin_lab_sync.yml:theme'
 ```
 
+### Webmaster ip
+
+When webmaster sign in ip could be stored in data_file. This ip is added to ip param. An event has to be registrated for that.
+
+```
+events:
+  signin:
+    -
+      plugin: 'lab/sync'
+      method: 'signin'
+```
 
 ## Extra folders
 One could add extra folders for a theme via parameter external_folders.

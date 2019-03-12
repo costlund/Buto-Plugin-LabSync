@@ -1,5 +1,8 @@
-version: '1.7'
+version: '1.8'
 history:
+  '1.8':
+    date: '2019-03-12'
+    description: 'Webmaster ip in data_file to be added to ip param.'
   '1.7':
     date: '2019-03-11'
     description: 'Add filter buttons.'

@@ -55,7 +55,20 @@ class PluginLabSync{
   private function check_ip(){
     $settings = new PluginWfArray(wfPlugin::getModuleSettings());
     $check_ip = false;
-    foreach ($settings->get('ip') as $key => $value) {
+    $ip = $settings->get('ip');
+    /**
+     * Set ip from webmaster signin.
+     */
+    if($settings->get('data_file')){
+      $data_file = new PluginWfYml(wfGlobals::getAppDir().$settings->get('data_file'));
+      if($data_file->get('webmaster/ip')){
+        $ip[] = $data_file->get('webmaster/ip');
+      }
+    }
+    /**
+     * 
+     */
+    foreach ($ip as $key => $value) {
       if($value==wfServer::getRemoteAddr()){
         $check_ip = true;
         break;
@@ -679,5 +692,19 @@ class PluginLabSync{
       $result->set('message', 'File does not exist remote.');
     }
     exit(serialize($result->get()));
+  }
+  public function event_signin(){
+    /**
+     * If role webmaster we store ip to check in read procedure.
+     */
+    if(wfUser::hasRole('webmaster')){
+      $settings = wfPlugin::getPluginModulesOne('lab/sync');
+      if($settings->get('settings/data_file')){
+        $data_file = new PluginWfYml(wfGlobals::getAppDir().$settings->get('settings/data_file'));
+        $data_file->set('webmaster/ip', wfServer::getRemoteAddr());
+        $data_file->set('webmaster/date', date('Y-m-d H:i:s'));
+        $data_file->save();
+      }
+    }
   }
 }
