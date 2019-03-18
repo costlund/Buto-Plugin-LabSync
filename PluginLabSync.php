@@ -3,51 +3,54 @@ class PluginLabSync{
   private $files = array();
   private $remote_host = false;
   private $settings = null;
-  function __construct($buto) {
-    if($buto){
-      /**¨
-       * ¨Include.
-       */
-      wfPlugin::includeonce('wf/form_v2');
-      wfPlugin::includeonce('wf/array');
-      wfPlugin::includeonce('wf/yml');
-      /**
-       * Enable.
-       */
-      wfPlugin::enable('wf/bootstrap');
-      wfPlugin::enable('form/form_v1');
-      wfPlugin::enable('wf/table');
-      wfPlugin::enable('wf/ajax');
-      wfPlugin::enable('wf/bootstrapjs');
-      wfPlugin::enable('wf/dom');
-      wfPlugin::enable('wf/callbackjson');
-      wfPlugin::enable('datatable/datatable_1_10_16');
-      wfPlugin::enable('element/iframe_v1');
-      wfPlugin::enable('wf/embed');
-      wfPlugin::enable('twitter/bootstrap335v');
-      /**
-       * Only webmaster if not reading files.
-       */
-      if(wfGlobals::get('method')!='files' && wfGlobals::get('method')!='upload_capture' && wfGlobals::get('method')!='delete_remote_do'  && wfGlobals::get('method')!='download_capture' && !wfUser::hasRole('webmaster')){
-        exit('Role issue says PluginLabSync.');
-      }
-      /**
-       * Layout path.
-       */
-      wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/lab/sync/layout');
-      /**
-       * Memory.
-       */
-      ini_set('memory_limit', '2048M');
-      /**
-       * Time.
-       */
-      ini_set('max_execution_time', 120);
-      /**
-       * Settings.
-       */
-      $this->settings = new PluginWfArray(wfArray::get($GLOBALS, 'sys/settings/plugin_modules/'.wfArray::get($GLOBALS, 'sys/class').'/settings'));
+  function __construct($data = array()) {
+    if($data == true){$data = array();} // Buto issue.
+    /**¨
+     * ¨Include.
+     */
+    wfPlugin::includeonce('wf/form_v2');
+    wfPlugin::includeonce('wf/array');
+    wfPlugin::includeonce('wf/yml');
+    /**
+     * Enable.
+     */
+    wfPlugin::enable('wf/bootstrap');
+    wfPlugin::enable('form/form_v1');
+    wfPlugin::enable('wf/table');
+    wfPlugin::enable('wf/ajax');
+    wfPlugin::enable('wf/bootstrapjs');
+    wfPlugin::enable('wf/dom');
+    wfPlugin::enable('wf/callbackjson');
+    wfPlugin::enable('datatable/datatable_1_10_16');
+    wfPlugin::enable('element/iframe_v1');
+    wfPlugin::enable('wf/embed');
+    wfPlugin::enable('twitter/bootstrap335v');
+    /**
+     * Only webmaster if not reading files.
+     */
+    $event = false;
+    if(wfGlobals::get('event/plugin')=='lab/sync'){
+      $event = true;
     }
+    if(!$event && wfGlobals::get('method')!='files' && wfGlobals::get('method')!='upload_capture' && wfGlobals::get('method')!='delete_remote_do'  && wfGlobals::get('method')!='download_capture' && !wfUser::hasRole('webmaster')){
+      exit('Role issue says PluginLabSync.');
+    }
+    /**
+     * Layout path.
+     */
+    wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/lab/sync/layout');
+    /**
+     * Memory.
+     */
+    ini_set('memory_limit', '2048M');
+    /**
+     * Time.
+     */
+    ini_set('max_execution_time', 120);
+    /**
+     * Settings.
+     */
+    $this->settings = new PluginWfArray(wfArray::get($GLOBALS, 'sys/settings/plugin_modules/'.wfArray::get($GLOBALS, 'sys/class').'/settings'));
   }
   /**
    * Check ip.
