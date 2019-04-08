@@ -1,5 +1,8 @@
-version: '1.8'
+version: '1.9'
 history:
+  '1.9':
+    date: '2019-04-08'
+    description: 'Zip file create dir changed to theme root folder.'
   '1.8':
     date: '2019-03-12'
     description: 'Webmaster ip in data_file to be added to ip param.'

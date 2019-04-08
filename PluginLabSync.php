@@ -234,11 +234,12 @@ class PluginLabSync{
     /**
      * Name of zip-file when download.
      */
-    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHi').'.zip';
+    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHis').'.zip';
+    $download_name = str_replace('/', '_', $download_name);
     /**
      * Where zip file should be put...
      */
-    $zip_filename = wfGlobals::getAppDir().'/plugin_lab_sync.zip';
+    $zip_filename = wfGlobals::getAppDir().'/theme/'.$settings->get('theme').'/'.$download_name;
     /**
      * Local files.
      */
