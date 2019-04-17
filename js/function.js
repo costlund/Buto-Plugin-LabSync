@@ -12,10 +12,16 @@ function PluginLabSync(){
         $(span).removeClass('glyphicon-upload');
         $(span).addClass('glyphicon-cloud-upload');
         local_newer.innerHTML = 'uploaded';
+        PluginLabSync.sound();
       }else{
         alert(data.message);
       }
-    });    
+    });
+  }
+  this.sound = function(){
+    var audio = document.createElement("AUDIO");
+    audio.src = '/plugin/play/sound/beep.mp3';
+    audio.play();
   }
   this.upload_all_localnewer = function(btn){
     if(!confirm('Upload all visible where Local newer is (localnewer)?')){

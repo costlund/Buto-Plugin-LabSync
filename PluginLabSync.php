@@ -473,6 +473,7 @@ class PluginLabSync{
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local').innerHTML='$local_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_remote').innerHTML='Remote: $remote_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local_newer').innerHTML='$local_newer_count';");
+    $script[] = wfDocument::createHtmlElement('script', "PluginLabSync.sound();");
     wfDocument::renderElement($script);
   }
   /**
