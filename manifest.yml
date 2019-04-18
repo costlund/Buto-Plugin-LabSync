@@ -76,6 +76,9 @@ plugin:
   -
     name: wf/embed
     version: '1.0'
+  -
+    name: play/sound
+    version: '1.0'
 sys:
   -
     name: mercury
