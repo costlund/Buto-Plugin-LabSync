@@ -239,7 +239,7 @@ class PluginLabSync{
     /**
      * Where zip file should be put...
      */
-    $zip_filename = wfGlobals::getAppDir().'/theme/'.$settings->get('theme').'/'.$download_name;
+    $zip_filename = wfGlobals::getAppDir().'/'.$download_name;
     /**
      * Local files.
      */
