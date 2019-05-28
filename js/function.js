@@ -1,5 +1,7 @@
 function PluginLabSync(){
   this.btn_delete = null;
+  this.files_count = null;
+  this.file_number = null;
   this.upload = function(btn){
     var local_newer = btn.parentNode.parentNode.getElementsByClassName('td_local_newer')[0];
     local_newer.innerHTML = '<img src="/plugin/wf/ajax/loading.gif">';
@@ -13,6 +15,8 @@ function PluginLabSync(){
         $(span).addClass('glyphicon-cloud-upload');
         local_newer.innerHTML = 'uploaded';
         PluginLabSync.sound();
+        PluginLabSync.file_number ++;
+        PluginLabSync.progress_set();
       }else{
         alert(data.message);
       }
@@ -36,6 +40,9 @@ function PluginLabSync(){
         count++;
       }
     }
+    this.file_number = 0;
+    this.files_count = i;
+    this.progress_set();
     console.log(count+' files uploaded.');
   }
   this.upload_all_exist_local = function(btn){
@@ -51,7 +58,13 @@ function PluginLabSync(){
         count++;
       }
     }
+    this.file_number = 0;
+    this.files_count = i;
+    this.progress_set();
     console.log(count+' files uploaded.');
+  }
+  this.progress_set = function(){
+    document.getElementById('progress').innerHTML = this.file_number+' of '+this.files_count;
   }
   this.download = function(btn){
     var local_newer = btn.parentNode.parentNode.getElementsByClassName('td_local_newer')[0];

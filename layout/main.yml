@@ -152,6 +152,15 @@ content:
                           onclick: "PluginLabSync.theme_select(this);"
                           class: btn btn-warning
                           data-key: ''
+                  -
+                    type: li
+                    innerHTML:
+                      -
+                        type: p
+                        attribute:
+                          id: progress
+                          class: navbar-text
+                        innerHTML: _ of _
   -
     type: div
     attribute:

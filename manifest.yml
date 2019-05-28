@@ -1,5 +1,8 @@
-version: '1.9'
+version: '1.10'
 history:
+  '1.10':
+    date: '2019-05-28'
+    description: 'Add progress numbers.'
   '1.9':
     date: '2019-04-08'
     description: 'Zip file create dir changed to theme root folder.'
