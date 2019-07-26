@@ -268,6 +268,18 @@ class PluginLabSync{
       }
     }
     /**
+     * Exclude
+     */
+    if($settings->get('exclude')){
+      foreach ($local_files as $key => $value) {
+        foreach ($settings->get('exclude') as $value2) {
+          if($this->match_wildcard($value2, $key)){
+            unset($local_files[$key]);
+          }
+        }
+      }
+    }
+    /**
      * Init ZipArchive.
      */
     $zip_archive = new ZipArchive();
