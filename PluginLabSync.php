@@ -332,7 +332,6 @@ class PluginLabSync{
       wfHelp::yml_dump($content, true);
       exit("Content from url $url could not be handled!");
     }
-    $element->setByTag(array('remote_files_count' => sizeof($remote_files)));
     /**
      * Merge existing remote to local.
      */
@@ -369,6 +368,10 @@ class PluginLabSync{
         }
       }
     }
+    /**
+     * Files count.
+     */
+    $element->setByTag(array('remote_files_count' => sizeof($local_files)));
     /**
      * Set size diff.
      */
