@@ -1,5 +1,8 @@
-version: '1.10'
+version: '1.11'
 history:
+  '1.11':
+    date: '2019-07-25'
+    description: 'Exclude param.'
   '1.10':
     date: '2019-05-28'
     description: 'Add progress numbers.'

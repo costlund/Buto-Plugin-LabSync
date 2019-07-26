@@ -28,7 +28,7 @@ Param filter/item is when not param filter/theme is in usage.
 
 ## Settings
 
-Param ip is for secure validation when push files to server. This one is IMPORTANT on the remote server settings.
+Param ip is for secure validation when push files to server. This one is IMPORTANT on the remote server settings. Use param exclude for files not has to be sync to server.
 ```
 plugin_modules:
   sync:
@@ -41,6 +41,8 @@ plugin_modules:
           url: 'https://www._my_domain_.com/sync'
           local_time: '2018-01-01 22:33:44'
           theme: my/theme
+          exclude:
+            - /theme/my/theme/version/*
       ip:
         - 127.0.0.1
         - '::1'
