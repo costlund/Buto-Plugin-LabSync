@@ -71,6 +71,12 @@ class PluginLabSync{
     /**
      * 
      */
+    if(!$ip){
+      $ip = array();
+    }
+    /**
+     * 
+     */
     foreach ($ip as $key => $value) {
       if($value==wfServer::getRemoteAddr()){
         $check_ip = true;

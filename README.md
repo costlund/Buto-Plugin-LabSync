@@ -1,34 +1,17 @@
 # Buto-Plugin-LabSync
 
-Sync files from a web browser instead of using FTP desktop client.
+Sync files between client and server. This software handle both the client part and server part.
 
-Takes all files or files for a theme via parameter filter/theme.
+First time one has to use a FTP client (or other method) to upload files. Then one could use this software to sync file only for a specific theme. Other files will not be involved.
 
-Keep track of:
-- Files only local.
-- Newer files local against server.
-- Files only on server.
 
-Buttons to batch sync files.
-
-## Admin layout
-Param admin_layout is optional.
-
-## Path string
-Params url, local_time and filter/theme can have yml path string.
-
-## IP
-Param ip is to protect when remote sync.
-
-## Theme
-Optional param filter/theme is if only sync one theme and all it´ dependencies.
-
-## Item
-Param filter/item is when not param filter/theme is in usage.
 
 ## Settings
 
 Param ip is for secure validation when push files to server. This one is IMPORTANT on the remote server settings. Use param exclude for files not has to be sync to server.
+
+### Client
+
 ```
 plugin_modules:
   sync:
@@ -43,21 +26,22 @@ plugin_modules:
           theme: my/theme
           exclude:
             - /theme/my/theme/version/*
+```
+
+### Server
+
+```
+plugin_modules:
+  sync:
+    plugin: 'lab/sync'
+    settings:
       ip:
         - 127.0.0.1
         - '::1'
       data_file: '/../buto_data/theme/my/theme/plugin_lab_sync.yml'
 ```
 
-
-Param theme could have string to file.
-```
-theme: 'yml:/../buto_data/theme/[theme]/plugin_lab_sync.yml:theme'
-```
-
-### Webmaster ip
-
-When webmaster sign in ip could be stored in data_file. This ip is added to ip param. An event has to be registrated for that.
+Event settings is for add webmaster ip to server.
 
 ```
 events:
@@ -67,7 +51,9 @@ events:
       method: 'signin'
 ```
 
+
 ## Extra folders
+
 One could add extra folders for a theme via parameter external_folders.
 ```
 plugin:
@@ -79,5 +65,6 @@ plugin:
 ```
 
 ## ZIP export
+
 One could export a theme to a zip file. The file will be created in theme root folder and also to be downloaded in browser.
 Files and folder start with "." except ".htaccess" are not included. If linked folders has errors warnings a zip file are corrupted.
