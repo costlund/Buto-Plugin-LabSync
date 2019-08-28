@@ -28,6 +28,8 @@ plugin_modules:
             - /theme/my/theme/version/*
 ```
 
+Param theme can also have string to yml.
+
 ### Server
 
 ```
@@ -41,7 +43,7 @@ plugin_modules:
       data_file: '/../buto_data/theme/my/theme/plugin_lab_sync.yml'
 ```
 
-Event settings is for add webmaster ip to server.
+Event settings is for add webmaster ip to server along with settings/ip.
 
 ```
 events:
