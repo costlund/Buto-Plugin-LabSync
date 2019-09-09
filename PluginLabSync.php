@@ -351,6 +351,20 @@ class PluginLabSync{
       exit("Content from url $url could not be handled!");
     }
     /**
+     * Remote files included in theme.
+     */
+    foreach ($remote_files as $key => $value) {
+      $remote_files[$key]['theme_text'] = '(theme_no)';
+      if($settings->get('item')){
+        foreach ($settings->get('item') as $key2 => $value2) {
+          if($this->match_wildcard($value2['value'], $key)>0){
+            $remote_files[$key]['theme_text'] = '(theme_yes)';
+            continue;
+          }
+        }
+      }
+    }
+    /**
      * Merge existing remote to local.
      */
     foreach ($local_files as $key => $value) {
@@ -358,6 +372,7 @@ class PluginLabSync{
         $local_files[$key]['exist'] = 'both';
         $local_files[$key]['remote_size'] = $remote_files[$key]['remote_size'];
         $local_files[$key]['remote_time'] = $remote_files[$key]['remote_time'];
+        $local_files[$key]['theme_text'] = $remote_files[$key]['theme_text'];
       }else{
         $local_files[$key]['exist'] = 'local';
       }
@@ -372,6 +387,7 @@ class PluginLabSync{
         $local_files[$key]['exist'] = 'remote';
         $local_files[$key]['remote_size'] = $remote_files[$key]['remote_size'];
         $local_files[$key]['remote_time'] = $remote_files[$key]['remote_time'];
+        $local_files[$key]['theme_text'] = $remote_files[$key]['theme_text'];
       }
     }
     /**
@@ -408,6 +424,16 @@ class PluginLabSync{
       $local_files[$key]['allow'] = false;
       if($settings->get('item')){
         foreach ($settings->get('item') as $key2 => $value2) {
+          /**
+           * Files on server but not included in theme.
+           */
+          if(isset($local_files[$key]['theme_text']) && $local_files[$key]['theme_text']=='(theme_no)'){
+            $local_files[$key]['allow'] = true;
+            continue;
+          }
+          /**
+           * Files not included in theme.
+           */
           if($this->match_wildcard($value2['value'], $key)>0){
             $local_files[$key]['allow'] = true;
             continue;
@@ -480,7 +506,8 @@ class PluginLabSync{
        wfDocument::createHtmlElement('td', ($item->get('local_time')?date('ymd H:i:s', $item->get('local_time')):null) ),
        wfDocument::createHtmlElement('td', ($item->get('remote_time')?date('ymd H:i:s', $item->get('remote_time')):null) ),
        wfDocument::createHtmlElement('td',   ($item->get('time_diff')?'('.$item->get('time_diff').')':null) ),
-       wfDocument::createHtmlElement('td', ($item->get('local_newer')?'('.$item->get('local_newer').')':null), array('class' => 'td_local_newer'))
+       wfDocument::createHtmlElement('td', ($item->get('local_newer')?'('.$item->get('local_newer').')':null), array('class' => 'td_local_newer')),
+       wfDocument::createHtmlElement('td', $item->get('theme_text'))
       ));
     }
     $element->setByTag(array('tbody' => $tbody));

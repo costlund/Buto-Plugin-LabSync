@@ -1,5 +1,8 @@
-version: '1.11'
+version: '1.12'
 history:
+  '1.12':
+    date: '2019-09-09'
+    description: 'Files on server but not included in theme.'
   '1.11':
     date: '2019-07-25'
     description: 'Exclude param.'

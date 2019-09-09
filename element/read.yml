@@ -69,6 +69,9 @@
             -
               type: th
               innerHTML: Local newer
+            -
+              type: th
+              innerHTML: Theme
     -
       type: tbody
       innerHTML: rs:tbody
