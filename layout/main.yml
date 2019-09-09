@@ -127,6 +127,12 @@ content:
                               class: badge
                               id: badge_remote
                             innerHTML: 
+                          -
+                            type: span
+                            attribute:
+                              class: badge
+                              id: badge_theme_no
+                            innerHTML: 
                   -
                     type: li
                     innerHTML:

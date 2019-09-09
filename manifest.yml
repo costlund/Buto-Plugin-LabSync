@@ -1,5 +1,8 @@
-version: '1.12'
+version: '1.13'
 history:
+  '1.13':
+    date: '2019-09-09'
+    description: 'Delete folder.'
   '1.12':
     date: '2019-09-09'
     description: 'Files on server but not included in theme.'

@@ -3,8 +3,13 @@ class PluginLabSync{
   private $files = array();
   private $remote_host = false;
   private $settings = null;
+  private $files_excluded = array();
   function __construct($data = array()) {
     if($data == true){$data = array();} // Buto issue.
+    /**
+     * Excluded.
+     */
+    $this->files_excluded = array('/config/settings.yml');
     /**¨
      * ¨Include.
      */
@@ -32,7 +37,7 @@ class PluginLabSync{
     if(wfGlobals::get('event/plugin')=='lab/sync'){
       $event = true;
     }
-    if(!$event && wfGlobals::get('method')!='files' && wfGlobals::get('method')!='upload_capture' && wfGlobals::get('method')!='delete_remote_do'  && wfGlobals::get('method')!='download_capture' && !wfUser::hasRole('webmaster')){
+    if(!$event && wfGlobals::get('method')!='files' && wfGlobals::get('method')!='upload_capture' && wfGlobals::get('method')!='delete_remote_do' && wfGlobals::get('method')!='delete_remote_folder_do'  && wfGlobals::get('method')!='download_capture' && !wfUser::hasRole('webmaster')){
       exit('Role issue says PluginLabSync.');
     }
     /**
@@ -354,6 +359,10 @@ class PluginLabSync{
      * Remote files included in theme.
      */
     foreach ($remote_files as $key => $value) {
+      if(in_array($key, $this->files_excluded)){
+        $remote_files[$key]['theme_text'] = null;
+        continue;
+      }
       $remote_files[$key]['theme_text'] = '(theme_no)';
       if($settings->get('item')){
         foreach ($settings->get('item') as $key2 => $value2) {
@@ -497,7 +506,7 @@ class PluginLabSync{
        wfDocument::createHtmlElement('td', array(
          wfDocument::createHtmlElement('text', $key), 
          wfDocument::createHtmlElement('a', array(wfDocument::createHtmlElement('span', null, array('class' => 'glyphicon glyphicon-'.$glyphicon))), array('onclick' => $onclick, 'title' => $title, 'class' => 'btn_upload', 'data-file' => urlencode($key), 'data-exist' => $item->get('exist'))),
-         wfDocument::createHtmlElement('a', array(wfDocument::createHtmlElement('span', null, array('class' => 'glyphicon glyphicon-trash'))), array('onclick' => "PluginLabSync.delete_form(this)", 'title' => 'Delete file.', 'class' => '', 'data-file' => urlencode($key), 'data-exist' => $item->get('exist')))
+         wfDocument::createHtmlElement('a', array(wfDocument::createHtmlElement('span', null, array('class' => 'glyphicon glyphicon-trash'))), array('onclick' => "PluginLabSync.delete_form(this)", 'title' => 'Delete file.', 'class' => '', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist')))
          )),
        wfDocument::createHtmlElement('td', '('.$item->get('exist').')', array('class' => 'td_exist')),
        wfDocument::createHtmlElement('td', ($item->get('size_diff')?'('.$item->get('size_diff').')':null) ),
@@ -518,6 +527,7 @@ class PluginLabSync{
     $local_count = 0;
     $remote_count = 0;
     $local_newer_count = 0;
+    $theme_no_count = 0;
     foreach ($local_files as $key => $value) {
       if($value['allow'] && $value['exist']=='local'){
         $local_count++;
@@ -528,10 +538,14 @@ class PluginLabSync{
       if($value['allow'] && $value['local_newer']=='local_newer'){
         $local_newer_count++;
       }
+      if(isset($value['theme_text']) && $value['allow'] && $value['theme_text']=='(theme_no)'){
+        $theme_no_count++;
+      }
     }
     $script = array();
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local').innerHTML='$local_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_remote').innerHTML='Remote: $remote_count';");
+    $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_theme_no').innerHTML='Theme no: $theme_no_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local_newer').innerHTML='$local_newer_count';");
     $script[] = wfDocument::createHtmlElement('script', "PluginLabSync.sound();");
     wfDocument::renderElement($script);
@@ -755,6 +769,56 @@ class PluginLabSync{
     }else{
       $result->set('success', false);
       $result->set('message', 'File does not exist remote.');
+    }
+    exit(serialize($result->get()));
+  }
+  /**
+   * S2C request.
+   * Call this from local server.
+   */
+  public function page_delete_remote_folder(){
+    $filename = wfRequest::get('key');
+    $url = $this->getUrl('delete_remote_folder_do');
+    $params = new PluginWfArray();
+    $params->set('filename', $filename);
+    wfPlugin::includeonce('server/push');
+    $push = new PluginServerPush();
+    $result = $push->push($url, $params->get());
+    $unserialize = @unserialize($result);
+    if($unserialize===false){
+      exit($result);
+    }else{
+      exit(json_encode($unserialize));
+    }
+  }
+  /**
+   * S2S request.
+   */
+  public function page_delete_remote_folder_do(){
+    $filename = wfRequest::get('filename');
+    $filename = $this->replaceWebDir($filename);
+    /**
+     * Result.
+     */
+    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null));
+    /**
+     * Check IP.
+     */
+    $check_ip = $this->check_ip();
+    if(!$check_ip){
+      $result->set('success', false);
+      $result->set('message', 'Your ip is not registred!');
+      exit(serialize($result->get()));
+    }
+    /**
+     * Get content and put in serialize array.
+     */
+    $dirname = wfGlobals::getAppDir().$filename;
+    if(wfFilesystem::fileExist($dirname)){
+      wfFilesystem::delete_dir($dirname);
+    }else{
+      $result->set('success', false);
+      $result->set('message', 'Folder does not exist remote.');
     }
     exit(serialize($result->get()));
   }

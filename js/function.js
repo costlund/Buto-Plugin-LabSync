@@ -91,9 +91,10 @@ function PluginLabSync(){
       {type: 'p', innerHTML: [{type: 'strong', innerHTML: 'File: '},{type: 'span', innerHTML: decodeURIComponent(btn.getAttribute('data-file'))}]},
       {type: 'p', innerHTML: [{type: 'strong', innerHTML: 'Exist: '},{type: 'span', innerHTML: btn.getAttribute('data-exist')}]},
       {type: 'p', innerHTML: [
-          {type: 'a', attribute: {class: 'btn btn-primary btn-sm', id: 'btn_delete_local', onclick: "PluginLabSync.delete('local')"}, innerHTML: 'Delete local'},
-          {type: 'a', attribute: {class: 'btn btn-warning', id: 'btn_delete_both', onclick: "PluginLabSync.delete('both')"}, innerHTML: 'Delete both'},
-          {type: 'a', attribute: {class: 'btn btn-primary btn-sm', id: 'btn_delete_remote', onclick: "PluginLabSync.delete('remote')"}, innerHTML: 'Delete remote'}
+          {type: 'a', attribute: {class: 'btn btn-primary btn-sm',   id: 'btn_delete_local',         onclick: "PluginLabSync.delete('local')"},         innerHTML: 'Delete local'},
+          {type: 'a', attribute: {class: 'btn btn-warning',          id: 'btn_delete_both',          onclick: "PluginLabSync.delete('both')"},          innerHTML: 'Delete both'},
+          {type: 'a', attribute: {class: 'btn btn-primary btn-sm',   id: 'btn_delete_remote',        onclick: "PluginLabSync.delete('remote')"},        innerHTML: 'Delete remote'},
+          {type: 'a', attribute: {class: 'btn btn-secondary btn-sm', id: 'btn_delete_remote_folder', onclick: "PluginLabSync.delete('remote_folder')"}, innerHTML: 'Delete remote folder'}
         ], attribute: {style: 'text-align:center'}}
             ];
     PluginWfDom.render(content, document.getElementById('modal_delete_body'));
@@ -133,6 +134,21 @@ function PluginLabSync(){
           local_newer.innerHTML = data.message;
         }
       });
+    }else if(mode=='remote_folder'){
+      var dir = prompt("Please enter your name", decodeURIComponent(this.btn_delete.getAttribute('data-dir')));
+      if(dir){
+        if(confirm('Are you sure to delete hole folder '+dir+'?')){
+          $.get( "delete_remote_folder?key="+dir, function( data ) {
+            data = JSON.parse(data);
+            if(data.success){
+              local_newer.innerHTML = 'Remote folder deleted';
+              $('#modal_delete').modal('hide');
+            }else{
+              local_newer.innerHTML = data.message;
+            }
+          });
+        }
+      }
     }else if(mode=='both'){
       alert('not yet');
     }

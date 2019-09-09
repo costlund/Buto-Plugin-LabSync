@@ -25,12 +25,17 @@
     -
       type: button
       attribute:
+        onclick: "$('#sync_table').DataTable().search('(theme_no)').draw();"
+      innerHTML: (theme_no)
+    -
+      type: button
+      attribute:
         onclick: "$('#sync_table').DataTable().search('').draw();"
       innerHTML: Clear
 -
   type: table
   attribute:
-    class: table
+    class: table table-sm
     id: sync_table
   innerHTML:
     -
