@@ -18,33 +18,11 @@ content:
           -
             type: widget
             data:
-              plugin: 'twitter/bootstrap335v'
-              method: all
-          -
-            type: widget
-            data:
-              plugin: 'wf/ajax'
+              plugin: 'theme/include'
               method: include
-          -
-            type: widget
-            data:
-              plugin: 'wf/bootstrapjs'
-              method: include
-          -
-            type: widget
-            data:
-              plugin: 'wf/callbackjson'
-              method: include
-          -
-            type: widget
-            data:
-              plugin: 'wf/dom'
-              method: include
-          -
-            type: widget
-            data:
-              plugin: 'datatable/datatable_1_10_16'
-              method: include
+              data:
+                bootswatch:
+                  theme: Spacelab
           -
             type: widget
             data:

@@ -19,17 +19,8 @@ class PluginLabSync{
     /**
      * Enable.
      */
-    wfPlugin::enable('wf/bootstrap');
-    wfPlugin::enable('form/form_v1');
-    wfPlugin::enable('wf/table');
-    wfPlugin::enable('wf/ajax');
-    wfPlugin::enable('wf/bootstrapjs');
-    wfPlugin::enable('wf/dom');
-    wfPlugin::enable('wf/callbackjson');
-    wfPlugin::enable('datatable/datatable_1_10_16');
-    wfPlugin::enable('element/iframe_v1');
-    wfPlugin::enable('wf/embed');
-    wfPlugin::enable('twitter/bootstrap335v');
+    wfPlugin::enable('theme/include');
+    wfPlugin::enable('icons/octicons');
     /**
      * Only webmaster if not reading files.
      */
@@ -494,19 +485,20 @@ class PluginLabSync{
       }
       if($item->get('exist')=='remote'){
         $onclick = "PluginLabSync.download(this)";
-        $glyphicon = 'download';
         $title = 'Download file from server.';
+        $icon_upload = wfDocument::createWidget('icons/octicons', 'svg', array('name' => 'cloud-download'));
       }else{
         $onclick = "PluginLabSync.upload(this)";
-        $glyphicon = 'upload';
         $title = 'Upload file to server.';
+        $icon_upload = wfDocument::createWidget('icons/octicons', 'svg', array('name' => 'cloud-upload'));
       }
+      $icon_trashcan = wfDocument::createWidget('icons/octicons', 'svg', array('name' => 'trashcan'));
       $tbody[] = wfDocument::createHtmlElement('tr', array(
        wfDocument::createHtmlElement('td', $i),
        wfDocument::createHtmlElement('td', array(
          wfDocument::createHtmlElement('text', $key), 
-         wfDocument::createHtmlElement('a', array(wfDocument::createHtmlElement('span', null, array('class' => 'glyphicon glyphicon-'.$glyphicon))), array('onclick' => $onclick, 'title' => $title, 'class' => 'btn_upload', 'data-file' => urlencode($key), 'data-exist' => $item->get('exist'))),
-         wfDocument::createHtmlElement('a', array(wfDocument::createHtmlElement('span', null, array('class' => 'glyphicon glyphicon-trash'))), array('onclick' => "PluginLabSync.delete_form(this)", 'title' => 'Delete file.', 'class' => '', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist')))
+         wfDocument::createHtmlElement('a', array($icon_upload), array('onclick' => $onclick, 'title' => $title, 'class' => 'btn_upload', 'data-file' => urlencode($key), 'data-exist' => $item->get('exist'))),
+         wfDocument::createHtmlElement('a', array($icon_trashcan), array('onclick' => "PluginLabSync.delete_form(this)", 'title' => 'Delete file.', 'class' => '', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist')))
          )),
        wfDocument::createHtmlElement('td', '('.$item->get('exist').')', array('class' => 'td_exist')),
        wfDocument::createHtmlElement('td', ($item->get('size_diff')?'('.$item->get('size_diff').')':null) ),

@@ -9,10 +9,6 @@ function PluginLabSync(){
       console.log(data);
       data = JSON.parse(data);
       if(data.success){
-        var span = btn.getElementsByClassName('glyphicon')[0];
-        span.style.color='green';
-        $(span).removeClass('glyphicon-upload');
-        $(span).addClass('glyphicon-cloud-upload');
         local_newer.innerHTML = 'uploaded';
         PluginLabSync.sound();
         PluginLabSync.file_number ++;
@@ -73,10 +69,6 @@ function PluginLabSync(){
       console.log(data);
       data = JSON.parse(data);
       if(data.success){
-        var span = btn.getElementsByClassName('glyphicon')[0];
-        span.style.color='green';
-        $(span).removeClass('glyphicon-upload');
-        $(span).addClass('glyphicon-cloud-upload');
         local_newer.innerHTML = 'downloaded';
       }else{
         alert(data.message);
@@ -160,9 +152,15 @@ function PluginLabSync(){
     /**
      * Select a theme.
      */
-    $.getJSON( "theme_select?key="+e.getAttribute('data-key'), function( data ) {
-      location.reload();
-    });
+    if(e.getAttribute('data-key')){
+      $.getJSON( "theme_select?key="+e.getAttribute('data-key'), function( data ) {
+        location.reload();
+      });
+    }else{
+      $.getJSON( "theme_select", function( data ) {
+        location.reload();
+      });
+    }
   }
 }
 var PluginLabSync = new PluginLabSync();

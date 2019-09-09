@@ -10,166 +10,76 @@ content:
       class: 'container-fluid'
     innerHTML:
       -
-        type: nav
-        attribute:
-          class: 'navbar navbar-default'
-          id: navbar_lab_sync
-        innerHTML:
-          -
-            type: div
-            attribute:
-              class: navbar-header
-            innerHTML:
-              -
-                type: button
-                attribute:
-                  type: button
-                  class: 'navbar-toggle collapsed'
-                  data-toggle: collapse
-                  data-target: '#bs-example-navbar-collapse-2'
-                  aria-expanded: 'false'
-                innerHTML:
-                  0:
-                    type: span
-                    attribute:
-                      class: icon-bar
-                  1:
-                    type: span
-                    attribute:
-                      class: icon-bar
-                  3:
-                    type: span
-                    attribute:
-                      class: icon-bar
-              -
-                type: span
-                attribute:
-                  class: navbar-brand
-                innerHTML:
-                  -
-                    type: span
-                    attribute:
-                      class: 'glyphicon glyphicon-fire'
-                      aria-hidden: true
-                  -
-                    type: strong
-                    innerHTML: yml:/plugin/lab/sync/data/data.yml:title
-          -
-            type: div
-            attribute:
-              class: 'collapse navbar-collapse'
-              id: bs-example-navbar-collapse-2
-            innerHTML:
-              -
-                type: ul
-                attribute:
-                  class: 'nav navbar-nav'
-                innerHTML:
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: a
-                        innerHTML:
-                          -
-                            type: span
-                            innerHTML: Sync
-                        attribute:
-                          onclick: "start();"
-                          class: btn btn-default
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: a
-                        innerHTML:
-                          -
-                            type: span
-                            innerHTML: Local
-                          -
-                            type: span
-                            attribute:
-                              class: badge
-                              id: badge_local
-                            innerHTML: 
-                        attribute:
-                          onclick: "PluginLabSync.upload_all_exist_local(this);"
-                          class: btn btn-default
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: a
-                        innerHTML:
-                          -
-                            type: span
-                            innerHTML: Local newer
-                          -
-                            type: span
-                            attribute:
-                              class: badge
-                              id: badge_local_newer
-                            innerHTML: 
-                        attribute:
-                          onclick: "PluginLabSync.upload_all_localnewer(this);"
-                          class: btn btn-default
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: p
-                        attribute:
-                          class: navbar-text
-                        innerHTML:
-                          -
-                            type: span
-                            attribute:
-                              class: badge
-                              id: badge_remote
-                            innerHTML: 
-                          -
-                            type: span
-                            attribute:
-                              class: badge
-                              id: badge_theme_no
-                            innerHTML: 
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: a
-                        innerHTML:
-                          -
-                            type: span
-                            innerHTML: Zip
-                        attribute:
-                          onclick: "PluginLabSync.zip();"
-                          class: btn btn-default
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: a
-                        innerHTML:
-                          -
-                            type: span
-                            innerHTML: Deselect
-                        attribute:
-                          onclick: "PluginLabSync.theme_select(this);"
-                          class: btn btn-warning
-                          data-key: ''
-                  -
-                    type: li
-                    innerHTML:
-                      -
-                        type: p
-                        attribute:
-                          id: progress
-                          class: navbar-text
-                        innerHTML: _ of _
+        type: widget
+        data:
+          plugin: 'bootstrap/navbar_v1'
+          method: navbar
+          data:
+            brand: Sync
+            navbar:
+              id: _my_navbar_id_
+              item:
+                -
+                  text: Sync
+                  onclick: "start();"
+                -
+                  text:
+                    -
+                      type: span
+                      innerHTML: Local
+                    -
+                      type: span
+                      attribute:
+                        class: badge badge-primary
+                        id: badge_local
+                      innerHTML: _
+                  onclick: "PluginLabSync.upload_all_exist_local(this);"
+                -
+                  text:
+                    -
+                      type: span
+                      innerHTML: Local newer
+                    -
+                      type: span
+                      attribute:
+                        class: badge badge-primary
+                        id: badge_local_newer
+                      innerHTML: _
+                  onclick: "PluginLabSync.upload_all_localnewer(this);"
+                -
+                  type: text
+                  text:
+                    -
+                      type: span
+                      attribute:
+                        class: badge
+                        id: badge_remote
+                      innerHTML: _
+                    -
+                      type: span
+                      attribute:
+                        class: badge
+                        id: badge_theme_no
+                      innerHTML: _
+                -
+                  text: Zip
+                  onclick: "PluginLabSync.zip();"
+                -
+                  text: Deselect
+                  onclick: "PluginLabSync.theme_select(this);"
+                  attribute:
+                    data-key: ''
+                -
+                  type: text
+                  text: 
+                    -
+                      type: span
+                      innerHTML: _ of _
+                      attribute:
+                        id: progress
   -
     type: div
     attribute:
+      style: 'margin-top:20px;min-height:500px'
       class: 'container-fluid'
     innerHTML:
-      
