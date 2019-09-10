@@ -15,8 +15,8 @@
     -
       type: button
       attribute:
-        onclick: "$('#sync_table').DataTable().search('(local_newer)').draw();"
-      innerHTML: (local_newer)
+        onclick: "$('#sync_table').DataTable().search('(local_newer) (theme_yes)').draw();"
+      innerHTML: '(local_newer) (theme_yes)'
     -
       type: button
       attribute:
@@ -96,6 +96,8 @@
                 - 50
                 - 100
                 - 500
+                - 1000
+                - 2000
                 - '-1'
               -
                 - 10
@@ -103,6 +105,8 @@
                 - 50
                 - 100
                 - 500
+                - 1000
+                - 2000
                 - All
             ordering: true
             info: true
