@@ -67,6 +67,7 @@ function PluginLabSync(){
     local_newer.innerHTML = '<img src="/plugin/wf/ajax/loading.gif">';
     $.get( "download?key="+btn.getAttribute('data-file'), function( data ) {
       console.log(data);
+      PluginLabSync.sound();
       data = JSON.parse(data);
       if(data.success){
         local_newer.innerHTML = 'downloaded';
