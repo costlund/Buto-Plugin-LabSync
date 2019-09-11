@@ -33,90 +33,95 @@
         onclick: "$('#sync_table').DataTable().search('').draw();"
       innerHTML: Clear
 -
-  type: table
+  type: div
   attribute:
-    class: table table-sm
-    id: sync_table
+    class: table-responsive
   innerHTML:
     -
-      type: thead
+      type: table
+      attribute:
+        class: table table-sm
+        id: sync_table
       innerHTML:
         -
-          type: tr
+          type: thead
           innerHTML:
             -
-              type: th
-              innerHTML: '-'
-            -
-              type: th
-              innerHTML: File
-            -
-              type: th
-              innerHTML: Exist
-            -
-              type: th
-              innerHTML: Size diff
-            -
-              type: th
-              innerHTML: Local size
-            -
-              type: th
-              innerHTML: Remote size
-            -
-              type: th
-              innerHTML: Local time
-            -
-              type: th
-              innerHTML: Remote time
-            -
-              type: th
-              innerHTML: Time diff
-            -
-              type: th
-              innerHTML: Local newer
-            -
-              type: th
-              innerHTML: Theme
-    -
-      type: tbody
-      innerHTML: rs:tbody
-    -
-      type: widget
-      data:
-        plugin: datatable/datatable_1_10_16
-        method: run
-        data:
-          id: sync_table
-          json:
-            paging: true
-            lengthMenu:
-              -
-                - 10
-                - 25
-                - 50
-                - 100
-                - 500
-                - 1000
-                - 2000
-                - '-1'
-              -
-                - 10
-                - 25
-                - 50
-                - 100
-                - 500
-                - 1000
-                - 2000
-                - All
-            ordering: true
-            info: true
-            searching: true
-            orderzzz:
-              -
-                - 0
-                - desc
-            language:
-              url: /plugin/datatable/datatable_1_10_16/i18n/Swedish.json
-            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-5'i><'col-sm-7'p>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>"
+              type: tr
+              innerHTML:
+                -
+                  type: th
+                  innerHTML: '-'
+                -
+                  type: th
+                  innerHTML: File
+                -
+                  type: th
+                  innerHTML: Exist
+                -
+                  type: th
+                  innerHTML: Size diff
+                -
+                  type: th
+                  innerHTML: Local size
+                -
+                  type: th
+                  innerHTML: Remote size
+                -
+                  type: th
+                  innerHTML: Local time
+                -
+                  type: th
+                  innerHTML: Remote time
+                -
+                  type: th
+                  innerHTML: Time diff
+                -
+                  type: th
+                  innerHTML: Local newer
+                -
+                  type: th
+                  innerHTML: Theme
+        -
+          type: tbody
+          innerHTML: rs:tbody
+        -
+          type: widget
+          data:
+            plugin: datatable/datatable_1_10_16
+            method: run
+            data:
+              id: sync_table
+              json:
+                paging: true
+                lengthMenu:
+                  -
+                    - 10
+                    - 25
+                    - 50
+                    - 100
+                    - 500
+                    - 1000
+                    - 2000
+                    - '-1'
+                  -
+                    - 10
+                    - 25
+                    - 50
+                    - 100
+                    - 500
+                    - 1000
+                    - 2000
+                    - All
+                ordering: true
+                info: true
+                searching: true
+                orderzzz:
+                  -
+                    - 0
+                    - desc
+                language:
+                  url: /plugin/datatable/datatable_1_10_16/i18n/Swedish.json
+                dom: "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-5'i><'col-sm-7'p>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>"
 
               

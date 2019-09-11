@@ -30,6 +30,11 @@ content:
               method: js
               data:
                 file: /plugin/lab/sync/js/function.js
+          -
+            type: widget
+            data:
+              plugin: bootstrap/navtabs_v1
+              method: include
       body:
         type: body
         innerHTML: 'body...'

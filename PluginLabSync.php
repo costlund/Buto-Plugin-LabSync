@@ -21,6 +21,8 @@ class PluginLabSync{
      */
     wfPlugin::enable('theme/include');
     wfPlugin::enable('icons/octicons');
+    wfPlugin::enable('wf/table');
+    wfPlugin::enable('bootstrap/navtabs_v1');
     /**
      * Only webmaster if not reading files.
      */
@@ -211,7 +213,7 @@ class PluginLabSync{
     wfPlugin::includeonce('wf/yml');
     $settings = $this->getSettings();
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
-    $page->setByTag(array('settings' => wfHelp::getYmlDump($settings->get())));
+    $page->setByTag(array('settings' => $settings->get()));
     $page->setByTag($settings->get());
     $page->setByTag(array('element_theme' => $this->getElementTheme()));
     /**
