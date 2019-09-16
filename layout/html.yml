@@ -23,6 +23,7 @@ content:
               data:
                 bootswatch:
                   theme: Spacelab
+                icon: /plugin/lab/sync/icon/icon.png
           -
             type: widget
             data:
