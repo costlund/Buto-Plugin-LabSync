@@ -500,7 +500,8 @@ class PluginLabSync{
        wfDocument::createHtmlElement('td', array(
          wfDocument::createHtmlElement('text', $key), 
          wfDocument::createHtmlElement('a', array($icon_upload), array('onclick' => $onclick, 'title' => $title, 'class' => 'btn_upload', 'data-file' => urlencode($key), 'data-exist' => $item->get('exist'))),
-         wfDocument::createHtmlElement('a', array($icon_trashcan), array('onclick' => "PluginLabSync.delete_form(this)", 'title' => 'Delete file.', 'class' => '', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist')))
+         wfDocument::createHtmlElement('a', array($icon_trashcan), array('onclick' => "PluginLabSync.delete_form(this)", 'title' => 'Delete file.', 'class' => '', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist'))),
+         wfDocument::createHtmlElement('a', 'hidden_btn_delete_remote', array('style' => 'display:none', 'onclick' => "PluginLabSync.delete_remote(this)", 'title' => 'Delete remote file.', 'class' => 'btn_delete_all_theme_no', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist')))
          )),
        wfDocument::createHtmlElement('td', '('.$item->get('exist').')', array('class' => 'td_exist')),
        wfDocument::createHtmlElement('td', ($item->get('size_diff')?'('.$item->get('size_diff').')':null) ),
@@ -510,7 +511,7 @@ class PluginLabSync{
        wfDocument::createHtmlElement('td', ($item->get('remote_time')?date('ymd H:i:s', $item->get('remote_time')):null) ),
        wfDocument::createHtmlElement('td',   ($item->get('time_diff')?'('.$item->get('time_diff').')':null) ),
        wfDocument::createHtmlElement('td', ($item->get('local_newer')?'('.$item->get('local_newer').')':null), array('class' => 'td_local_newer')),
-       wfDocument::createHtmlElement('td', $item->get('theme_text'))
+       wfDocument::createHtmlElement('td', $item->get('theme_text'), array('class' => 'td_theme'))
       ));
     }
     $element->setByTag(array('tbody' => $tbody));
@@ -539,7 +540,7 @@ class PluginLabSync{
     $script = array();
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local').innerHTML='$local_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_remote').innerHTML='Remote: $remote_count';");
-    $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_theme_no').innerHTML='Theme no: $theme_no_count';");
+    $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_theme_no').innerHTML='$theme_no_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local_newer').innerHTML='$local_newer_count';");
     $script[] = wfDocument::createHtmlElement('script', "PluginLabSync.sound();");
     wfDocument::renderElement($script);
@@ -610,7 +611,6 @@ class PluginLabSync{
       $result->set('message', $e->getMessage());
       exit(serialize($result->get()));
     }
-    
     /**
      * Send back result.
      */

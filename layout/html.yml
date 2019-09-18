@@ -21,8 +21,6 @@ content:
               plugin: 'theme/include'
               method: include
               data:
-                bootswatch:
-                  theme: Spacelab
                 icon: /plugin/lab/sync/icon/icon.png
           -
             type: widget

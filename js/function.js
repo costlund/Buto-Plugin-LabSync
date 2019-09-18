@@ -23,6 +23,21 @@ function PluginLabSync(){
     audio.src = '/plugin/play/sound/beep.mp3';
     audio.play();
   }
+  this.delete_all_theme_no = function(btn){
+    if(!confirm('Delete all visible where Theme has theme_no?')){
+      return null;
+    }
+    var tds = document.getElementById('sync_table_wrapper').getElementsByClassName('td_theme');
+    this.file_number = 0;
+    this.files_count = tds.length;
+    this.progress_set();
+    for(i=0;i<tds.length;i++){
+      if(tds[i].innerHTML=='(theme_no)'){
+        var b = tds[i].parentNode.getElementsByClassName('btn_delete_all_theme_no')[0];
+        b.onclick();
+      }
+    }
+  }
   this.upload_all_localnewer = function(btn){
     if(!confirm('Upload all visible where Local newer is (localnewer)?')){
       return null;
@@ -104,6 +119,22 @@ function PluginLabSync(){
       document.getElementById('btn_delete_local').setAttribute('onclick', null);
     }
   }
+  this.delete_remote = function(btn){
+    var td = btn.parentNode.parentNode.getElementsByClassName('td_local_newer')[0];
+    td.innerHTML = '<img src="/plugin/wf/ajax/loading.gif">';
+    $.get( "delete_remote?key="+btn.getAttribute('data-file'), function( data ) {
+      data = JSON.parse(data);
+      if(data.success){
+        td.innerHTML = 'Remote deleted';
+        $('#modal_delete').modal('hide');
+        PluginLabSync.sound();
+        PluginLabSync.file_number ++;
+        PluginLabSync.progress_set();
+     }else{
+        td.innerHTML = data.message;
+      }
+    });
+  }
   this.delete = function(mode){
     var local_newer = this.btn_delete.parentNode.parentNode.getElementsByClassName('td_local_newer')[0];
     local_newer.innerHTML = '<img src="/plugin/wf/ajax/loading.gif">';
@@ -118,15 +149,7 @@ function PluginLabSync(){
         }
       });
     }else if(mode=='remote'){
-      $.get( "delete_remote?key="+this.btn_delete.getAttribute('data-file'), function( data ) {
-        data = JSON.parse(data);
-        if(data.success){
-          local_newer.innerHTML = 'Remote deleted';
-          $('#modal_delete').modal('hide');
-        }else{
-          local_newer.innerHTML = data.message;
-        }
-      });
+      this.delete_remote(this.btn_delete);
     }else if(mode=='remote_folder'){
       var dir = prompt("Please enter your name", decodeURIComponent(this.btn_delete.getAttribute('data-dir')));
       if(dir){

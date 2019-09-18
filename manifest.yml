@@ -1,5 +1,8 @@
-version: '1.15'
+version: '1.16'
 history:
+  '1.16':
+    date: '2019-09-18'
+    description: 'Delete multiple remote files.'
   '1.15':
     date: '2019-09-11'
     description: 'Improved layout with tabs.'

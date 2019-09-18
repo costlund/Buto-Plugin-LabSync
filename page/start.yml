@@ -56,15 +56,21 @@ content:
                     -
                       type: span
                       attribute:
-                        class: badge
+                        class: badge badge-primary
                         id: badge_remote
                       innerHTML: _
+                -
+                  text:
+                    -
+                      type: span
+                      innerHTML: Delete(theme_no)
                     -
                       type: span
                       attribute:
-                        class: badge
+                        class: badge badge-primary
                         id: badge_theme_no
                       innerHTML: _
+                  onclick: "PluginLabSync.delete_all_theme_no(this);"
                 -
                   text: Zip
                   onclick: "PluginLabSync.zip();"
