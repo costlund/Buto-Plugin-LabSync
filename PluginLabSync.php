@@ -338,15 +338,22 @@ class PluginLabSync{
     /**
      * Remote files.
      */
-    $url = $this->getUrl('files');
-    $content = @file_get_contents($url);
-    if($content === false){
-      exit("Error when call url $url!");
-    }
-    $remote_files = @unserialize($content);
-    if($remote_files === false){
-      wfHelp::yml_dump($content, true);
-      exit("Content from url $url could not be handled!");
+    if($settings->get('ftp')){
+      wfPlugin::includeonce('php/ftp_v1');
+      $ftp = new PluginPhpFtp_v1();
+      $ftp->setData($settings->get('ftp'));
+      $remote_files = $ftp->rawlist_files($ftp->rawlist('/eaglesandbirdies.se'));
+    }else{
+      $url = $this->getUrl('files');
+      $content = @file_get_contents($url);
+      if($content === false){
+        exit("Error when call url $url!");
+      }
+      $remote_files = @unserialize($content);
+      if($remote_files === false){
+        wfHelp::yml_dump($content, true);
+        exit("Content from url $url could not be handled!");
+      }
     }
     /**
      * Remote files included in theme.
