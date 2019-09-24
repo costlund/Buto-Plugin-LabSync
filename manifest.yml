@@ -1,5 +1,8 @@
-version: '1.16'
+version: '1.17'
 history:
+  '1.17':
+    date: '2019-09-24'
+    description: 'FTP support.'
   '1.16':
     date: '2019-09-18'
     description: 'Delete multiple remote files.'

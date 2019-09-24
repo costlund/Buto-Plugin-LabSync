@@ -28,6 +28,22 @@ plugin_modules:
             - /theme/my/theme/version/*
 ```
 
+### FTP
+
+FTP settings.
+
+```
+plugin_modules:
+  sync:
+    plugin: 'lab/sync'
+    settings:
+    ftp:
+      server: _
+      user: _
+      password: _
+```
+
+
 Param theme can also have string to yml.
 
 ### Server
