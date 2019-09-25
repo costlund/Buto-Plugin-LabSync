@@ -41,6 +41,8 @@ plugin_modules:
       server: _
       user: _
       password: _
+      dir: /_buto_app_folder_
+      web_folder: public_html
 ```
 
 

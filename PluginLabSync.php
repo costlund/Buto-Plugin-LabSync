@@ -4,6 +4,7 @@ class PluginLabSync{
   private $remote_host = false;
   private $settings = null;
   private $files_excluded = array();
+  private $ftp = null;
   function __construct($data = array()) {
     if($data == true){$data = array();} // Buto issue.
     /**
@@ -49,6 +50,14 @@ class PluginLabSync{
      * Settings.
      */
     $this->settings = new PluginWfArray(wfArray::get($GLOBALS, 'sys/settings/plugin_modules/'.wfArray::get($GLOBALS, 'sys/class').'/settings'));
+  }
+  private function set_ftp(){
+    $settings = $this->getSettings();
+    wfPlugin::includeonce('php/ftp_v1');
+    $this->ftp = new PluginPhpFtp_v1();
+    $this->ftp->setData($settings->get('ftp'));
+    $this->ftp->dir = $settings->get('ftp/dir');
+    return null;
   }
   /**
    * Check ip.
@@ -339,12 +348,9 @@ class PluginLabSync{
      * Remote files.
      */
     if($settings->get('ftp')){
-      wfPlugin::includeonce('php/ftp_v1');
-      $ftp = new PluginPhpFtp_v1();
-      $ftp->setData($settings->get('ftp'));
-      $ftp->dir = $settings->get('ftp/dir');
-      $ftp->set_file_list();
-      $remote_files = $ftp->file_list;
+      $this->set_ftp();
+      $this->ftp->set_file_list();
+      $remote_files = $this->ftp->file_list;
     }else{
       $url = $this->getUrl('files');
       $content = @file_get_contents($url);
@@ -573,7 +579,7 @@ class PluginLabSync{
     return $settings->get('url').'/'.$method;
   }
   /**
-   * Save files from remote server.
+   * Save files from client server via PluginServerPush.
    * This method support multiple files.
    */
   public function page_upload_capture(){
@@ -631,20 +637,36 @@ class PluginLabSync{
    * Method page_upload_capture() handle response.
    */
   public function page_upload(){
-    $data = $this->getUploadData();
-    $url = $this->getUrl('upload_capture');
-    $params = new PluginWfArray();
-    $params->set(true, array('filename' => $data->get('filename'), 'content' => $data->get('content')));
-    wfPlugin::includeonce('server/push');
-    $push = new PluginServerPush();
-    $result = $push->push($url, $params->get());
-    $json = null;
-    try {
-      $json = json_encode(unserialize($result));
-    } catch (Exception $exc) {
-      exit($result);
+    $settings = $this->getSettings();
+    if(!$settings->get('ftp')){
+      $data = $this->getUploadData();
+      $url = $this->getUrl('upload_capture');
+      $params = new PluginWfArray();
+      $params->set(true, array('filename' => $data->get('filename'), 'content' => $data->get('content')));
+      wfPlugin::includeonce('server/push');
+      $push = new PluginServerPush();
+      $result = $push->push($url, $params->get());
+      $json = null;
+      try {
+        $json = json_encode(unserialize($result));
+      } catch (Exception $exc) {
+        exit($result);
+      }
+      exit($json);
+    }else{
+      $this->set_ftp();
+      $data = $this->getUploadData();
+      $local_file = $this->replaceWebDir($data->get('filename'));
+      $remote_file = $this->replaceWebDirFtp($data->get('filename'));
+      $bool = $this->ftp->put($remote_file, wfGlobals::getAppDir().$local_file);
+      $result = new PluginWfArray(array('success' => $bool, 'files' => array($local_file), 'message' => "File $local_file was uploaded as $remote_file with FTP."));
+      $json = json_encode($result->get());
+      exit($json);
     }
-    exit($json);
+  }
+  private function replaceWebDirFtp($filename){
+    $settings = $this->getSettings();
+    return str_replace('[web_folder]', $settings->get('ftp/web_folder'), $filename);
   }
   private function replaceWebDir($filename){
     return str_replace('[web_folder]', $this->getWebFolderName(), $filename);

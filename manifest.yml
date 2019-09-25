@@ -1,8 +1,11 @@
-version: '1.17'
+version: '1.18'
 history:
+  '1.18':
+    date: '2019-09-24'
+    description: 'FTP support for upload.'
   '1.17':
     date: '2019-09-24'
-    description: 'FTP support.'
+    description: 'FTP support to read files.'
   '1.16':
     date: '2019-09-18'
     description: 'Delete multiple remote files.'
