@@ -342,7 +342,9 @@ class PluginLabSync{
       wfPlugin::includeonce('php/ftp_v1');
       $ftp = new PluginPhpFtp_v1();
       $ftp->setData($settings->get('ftp'));
-      $remote_files = $ftp->rawlist_files($ftp->rawlist('/eaglesandbirdies.se'));
+      $ftp->dir = $settings->get('ftp/dir');
+      $ftp->set_file_list();
+      $remote_files = $ftp->file_list;
     }else{
       $url = $this->getUrl('files');
       $content = @file_get_contents($url);
