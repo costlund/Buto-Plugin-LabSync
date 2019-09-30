@@ -221,6 +221,7 @@ class PluginLabSync{
   public function page_start(){
     wfPlugin::includeonce('wf/yml');
     $settings = $this->getSettings();
+    $settings->set('ftp/password', '****');
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
     $page->setByTag(array('settings' => $settings->get()));
     $page->setByTag($settings->get());
@@ -349,8 +350,9 @@ class PluginLabSync{
      */
     if($settings->get('ftp')){
       $this->set_ftp();
-      $this->ftp->set_file_list();
-      $remote_files = $this->ftp->file_list;
+      $rawlist = $this->ftp->rawlist();
+      $rawlist = $this->ftp->raw_list_top_level_7($rawlist);
+      $remote_files = $this->ftp->rawlist_files($rawlist);
     }else{
       $url = $this->getUrl('files');
       $content = @file_get_contents($url);
@@ -678,29 +680,41 @@ class PluginLabSync{
     /**
      * Ask server for file.
      */
-    $filename = wfRequest::get('key');
-    $url = $this->getUrl('download_capture');
-    wfPlugin::includeonce('server/push');
-    $push = new PluginServerPush();
-    $result = $push->push($url, array('filename' => $filename));
-    $result = new PluginWfArray(unserialize($result));
-    if($result->get('success')){
-      $filename = $this->replaceWebDir($filename);
-      /**
-       * Create dir if not exist.
-       */
-      $dirname = dirname(wfGlobals::getAppDir().$filename);
-      if(!wfFilesystem::fileExist($dirname)){
-        mkdir($dirname, 0777, true);
+    $settings = $this->getSettings();
+    if(!$settings->get('ftp')){
+      $filename = wfRequest::get('key');
+      $url = $this->getUrl('download_capture');
+      wfPlugin::includeonce('server/push');
+      $push = new PluginServerPush();
+      $result = $push->push($url, array('filename' => $filename));
+      $result = new PluginWfArray(unserialize($result));
+      if($result->get('success')){
+        $filename = $this->replaceWebDir($filename);
+        /**
+         * Create dir if not exist.
+         */
+        $dirname = dirname(wfGlobals::getAppDir().$filename);
+        if(!wfFilesystem::fileExist($dirname)){
+          mkdir($dirname, 0777, true);
+        }
+        /**
+         * Save file.
+         */
+        $size = file_put_contents(wfGlobals::getAppDir().$filename, $result->get('content'));
+        $result->set('content', null);
+        $result->set('size', $size);
       }
-      /**
-       * Save file.
-       */
-      $size = file_put_contents(wfGlobals::getAppDir().$filename, $result->get('content'));
-      $result->set('content', null);
-      $result->set('size', $size);
+      exit(json_encode($result->get()));
+    }else{
+      $this->set_ftp();
+      $filename = wfRequest::get('key');
+      $local_file = $this->replaceWebDir($filename);
+      $remote_file = $this->replaceWebDirFtp($filename);
+      $bool = $this->ftp->get(wfGlobals::getAppDir().$local_file, $remote_file);
+      $result = new PluginWfArray(array('success' => $bool, 'files' => array($remote_file), 'message' => "File $remote_file was downloaded with FTP."));
+      $json = json_encode($result->get());
+      exit($json);
     }
-    exit(json_encode($result->get()));
   }
   /**
    * Download file server side.
@@ -728,6 +742,9 @@ class PluginLabSync{
     $result->set('content', $content);
     exit(serialize($result->get()));
   }
+  /**
+   * Delete file on client.
+   */
   public function page_delete_local(){
     $filename = wfRequest::get('key');
     $filename = $this->replaceWebDir($filename);
@@ -753,18 +770,29 @@ class PluginLabSync{
    * Call this from local server.
    */
   public function page_delete_remote(){
-    $filename = wfRequest::get('key');
-    $url = $this->getUrl('delete_remote_do');
-    $params = new PluginWfArray();
-    $params->set('filename', $filename);
-    wfPlugin::includeonce('server/push');
-    $push = new PluginServerPush();
-    $result = $push->push($url, $params->get());
-    $unserialize = @unserialize($result);
-    if($unserialize===false){
-      exit($result);
+    $settings = $this->getSettings();
+    if(!$settings->get('ftp')){
+      $filename = wfRequest::get('key');
+      $url = $this->getUrl('delete_remote_do');
+      $params = new PluginWfArray();
+      $params->set('filename', $filename);
+      wfPlugin::includeonce('server/push');
+      $push = new PluginServerPush();
+      $result = $push->push($url, $params->get());
+      $unserialize = @unserialize($result);
+      if($unserialize===false){
+        exit($result);
+      }else{
+        exit(json_encode($unserialize));
+      }
     }else{
-      exit(json_encode($unserialize));
+      $this->set_ftp();
+      $filename = wfRequest::get('key');
+      $remote_file = $this->replaceWebDirFtp($filename);
+      $bool = $this->ftp->delete($remote_file);
+      $result = new PluginWfArray(array('success' => $bool, 'files' => array($remote_file), 'message' => "File $remote_file was deleted with FTP."));
+      $json = json_encode($result->get());
+      exit($json);
     }
   }
   /**
@@ -802,18 +830,30 @@ class PluginLabSync{
    * Call this from local server.
    */
   public function page_delete_remote_folder(){
-    $filename = wfRequest::get('key');
-    $url = $this->getUrl('delete_remote_folder_do');
-    $params = new PluginWfArray();
-    $params->set('filename', $filename);
-    wfPlugin::includeonce('server/push');
-    $push = new PluginServerPush();
-    $result = $push->push($url, $params->get());
-    $unserialize = @unserialize($result);
-    if($unserialize===false){
-      exit($result);
+    $settings = $this->getSettings();
+    if(!$settings->get('ftp')){
+      $filename = wfRequest::get('key');
+      $url = $this->getUrl('delete_remote_folder_do');
+      $params = new PluginWfArray();
+      $params->set('filename', $filename);
+      wfPlugin::includeonce('server/push');
+      $push = new PluginServerPush();
+      $result = $push->push($url, $params->get());
+      $unserialize = @unserialize($result);
+      if($unserialize===false){
+        exit($result);
+      }else{
+        exit(json_encode($unserialize));
+      }
     }else{
-      exit(json_encode($unserialize));
+      exit('Does not work if folder not empty...');
+      $this->set_ftp();
+      $filename = wfRequest::get('key');
+      $remote_dir = $this->replaceWebDirFtp($filename);
+      $bool = $this->ftp->rmdir($remote_dir);
+      $result = new PluginWfArray(array('success' => $bool, 'files' => array($remote_dir), 'message' => "Dir $remote_dir was deleted with FTP."));
+      $json = json_encode($result->get());
+      exit($json);
     }
   }
   /**
