@@ -74,7 +74,7 @@ events:
 
 ## Extra folders
 
-One could add extra folders for a theme via parameter external_folders.
+In theme /config/settings.yml one could add extra folders for a theme via parameter external_folders.
 ```
 plugin:
   lab:
