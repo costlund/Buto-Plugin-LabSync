@@ -86,5 +86,5 @@ plugin:
 
 ## ZIP export
 
-One could export a theme to a zip file. The file will be created in theme root folder and also to be downloaded in browser.
+One could export a theme to a zip file. The file will be created in app root folder and also to be downloaded in browser.
 Files and folder start with "." except ".htaccess" are not included. If linked folders has errors warnings a zip file are corrupted.

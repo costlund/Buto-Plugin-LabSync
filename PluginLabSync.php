@@ -148,6 +148,13 @@ class PluginLabSync{
         $theme_active->set('has_theme', true);
       }
       /**
+       * Theme manifest.
+       */
+      if($theme_active->get('theme')!='*'){
+        $manifest = new PluginWfYml('/theme/'.$theme_active->get('theme').'/config/manifest.yml');
+        $theme_active->set('manifest', $manifest->get());
+      }
+      /**
        * If theme is set we set item.
        */
       if($theme_active->get('theme')=='*'){
@@ -246,9 +253,16 @@ class PluginLabSync{
      */
     $settings = $this->getSettings();
     /**
+     * Version.
+     */
+    $version = '';
+    if($settings->get('manifest/version')){
+      $version = '_'.$settings->get('manifest/version');
+    }
+    /**
      * Name of zip-file when download.
      */
-    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHis').'.zip';
+    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHis').$version.'.zip';
     $download_name = str_replace('/', '_', $download_name);
     /**
      * Where zip file should be put...

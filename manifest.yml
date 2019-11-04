@@ -1,60 +1,64 @@
-version: '1.18'
+version: '1.19.0'
 history:
-  '1.18':
+  '1.19.0':
+    date: '2019-11-04'
+    title: Zip filename
+    description: 'Add theme version to zip filename.'
+  '1.18.0':
     date: '2019-09-24'
     description: 'FTP support for upload.'
-  '1.17':
+  '1.17.0':
     date: '2019-09-24'
     description: 'FTP support to read files.'
-  '1.16':
+  '1.16.0':
     date: '2019-09-18'
     description: 'Delete multiple remote files.'
-  '1.15':
+  '1.15.0':
     date: '2019-09-11'
     description: 'Improved layout with tabs.'
-  '1.14':
+  '1.14.0':
     date: '2019-09-09'
     description: 'Bootstrap 4.'
-  '1.13':
+  '1.13.0':
     date: '2019-09-09'
     description: 'Delete folder.'
-  '1.12':
+  '1.12.0':
     date: '2019-09-09'
     description: 'Files on server but not included in theme.'
-  '1.11':
+  '1.11.0':
     date: '2019-07-25'
     description: 'Exclude param.'
-  '1.10':
+  '1.10.0':
     date: '2019-05-28'
     description: 'Add progress numbers.'
-  '1.9':
+  '1.9.0':
     date: '2019-04-08'
     description: 'Zip file create dir changed to theme root folder.'
-  '1.8':
+  '1.8.0':
     date: '2019-03-12'
     description: 'Webmaster ip in data_file to be added to ip param.'
-  '1.7':
+  '1.7.0':
     date: '2019-03-11'
     description: 'Add filter buttons.'
-  '1.6':
+  '1.6.0':
     date: '2019-03-11'
     description: 'Supporting multiple themes.'
-  '1.5':
+  '1.5.0':
     date: '2019-02-11'
     description: 'Read yml string for filter/theme.'
-  '1.4':
+  '1.4.0':
     date: '2019-01-31'
     description: 'Read yml string for url.'
-  '1.3':
+  '1.3.0':
     date: '2019-01-21'
     description: 'Bug fix.'
-  '1.2':
+  '1.2.0':
     date: '2019-01-09'
     description: 'Add extra folders for a theme to be included in ZIP file.'
-  '1.1':
+  '1.1.0':
     date: '2019-01-05'
     description: 'Zip file download for a theme.'
-  '1.0':
+  '1.0.0':
     date: '2019-01-05'
     description: 'First version.'
 plugin:
