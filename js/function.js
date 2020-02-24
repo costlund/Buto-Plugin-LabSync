@@ -91,6 +91,9 @@ function PluginLabSync(){
       }
     });    
   }
+  this.script = function(btn){
+    PluginWfBootstrapjs.modal({id: 'modal_script', url: 'script', lable: 'Script'});
+  }
   this.delete_form = function(btn){
     this.btn_delete = btn;
     PluginWfBootstrapjs.modal({id: 'modal_delete', content: '', lable: 'Delete'});

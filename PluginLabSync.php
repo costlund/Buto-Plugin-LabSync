@@ -144,6 +144,15 @@ class PluginLabSync{
       $settings->set('theme', wfSettings::getSettingsFromYmlString($settings->get('theme')));
       $theme_active = new PluginWfArray($settings->get("theme/".$settings->get('theme_active')));
       $theme_active->set('has_theme', false);
+      /**
+       * 
+       */
+      wfPlugin::includeonce('theme/analysis');
+      $ta = new PluginThemeAnalysis(true);
+      $ta->setData($theme_active->get('theme'));
+      /**
+       * 
+       */
       if(strlen($user->get('plugin/lab/sync/theme'))){
         $theme_active->set('has_theme', true);
       }
@@ -174,9 +183,6 @@ class PluginLabSync{
         $item[] = array('value' => '/[web_folder]/index.php');
         $item[] = array('value' => '/[web_folder]/.htaccess');
         $item[] = array('value' => '/[web_folder]/web.config');
-        wfPlugin::includeonce('theme/analysis');
-        $ta = new PluginThemeAnalysis(true);
-        $ta->setData($theme_active->get('theme'));
         foreach ($ta->data->get() as $key => $value) {
           $i = new PluginWfArray($value);
           $item[] = array('value' => '/plugin/'.$i->get('name').'/*');
@@ -202,6 +208,7 @@ class PluginLabSync{
        * 
        */
       $theme_active->set('item', $item);
+      $theme_active->set('plugin', $ta->data->get());
     }
     return $theme_active;
   }
@@ -914,5 +921,123 @@ class PluginLabSync{
         $data_file->save();
       }
     }
+  }
+  private function get_sub_folder($folder_folder){
+    return substr($folder_folder, 0, strpos($folder_folder, '/'));
+  }
+  private function handel_remote_get_url_origin($url){
+    if(substr($url, strlen($url)-4)!='.git'){
+      $url .= '.git';
+    }
+    return $url;
+  }
+  public function page_script(){
+    $data = new PluginWfArray();
+    $settings = $this->getSettings();
+    /**
+     * rm
+     */
+    $rm = array();
+    $rm[] = "rm -rf buto";
+    /**
+     * mkdir_buto
+     */
+    $mkdir_buto = array();
+    $mkdir_buto[] = "mkdir buto";
+    $mkdir_buto[] = "mkdir buto/config";
+    $mkdir_buto[] = "mkdir buto/sys";
+    $mkdir_buto[] = "mkdir buto/web";
+    $mkdir_buto[] = "mkdir buto/web/plugin";
+    $mkdir_buto[] = "mkdir buto/web/theme";
+    $mkdir_buto[] = "mkdir buto/plugin";
+    $mkdir_buto[] = "mkdir buto/theme";
+    /**
+     * config
+     */
+    $config = array();
+    $config[] = "touch buto/config/settings.yml";
+    $config[] = 'echo "# script generated file...\ntheme: '.$settings->get('theme').'" >> buto/config/settings.yml';
+    /**
+     * sys
+     */
+    $sys = array();
+    $sys[] = "git clone https://github.com/costlund/Buto-Sys-Mercury.git buto/sys/mercury";
+    $sys[] = "cp buto/sys/mercury/root/* buto/web";
+    $sys[] = "cp buto/sys/mercury/root/.htaccess buto/web";
+    /**
+     * theme
+     */
+    $theme = array();
+    $theme[] = "mkdir buto/theme/".$this->get_sub_folder($settings->get('theme'));
+    wfPlugin::includeonce('git/kbjr');
+    $git = new PluginGitKbjr();
+    $git->set_repo_theme($settings->get('theme'));
+    if($git->exist()){
+      $theme[] = "git clone ".$this->handel_remote_get_url_origin($git->remote_get_url_origin())." buto/theme/".$settings->get('theme');
+      $theme[] = "mkdir buto/web/theme/".$this->get_sub_folder($settings->get('theme'));
+      $theme[] = "mkdir buto/web/theme/".$settings->get('theme');
+      $theme[] = 'cp -R buto/theme/'.$settings->get('theme').'/public/* buto/web/theme/'.$settings->get('theme');
+    }else{
+      $theme[] = "# Could not find url for ".$settings->get('theme');
+    }
+    /**
+     * mkdir
+     */
+    $mkdir = array();
+    foreach ($settings->get('plugin') as $key => $value) {
+      $i = new PluginWfArray($value);
+      $mkdir[$this->get_sub_folder($i->get('name'))] = "mkdir buto/plugin/".$this->get_sub_folder($i->get('name'));
+    }
+    /**
+     * clone
+     */
+    $clone = array();
+    foreach ($settings->get('plugin') as $key => $value) {
+      $i = new PluginWfArray($value);
+      if($i->get('git_url')){
+        $clone[] = 'git clone '.$this->handel_remote_get_url_origin($i->get('git_url')).' buto/plugin/'.$i->get('name');
+      }else{
+        $clone[] = '# '.$i->get('name').' has no git url.';
+      }
+    }
+    /**
+     * Public folder
+     */
+    $mkdir_web = array();
+    $mkdir_web2 = array();
+    $public = array();
+    foreach ($settings->get('plugin') as $key => $value) {
+      $i = new PluginWfArray($value);
+      if($i->get('has_public')){
+        $mkdir_web[$this->get_sub_folder($i->get('name'))] = "mkdir buto/web/plugin/".$this->get_sub_folder($i->get('name'));
+        $mkdir_web2[] = "mkdir buto/web/plugin/".$i->get('name');
+        $public[] = 'cp -R buto/plugin/'.$i->get('name').'/public/* buto/web/plugin/'.$i->get('name');
+      }
+    }
+    /**
+     * done
+     */
+    $done = array();
+    $done[] = 'echo "done..."';
+    /**
+     * 
+     */
+    $data = array('rm' => $rm, 'mkdir_buto' => $mkdir_buto, 'config' => $config, 'sys' => $sys, 'theme' => $theme, 'mkdir' => $mkdir, 'clone' => $clone, 'mkdir_web' => $mkdir_web, 'mkdir_web2' => $mkdir_web2, 'public' => $public, 'done' => $done);
+    /**
+     * 
+     */
+    $script = null;
+    /**
+     * 
+     */
+    foreach ($data as $key => $value) {
+      $script .= "#####################\n";
+      $script .= "########## ".$key." \n";
+      $script .= "#####################\n";
+      foreach ($value as $key2 => $value2) {
+        $script .= $value2."\n";
+      }
+    }
+    wfHelp::textarea_dump($script);
   }
 }
