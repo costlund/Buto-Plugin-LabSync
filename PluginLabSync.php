@@ -374,6 +374,12 @@ class PluginLabSync{
       $rawlist = $this->ftp->rawlist();
       $rawlist = $this->ftp->raw_list_top_level_7($rawlist);
       $remote_files = $this->ftp->rawlist_files($rawlist);
+      /**
+       * 
+       */
+      if(sizeof($remote_files)==0){
+        exit("Ftp server does not return any data!");
+      }
     }else{
       $url = $this->getUrl('files');
       $content = @file_get_contents($url);
@@ -384,6 +390,12 @@ class PluginLabSync{
       if($remote_files === false){
         wfHelp::yml_dump($content, true);
         exit("Content from url $url could not be handled!");
+      }
+      /**
+       * 
+       */
+      if(sizeof($remote_files)==0){
+        exit("$url does not return any data!");
       }
     }
     /**

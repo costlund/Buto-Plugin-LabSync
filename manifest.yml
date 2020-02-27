@@ -1,5 +1,9 @@
-version: '1.20.0'
+version: '1.20.1'
 history:
+  '1.20.1':
+    date: '2020-02-27'
+    title: Remote server
+    description: Show message if remote server not return any data.
   '1.20.0':
     date: '2020-02-24'
     title: Script
