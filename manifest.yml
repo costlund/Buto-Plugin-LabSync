@@ -1,5 +1,9 @@
-version: '1.20.1'
+version: '1.20.2'
 history:
+  '1.20.2':
+    date: '2020-03-13'
+    title: Load start
+    description: Js error when trying to activate tab when not in theme mode.
   '1.20.1':
     date: '2020-02-27'
     title: Remote server

@@ -216,6 +216,8 @@ content:
                         innerHTML: (nothing synced yet)
       -
         type: script
+        settings:
+          enabled: rs:has_theme
         innerHTML: "PluginBootstrapNavtabs_v1.nav_init({ul: 'my_navtabs', content: 'my_content', click: 0});"          
       -
         type: div
