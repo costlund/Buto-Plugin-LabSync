@@ -947,58 +947,52 @@ class PluginLabSync{
     $data = new PluginWfArray();
     $settings = $this->getSettings();
     /**
-     * rm
-     */
-    $rm = array();
-    $rm[] = "rm -rf buto";
-    /**
-     * mkdir_buto
+     * mkdir
      */
     $mkdir_buto = array();
-    $mkdir_buto[] = "mkdir buto";
-    $mkdir_buto[] = "mkdir buto/config";
-    $mkdir_buto[] = "mkdir buto/sys";
-    $mkdir_buto[] = "mkdir buto/web";
-    $mkdir_buto[] = "mkdir buto/web/plugin";
-    $mkdir_buto[] = "mkdir buto/web/theme";
-    $mkdir_buto[] = "mkdir buto/plugin";
-    $mkdir_buto[] = "mkdir buto/theme";
+    $mkdir_buto[] = "mkdir config";
+    $mkdir_buto[] = "mkdir sys";
+    $mkdir_buto[] = "mkdir web";
+    $mkdir_buto[] = "mkdir web/plugin";
+    $mkdir_buto[] = "mkdir web/theme";
+    $mkdir_buto[] = "mkdir plugin";
+    $mkdir_buto[] = "mkdir theme";
     /**
      * config
      */
     $config = array();
-    $config[] = "touch buto/config/settings.yml";
-    $config[] = 'echo "# script generated file...\ntheme: '.$settings->get('theme').'" >> buto/config/settings.yml';
+    $config[] = "touch config/settings.yml";
+    $config[] = 'echo "# script generated file...\ntheme: '.$settings->get('theme').'" >> config/settings.yml';
     /**
      * sys
      */
     $sys = array();
-    $sys[] = "git clone https://github.com/costlund/Buto-Sys-Mercury.git buto/sys/mercury";
-    $sys[] = "cp buto/sys/mercury/root/* buto/web";
-    $sys[] = "cp buto/sys/mercury/root/.htaccess buto/web";
+    $sys[] = "git clone https://github.com/costlund/Buto-Sys-Mercury.git sys/mercury";
+    $sys[] = "cp sys/mercury/root/* web";
+    $sys[] = "cp sys/mercury/root/.htaccess web";
     /**
      * theme
      */
     $theme = array();
-    $theme[] = "mkdir buto/theme/".$this->get_sub_folder($settings->get('theme'));
+    $theme[] = "mkdir theme/".$this->get_sub_folder($settings->get('theme'));
     wfPlugin::includeonce('git/kbjr');
     $git = new PluginGitKbjr();
     $git->set_repo_theme($settings->get('theme'));
     if($git->exist()){
-      $theme[] = "git clone ".$this->handel_remote_get_url_origin($git->remote_get_url_origin())." buto/theme/".$settings->get('theme');
-      $theme[] = "mkdir buto/web/theme/".$this->get_sub_folder($settings->get('theme'));
-      $theme[] = "mkdir buto/web/theme/".$settings->get('theme');
-      $theme[] = 'cp -R buto/theme/'.$settings->get('theme').'/public/* buto/web/theme/'.$settings->get('theme');
+      $theme[] = "git clone ".$this->handel_remote_get_url_origin($git->remote_get_url_origin())." theme/".$settings->get('theme');
+      $theme[] = "mkdir web/theme/".$this->get_sub_folder($settings->get('theme'));
+      $theme[] = "mkdir web/theme/".$settings->get('theme');
+      $theme[] = 'cp -R theme/'.$settings->get('theme').'/public/* web/theme/'.$settings->get('theme');
     }else{
       $theme[] = "# Could not find url for ".$settings->get('theme');
     }
     /**
-     * mkdir
+     * mkdir_plugin
      */
-    $mkdir = array();
+    $mkdir_plugin = array();
     foreach ($settings->get('plugin') as $key => $value) {
       $i = new PluginWfArray($value);
-      $mkdir[$this->get_sub_folder($i->get('name'))] = "mkdir buto/plugin/".$this->get_sub_folder($i->get('name'));
+      $mkdir_plugin[$this->get_sub_folder($i->get('name'))] = "mkdir plugin/".$this->get_sub_folder($i->get('name'));
     }
     /**
      * clone
@@ -1007,7 +1001,7 @@ class PluginLabSync{
     foreach ($settings->get('plugin') as $key => $value) {
       $i = new PluginWfArray($value);
       if($i->get('git_url')){
-        $clone[] = 'git clone '.$this->handel_remote_get_url_origin($i->get('git_url')).' buto/plugin/'.$i->get('name');
+        $clone[] = 'git clone '.$this->handel_remote_get_url_origin($i->get('git_url')).' plugin/'.$i->get('name');
       }else{
         $clone[] = '# '.$i->get('name').' has no git url.';
       }
@@ -1021,9 +1015,9 @@ class PluginLabSync{
     foreach ($settings->get('plugin') as $key => $value) {
       $i = new PluginWfArray($value);
       if($i->get('has_public')){
-        $mkdir_web[$this->get_sub_folder($i->get('name'))] = "mkdir buto/web/plugin/".$this->get_sub_folder($i->get('name'));
-        $mkdir_web2[] = "mkdir buto/web/plugin/".$i->get('name');
-        $public[] = 'cp -R buto/plugin/'.$i->get('name').'/public/* buto/web/plugin/'.$i->get('name');
+        $mkdir_web[$this->get_sub_folder($i->get('name'))] = "mkdir web/plugin/".$this->get_sub_folder($i->get('name'));
+        $mkdir_web2[] = "mkdir web/plugin/".$i->get('name');
+        $public[] = 'cp -R plugin/'.$i->get('name').'/public/* web/plugin/'.$i->get('name');
       }
     }
     /**
@@ -1034,7 +1028,7 @@ class PluginLabSync{
     /**
      * 
      */
-    $data = array('rm' => $rm, 'mkdir_buto' => $mkdir_buto, 'config' => $config, 'sys' => $sys, 'theme' => $theme, 'mkdir' => $mkdir, 'clone' => $clone, 'mkdir_web' => $mkdir_web, 'mkdir_web2' => $mkdir_web2, 'public' => $public, 'done' => $done);
+    $data = array('mkdir_buto' => $mkdir_buto, 'config' => $config, 'sys' => $sys, 'theme' => $theme, 'mkdir_plugin' => $mkdir_plugin, 'clone' => $clone, 'mkdir_web' => $mkdir_web, 'mkdir_web2' => $mkdir_web2, 'public' => $public, 'done' => $done);
     /**
      * 
      */
