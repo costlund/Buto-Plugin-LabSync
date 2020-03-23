@@ -1,5 +1,9 @@
-version: '1.21.0'
+version: '1.21.1'
 history:
+  '1.21.1':
+    date: '2020-03-23'
+    title: Script
+    description: Improved documentation in script.
   '1.21.0':
     date: '2020-03-16'
     title: Script

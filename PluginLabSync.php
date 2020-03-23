@@ -1024,11 +1024,11 @@ class PluginLabSync{
      * done
      */
     $done = array();
-    $done[] = 'echo "done..."';
+    $done[] = 'echo "Done..."';
     /**
      * 
      */
-    $data = array('mkdir_buto' => $mkdir_buto, 'config' => $config, 'sys' => $sys, 'theme' => $theme, 'mkdir_plugin' => $mkdir_plugin, 'clone' => $clone, 'mkdir_web' => $mkdir_web, 'mkdir_web2' => $mkdir_web2, 'public' => $public, 'done' => $done);
+    $data = array('Make dir' => $mkdir_buto, 'Create config file' => $config, 'Buto system' => $sys, 'Theme' => $theme, 'Make plugin dir' => $mkdir_plugin, 'Clone plugin' => $clone, 'Make plugin web dir' => $mkdir_web, 'Make plugin sub web dir' => $mkdir_web2, 'Copy plugin public folders' => $public, 'Done' => $done);
     /**
      * 
      */
@@ -1036,10 +1036,16 @@ class PluginLabSync{
     /**
      * 
      */
+    $script .= "#########################################################\n";
+    $script .= "# Create a folder and put this content in file pull.sh and run command \"sh pull.sh\" within the new folder.\n";
+    $script .= "#########################################################\n";
+    /**
+     * 
+     */
     foreach ($data as $key => $value) {
-      $script .= "#####################\n";
-      $script .= "########## ".$key." \n";
-      $script .= "#####################\n";
+      $script .= "##########################################\n";
+      $script .= "# ".$key." \n";
+      $script .= "##########################################\n";
       foreach ($value as $key2 => $value2) {
         $script .= $value2."\n";
       }
