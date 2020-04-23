@@ -382,7 +382,8 @@ class PluginLabSync{
       }
     }else{
       $url = $this->getUrl('files');
-      $content = @file_get_contents($url);
+      $ctx = stream_context_create(array('http'=> array('timeout' => 60*5)));
+      $content = @file_get_contents($url, false, $ctx);
       if($content === false){
         exit("Error when call url $url!");
       }
@@ -603,7 +604,8 @@ class PluginLabSync{
     $filename = wfRequest::get('key');
     $data->set('filename', $filename);
     $filename = $this->replaceWebDir($filename);
-    $data->set('content', file_get_contents(wfGlobals::getAppDir().$filename));
+    $ctx = stream_context_create(array('http'=> array('timeout' => 60*5)));
+    $data->set('content', file_get_contents(wfGlobals::getAppDir().$filename, false, $ctx));
     return $data;
   }
   /**
