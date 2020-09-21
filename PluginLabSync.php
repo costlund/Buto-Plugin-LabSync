@@ -55,6 +55,9 @@ class PluginLabSync{
     $settings = $this->getSettings();
     wfPlugin::includeonce('php/ftp_v1');
     $this->ftp = new PluginPhpFtp_v1();
+    if(!$settings->get('ftp/dir')){
+      $settings->set('ftp/dir', '/');
+    }
     $this->ftp->setData($settings->get('ftp'));
     $this->ftp->dir = $settings->get('ftp/dir');
     return null;

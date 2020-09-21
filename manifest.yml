@@ -1,5 +1,9 @@
-version: '1.21.2'
+version: '1.21.3'
 history:
+  '1.21.3':
+    date: '2020-09-21'
+    label: Ftp dir param
+    description: 'Set ftp dir param to slash if empty to get restricted ftp accounts to work.'
   '1.21.2':
     date: '2020-04-23'
     label: Timeout
