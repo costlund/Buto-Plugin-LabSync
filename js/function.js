@@ -2,6 +2,11 @@ function PluginLabSync(){
   this.btn_delete = null;
   this.files_count = null;
   this.file_number = null;
+  this.start = function(){
+    PluginBootstrapNavtabs_v1.nav_init({ul: 'my_navtabs', content: 'my_content', click: 1});
+    PluginWfAjax.load('start', '/[[class]]/read');
+    $('#sync_info').show();
+}
   this.upload = function(btn){
     var local_newer = btn.parentNode.parentNode.getElementsByClassName('td_local_newer')[0];
     local_newer.innerHTML = '<img src="/plugin/wf/ajax/loading.gif">';

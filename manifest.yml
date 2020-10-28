@@ -1,5 +1,9 @@
-version: '1.22.0'
+version: '1.23.0'
 history:
+  '1.23.0':
+    date: '2020-10-28'
+    label: 'Layout'
+    description: 'Layout was bad. New better layout now.'
   '1.22.0':
     date: '2020-10-28'
     label: 'List'

@@ -1,37 +1,54 @@
 -
-  type: p
+  type: div
+  attribute:
+    class: row
   innerHTML:
     -
-      type: strong
-      innerHTML: Remote files count
-    -
-      type: span
-      innerHTML: rs:remote_files_count
-    -
-      type: button
+      type: div
       attribute:
-        onclick: "$('#sync_table').DataTable().search('(local)').draw();"
-      innerHTML: (local)
+        class: col-md-4
+      innerHTML:
+        -
+          type: strong
+          innerHTML: Remote files count
+        -
+          type: span
+          innerHTML: rs:remote_files_count
     -
-      type: button
+      type: div
       attribute:
-        onclick: "$('#sync_table').DataTable().search('(local_newer) (theme_yes)').draw();"
-      innerHTML: '(local_newer) (theme_yes)'
-    -
-      type: button
-      attribute:
-        onclick: "$('#sync_table').DataTable().search('(remote)').draw();"
-      innerHTML: (remote)
-    -
-      type: button
-      attribute:
-        onclick: "$('#sync_table').DataTable().search('(theme_no)').draw();"
-      innerHTML: (theme_no)
-    -
-      type: button
-      attribute:
-        onclick: "$('#sync_table').DataTable().search('').draw();"
-      innerHTML: Clear
+        class: col-md-8 text-right
+      innerHTML:
+        -
+          type: button
+          attribute:
+            class: btn btn-secondary btn-sm
+            onclick: "$('#sync_table').DataTable().search('(local)').draw();"
+          innerHTML: (local)
+        -
+          type: button
+          attribute:
+            class: btn btn-secondary btn-sm
+            onclick: "$('#sync_table').DataTable().search('(local_newer) (theme_yes)').draw();"
+          innerHTML: '(local_newer) (theme_yes)'
+        -
+          type: button
+          attribute:
+            class: btn btn-secondary btn-sm
+            onclick: "$('#sync_table').DataTable().search('(remote)').draw();"
+          innerHTML: (remote)
+        -
+          type: button
+          attribute:
+            class: btn btn-secondary btn-sm
+            onclick: "$('#sync_table').DataTable().search('(theme_no)').draw();"
+          innerHTML: (theme_no)
+        -
+          type: button
+          attribute:
+            class: btn btn-secondary btn-sm
+            onclick: "$('#sync_table').DataTable().search('').draw();"
+          innerHTML: Clear
 -
   type: div
   attribute:

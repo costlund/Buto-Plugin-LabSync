@@ -19,83 +19,37 @@ content:
           plugin: 'bootstrap/navbar_v1'
           method: navbar
           data:
-            brand: Sync
+            brand:
+              -
+                type: img
+                attribute:
+                  src: '/plugin/lab/sync/icon/icon.png'
+                  style:
+                    width: 20px
             navbar:
               id: _my_navbar_id_
               item:
                 -
                   text: Sync
-                  onclick: "start();"
+                  onclick: "PluginLabSync.start();"
+              item_right:
                 -
-                  text:
+                  type: dropdown
+                  text: rs:name
+                  item:
                     -
-                      type: span
-                      innerHTML: Local
-                    -
-                      type: span
+                      text: Deselect
+                      onclick: "PluginLabSync.theme_select(this);"
                       attribute:
-                        class: badge badge-primary
-                        id: badge_local
-                      innerHTML: _
-                  onclick: "PluginLabSync.upload_all_exist_local(this);"
-                -
-                  text:
+                        data-key: ''
+                        style:
+                          font-size: smaller
                     -
-                      type: span
-                      innerHTML: Local newer
+                      text: Zip
+                      onclick: "PluginLabSync.zip();"
                     -
-                      type: span
-                      attribute:
-                        class: badge badge-primary
-                        id: badge_local_newer
-                      innerHTML: _
-                  onclick: "PluginLabSync.upload_all_localnewer(this);"
-                -
-                  type: text
-                  text:
-                    -
-                      type: span
-                      attribute:
-                        class: badge badge-primary
-                        id: badge_remote
-                      innerHTML: _
-                -
-                  text:
-                    -
-                      type: span
-                      innerHTML: Delete(theme_no)
-                    -
-                      type: span
-                      attribute:
-                        class: badge badge-primary
-                        id: badge_theme_no
-                      innerHTML: _
-                  onclick: "PluginLabSync.delete_all_theme_no(this);"
-                -
-                  text: Zip
-                  onclick: "PluginLabSync.zip();"
-                -
-                  text: Script
-                  onclick: "PluginLabSync.script();"
-                -
-                  text: Deselect
-                  onclick: "PluginLabSync.theme_select(this);"
-                  attribute:
-                    data-key: ''
-                -
-                  type: text
-                  text: 
-                    -
-                      type: span
-                      innerHTML: _ of _
-                      attribute:
-                        id: progress
-              element_after:
-                -
-                  type: span
-                  attribute:
-                    class: navbar-text
-                  innerHTML: rs:name
+                      text: Script
+                      onclick: "PluginLabSync.script();"
   -
     type: div
     attribute:
@@ -124,6 +78,75 @@ content:
           id: hidden_class
           style: 'display:none'
         innerHTML: '[[class]]'
+      -
+        type: p
+        settings:
+          enabled: rs:has_theme
+        attribute:
+          id: sync_info
+          style:
+            display: none
+        innerHTML:
+          -
+            type: a
+            attribute:
+              onclick: "PluginLabSync.upload_all_exist_local(this);"
+            innerHTML:
+              -
+                type: span
+                innerHTML: Local
+              -
+                type: span
+                attribute:
+                  class: badge badge-primary
+                  id: badge_local
+                innerHTML: '&nbsp;'
+          -
+            type: a
+            attribute:
+              onclick: "PluginLabSync.upload_all_localnewer(this);"
+            innerHTML:
+              -
+                type: span
+                innerHTML: Local newer
+              -
+                type: span
+                attribute:
+                  class: badge badge-primary
+                  id: badge_local_newer
+                innerHTML: '&nbsp;'
+          -
+            type: span
+            innerHTML: Remote
+          -
+            type: span
+            attribute:
+              class: badge badge-secondary
+              id: badge_remote
+            innerHTML: '&nbsp;'
+          -
+            type: a
+            attribute:
+              onclick: "PluginLabSync.delete_all_theme_no(this);"
+            innerHTML:
+              -
+                type: span
+                innerHTML: Delete(theme_no)
+              -
+                type: span
+                attribute:
+                  class: badge badge-primary
+                  id: badge_theme_no
+                innerHTML: '&nbsp;'
+          -
+            type: span
+            innerHTML: Task
+          -
+            type: span
+            innerHTML: '&nbsp;'
+            attribute:
+              id: progress
+              class: badge badge-secondary
       -
         type: ul
         settings:
@@ -225,11 +248,4 @@ content:
           id: hidden_div
           style: 'display:none'
         innerHTML: ''
-      -
-        type: script
-        innerHTML: |
-          function start(){
-            PluginBootstrapNavtabs_v1.nav_init({ul: 'my_navtabs', content: 'my_content', click: 1});
-            PluginWfAjax.load('start', '/[[class]]/read');
-          }
   
