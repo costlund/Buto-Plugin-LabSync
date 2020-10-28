@@ -1,0 +1,18 @@
+type: widget
+data:
+  plugin: wf/table
+  method: render_many
+  data:
+    i18n: false
+    field:
+      name: Name
+      theme: Theme
+    rs: rs:data
+    datatable:
+      disabled: false
+      export:
+        disabled: true
+      order:
+        -
+          - 0
+          - asc

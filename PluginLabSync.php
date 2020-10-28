@@ -222,10 +222,16 @@ class PluginLabSync{
     $module_settings = new PluginWfArray(wfPlugin::getModuleSettings());
     $module_settings->set('theme', wfSettings::getSettingsFromYmlString($module_settings->get('theme')));
     $element = array();
-    foreach ($module_settings->get('theme') as $key => $value) {
-      $i = new PluginWfArray($value);
-      $element[] = wfDocument::createHtmlElement('a', $i->get('name'), array('class' => 'btn btn-primary', 'onclick' => "PluginLabSync.theme_select(this)", 'data-key' => $key));
+    /**
+     * Table
+     */
+    $table = new PluginWfYml(__DIR__.'/element/table.yml');
+    foreach($module_settings->get('theme') as $k => $v){
+      $module_settings->set("theme/$k/row_click", "PluginLabSync.theme_select(this)");
+      $module_settings->set("theme/$k/row_attribute", array('data-key' => $k));
     }
+    $table->setByTag(array('data' => $module_settings->get('theme')));
+    $element[] = $table->get();
     return $element;
   }
   public function page_theme_select(){

@@ -1,5 +1,9 @@
-version: '1.21.3'
+version: '1.22.0'
 history:
+  '1.22.0':
+    date: '2020-10-28'
+    label: 'List'
+    description: 'Buttons to list.'
   '1.21.3':
     date: '2020-09-21'
     label: Ftp dir param
