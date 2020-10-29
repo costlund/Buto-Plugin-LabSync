@@ -1,133 +1,137 @@
-version: '1.23.0'
+version: 1.23.1
 history:
-  '1.23.0':
+  1.23.1:
+    date: '2020-10-29'
+    label: 'Readme'
+    description: 'Readme improvement.'
+  1.23.0:
     date: '2020-10-28'
-    label: 'Layout'
+    label: Layout
     description: 'Layout was bad. New better layout now.'
-  '1.22.0':
+  1.22.0:
     date: '2020-10-28'
-    label: 'List'
+    label: List
     description: 'Buttons to list.'
-  '1.21.3':
+  1.21.3:
     date: '2020-09-21'
-    label: Ftp dir param
+    label: 'Ftp dir param'
     description: 'Set ftp dir param to slash if empty to get restricted ftp accounts to work.'
-  '1.21.2':
+  1.21.2:
     date: '2020-04-23'
     label: Timeout
     description: 'Set timeout to 5 min.'
-  '1.21.1':
+  1.21.1:
     date: '2020-03-23'
     title: Script
-    description: Improved documentation in script.
-  '1.21.0':
+    description: 'Improved documentation in script.'
+  1.21.0:
     date: '2020-03-16'
     title: Script
-    description: Improvement in script.
-  '1.20.2':
+    description: 'Improvement in script.'
+  1.20.2:
     date: '2020-03-13'
-    title: Load start
-    description: Js error when trying to activate tab when not in theme mode.
-  '1.20.1':
+    title: 'Load start'
+    description: 'Js error when trying to activate tab when not in theme mode.'
+  1.20.1:
     date: '2020-02-27'
-    title: Remote server
-    description: Show message if remote server not return any data.
-  '1.20.0':
+    title: 'Remote server'
+    description: 'Show message if remote server not return any data.'
+  1.20.0:
     date: '2020-02-24'
     title: Script
     description: 'Create script file to pull all buto necessary dependends for a theme.'
-  '1.19.0':
+  1.19.0:
     date: '2019-11-04'
-    title: Zip filename
+    title: 'Zip filename'
     description: 'Add theme version to zip filename.'
-  '1.18.0':
+  1.18.0:
     date: '2019-09-24'
     description: 'FTP support for upload.'
-  '1.17.0':
+  1.17.0:
     date: '2019-09-24'
     description: 'FTP support to read files.'
-  '1.16.0':
+  1.16.0:
     date: '2019-09-18'
     description: 'Delete multiple remote files.'
-  '1.15.0':
+  1.15.0:
     date: '2019-09-11'
     description: 'Improved layout with tabs.'
-  '1.14.0':
+  1.14.0:
     date: '2019-09-09'
     description: 'Bootstrap 4.'
-  '1.13.0':
+  1.13.0:
     date: '2019-09-09'
     description: 'Delete folder.'
-  '1.12.0':
+  1.12.0:
     date: '2019-09-09'
     description: 'Files on server but not included in theme.'
-  '1.11.0':
+  1.11.0:
     date: '2019-07-25'
     description: 'Exclude param.'
-  '1.10.0':
+  1.10.0:
     date: '2019-05-28'
     description: 'Add progress numbers.'
-  '1.9.0':
+  1.9.0:
     date: '2019-04-08'
     description: 'Zip file create dir changed to theme root folder.'
-  '1.8.0':
+  1.8.0:
     date: '2019-03-12'
     description: 'Webmaster ip in data_file to be added to ip param.'
-  '1.7.0':
+  1.7.0:
     date: '2019-03-11'
     description: 'Add filter buttons.'
-  '1.6.0':
+  1.6.0:
     date: '2019-03-11'
     description: 'Supporting multiple themes.'
-  '1.5.0':
+  1.5.0:
     date: '2019-02-11'
     description: 'Read yml string for filter/theme.'
-  '1.4.0':
+  1.4.0:
     date: '2019-01-31'
     description: 'Read yml string for url.'
-  '1.3.0':
+  1.3.0:
     date: '2019-01-21'
     description: 'Bug fix.'
-  '1.2.0':
+  1.2.0:
     date: '2019-01-09'
     description: 'Add extra folders for a theme to be included in ZIP file.'
-  '1.1.0':
+  1.1.0:
     date: '2019-01-05'
     description: 'Zip file download for a theme.'
-  '1.0.0':
+  1.0.0:
     date: '2019-01-05'
     description: 'First version.'
 plugin:
   -
     name: wf/form_v2
-    version: '1.4'
+    version: 1.4
   -
     name: wf/array
-    version: 1.0.1
+    version: 1.2.0
   -
     name: wf/yml
-    version: '1.1'
+    version: 1.2.2
   -
     name: theme/analysis
-    version: '1.0'
+    version: 1.2.0
   -
     name: server/push
-    version: '1.0'
+    version: 1.1.0
   -
     name: wf/bootstrap
     version: '1.0'
   -
     name: form/form_v1
-    version: '1.14'
+    version: 1.48.1
   -
     name: wf/table
-    version: '1.4'
+    version: 1.19.1
   -
     name: wf/ajax
-    version: '1.0'
+    version: 1.4.1
   -
     name: wf/bootstrapjs
-    version: '1.1'
+    version: '1.6'
   -
     name: wf/dom
     version: '1.0'
@@ -142,15 +146,24 @@ plugin:
     version: '1.0'
   -
     name: wf/embed
-    version: '1.0'
+    version: 1.1.0
   -
     name: play/sound
     version: '1.0'
   -
     name: bootstrap/navtabs_v1
-    version: '1.0'
+    version: 1.2.0
   -
     name: php/ftp_v1
+    version: 1.1.2
+  -
+    name: git/kbjr
+    version: 1.5.0
+  -
+    name: theme/include
+    version: 1.7.1
+  -
+    name: icons/octicons
     version: '1.1'
 sys:
   -
