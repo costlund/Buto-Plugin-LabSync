@@ -11,10 +11,9 @@ class PluginLabSync{
      * Excluded.
      */
     $this->files_excluded = array('/config/settings.yml');
-    /**¨
-     * ¨Include.
+    /**
+     * Include.
      */
-    wfPlugin::includeonce('wf/form_v2');
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
     /**

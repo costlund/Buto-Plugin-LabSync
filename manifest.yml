@@ -1,5 +1,9 @@
-version: 1.23.1
+version: 1.23.2
 history:
+  1.23.2:
+    date: '2020-11-16'
+    label: 'Plugin wf/form_v2.'
+    description: 'Remove dependencies.'
   1.23.1:
     date: '2020-10-29'
     label: 'Readme'
@@ -102,9 +106,6 @@ history:
     date: '2019-01-05'
     description: 'First version.'
 plugin:
-  -
-    name: wf/form_v2
-    version: 1.4
   -
     name: wf/array
     version: 1.2.0
