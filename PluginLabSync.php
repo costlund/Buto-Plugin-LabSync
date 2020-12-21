@@ -470,7 +470,7 @@ class PluginLabSync{
     /**
      * Files count.
      */
-    $element->setByTag(array('remote_files_count' => sizeof($local_files)));
+    $element->setByTag(array('total_files_count' => sizeof($local_files)));
     /**
      * Set size diff.
      */

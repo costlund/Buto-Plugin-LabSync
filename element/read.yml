@@ -9,46 +9,44 @@
         class: col-md-4
       innerHTML:
         -
-          type: strong
-          innerHTML: Remote files count
-        -
-          type: span
-          innerHTML: rs:remote_files_count
+          type: small
+          innerHTML:
+            -
+              type: span
+              innerHTML: rs:total_files_count
+            -
+              type: span
+              innerHTML: files
     -
       type: div
       attribute:
         class: col-md-8 text-right
       innerHTML:
         -
-          type: button
+          type: a
           attribute:
-            class: btn btn-secondary btn-sm
             onclick: "$('#sync_table').DataTable().search('(local)').draw();"
-          innerHTML: (local)
+          innerHTML: local
         -
-          type: button
+          type: a
           attribute:
-            class: btn btn-secondary btn-sm
             onclick: "$('#sync_table').DataTable().search('(local_newer) (theme_yes)').draw();"
-          innerHTML: '(local_newer) (theme_yes)'
+          innerHTML: 'local_newer, theme_yes'
         -
-          type: button
+          type: a
           attribute:
-            class: btn btn-secondary btn-sm
             onclick: "$('#sync_table').DataTable().search('(remote)').draw();"
-          innerHTML: (remote)
+          innerHTML: remote
         -
-          type: button
+          type: a
           attribute:
-            class: btn btn-secondary btn-sm
             onclick: "$('#sync_table').DataTable().search('(theme_no)').draw();"
-          innerHTML: (theme_no)
+          innerHTML: theme_no
         -
-          type: button
+          type: a
           attribute:
-            class: btn btn-secondary btn-sm
             onclick: "$('#sync_table').DataTable().search('').draw();"
-          innerHTML: Clear
+          innerHTML: clear
 -
   type: div
   attribute:
