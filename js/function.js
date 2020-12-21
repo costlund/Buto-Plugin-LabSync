@@ -2,9 +2,12 @@ function PluginLabSync(){
   this.btn_delete = null;
   this.files_count = null;
   this.file_number = null;
-  this.start = function(){
+  this.start = function(type_of_sync){
+    if(typeof type_of_sync == 'undefined'){
+      type_of_sync = 'sync';
+    }
     PluginBootstrapNavtabs_v1.nav_init({ul: 'my_navtabs', content: 'my_content', click: 1});
-    PluginWfAjax.load('start', '/[[class]]/read');
+    PluginWfAjax.load('start', '/[[class]]/read/type_of_sync/'+type_of_sync);
     $('#sync_info').show();
 }
   this.upload = function(btn){

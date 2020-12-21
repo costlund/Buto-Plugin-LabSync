@@ -1,5 +1,9 @@
-version: 1.23.2
+version: 1.23.3
 history:
+  1.23.3:
+    date: '2020-12-21'
+    label: 'Dry'
+    description: 'Add option to sync dry.'
   1.23.2:
     date: '2020-11-16'
     label: 'Plugin wf/form_v2.'

@@ -32,6 +32,9 @@ content:
                 -
                   text: Sync
                   onclick: "PluginLabSync.start();"
+                -
+                  text: Dry
+                  onclick: "PluginLabSync.start('dry');"
               item_right:
                 -
                   type: dropdown

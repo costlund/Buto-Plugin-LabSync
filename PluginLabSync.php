@@ -365,6 +365,7 @@ class PluginLabSync{
    * When client ask server for list of files.
    */
   public function page_read(){
+    $type_of_sync = wfRequest::get('type_of_sync');
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
     $settings = $this->getSettings();
@@ -377,34 +378,37 @@ class PluginLabSync{
     /**
      * Remote files.
      */
-    if($settings->get('ftp')){
-      $this->set_ftp();
-      $rawlist = $this->ftp->rawlist();
-      $rawlist = $this->ftp->raw_list_top_level_7($rawlist);
-      $remote_files = $this->ftp->rawlist_files($rawlist);
-      /**
-       * 
-       */
-      if(sizeof($remote_files)==0){
-        exit("Ftp server does not return any data!");
-      }
-    }else{
-      $url = $this->getUrl('files');
-      $ctx = stream_context_create(array('http'=> array('timeout' => 60*5)));
-      $content = @file_get_contents($url, false, $ctx);
-      if($content === false){
-        exit("Error when call url $url!");
-      }
-      $remote_files = @unserialize($content);
-      if($remote_files === false){
-        wfHelp::yml_dump($content, true);
-        exit("Content from url $url could not be handled!");
-      }
-      /**
-       * 
-       */
-      if(sizeof($remote_files)==0){
-        exit("$url does not return any data!");
+    $remote_files = array();
+    if($type_of_sync=='sync'){
+      if($settings->get('ftp')){
+        $this->set_ftp();
+        $rawlist = $this->ftp->rawlist();
+        $rawlist = $this->ftp->raw_list_top_level_7($rawlist);
+        $remote_files = $this->ftp->rawlist_files($rawlist);
+        /**
+         * 
+         */
+        if(sizeof($remote_files)==0){
+          exit("Ftp server does not return any data!");
+        }
+      }else{
+        $url = $this->getUrl('files');
+        $ctx = stream_context_create(array('http'=> array('timeout' => 60*5)));
+        $content = @file_get_contents($url, false, $ctx);
+        if($content === false){
+          exit("Error when call url $url!");
+        }
+        $remote_files = @unserialize($content);
+        if($remote_files === false){
+          wfHelp::yml_dump($content, true);
+          exit("Content from url $url could not be handled!");
+        }
+        /**
+         * 
+         */
+        if(sizeof($remote_files)==0){
+          exit("$url does not return any data!");
+        }
       }
     }
     /**
