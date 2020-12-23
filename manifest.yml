@@ -2,11 +2,11 @@ version: 1.23.4
 history:
   1.23.4:
     date: '2020-12-21'
-    label: 'Layout'
+    label: Layout
     description: 'Minor layout changes above table.'
   1.23.3:
     date: '2020-12-21'
-    label: 'Dry'
+    label: Dry
     description: 'Add option to sync dry.'
   1.23.2:
     date: '2020-11-16'
@@ -131,7 +131,7 @@ plugin:
     version: '1.0'
   -
     name: form/form_v1
-    version: 1.49.0
+    version: 1.50.0
   -
     name: wf/table
     version: 1.20.0
