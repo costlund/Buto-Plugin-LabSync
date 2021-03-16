@@ -134,7 +134,7 @@ plugin:
     version: 1.51.1
   -
     name: wf/table
-    version: 1.21.0
+    version: 1.22.0
   -
     name: wf/ajax
     version: 1.4.1
@@ -161,7 +161,7 @@ plugin:
     version: '1.0'
   -
     name: bootstrap/navtabs_v1
-    version: 1.2.0
+    version: 1.2.1
   -
     name: php/ftp_v1
     version: 1.1.3
