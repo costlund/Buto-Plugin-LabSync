@@ -1,5 +1,9 @@
-version: 1.23.4
+version: 1.24.0
 history:
+  1.24.0:
+    date: '2021-04-30'
+    label: 'Size diff'
+    description: 'Add filter button and upload button for size diff.'
   1.23.4:
     date: '2020-12-21'
     label: Layout

@@ -107,6 +107,20 @@ content:
           -
             type: a
             attribute:
+              onclick: "PluginLabSync.upload_all_sizediff(this);"
+            innerHTML:
+              -
+                type: span
+                innerHTML: Sizediff
+              -
+                type: span
+                attribute:
+                  class: badge badge-primary
+                  id: badge_sizediff
+                innerHTML: '&nbsp;'
+          -
+            type: a
+            attribute:
               onclick: "PluginLabSync.upload_all_localnewer(this);"
             innerHTML:
               -

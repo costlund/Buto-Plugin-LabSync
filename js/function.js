@@ -64,6 +64,24 @@ function PluginLabSync(){
     this.progress_set();
     console.log(count+' files uploaded.');
   }
+  this.upload_all_sizediff = function(btn){
+    if(!confirm('Upload all visible where Size diff is (sizediff)?')){
+      return null;
+    }
+    var sizediff = document.getElementById('sync_table_wrapper').getElementsByClassName('td_sizediff');
+    var count = 0;
+    for(i=0;i<sizediff.length;i++){
+      if(sizediff[i].innerHTML=='(sizediff)'){
+        var b = sizediff[i].parentNode.getElementsByClassName('btn_upload')[0];
+        b.onclick();
+        count++;
+      }
+    }
+    this.file_number = 0;
+    this.files_count = i;
+    this.progress_set();
+    console.log(count+' files uploaded.');
+  }
   this.upload_all_exist_local = function(btn){
     if(!confirm('Upload all visible where Exist is (local)?')){
       return null;

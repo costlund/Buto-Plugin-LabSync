@@ -30,6 +30,11 @@
         -
           type: a
           attribute:
+            onclick: "$('#sync_table').DataTable().search('(sizediff)').draw();"
+          innerHTML: sizediff
+        -
+          type: a
+          attribute:
             onclick: "$('#sync_table').DataTable().search('(local_newer) (theme_yes)').draw();"
           innerHTML: 'local_newer, theme_yes'
         -

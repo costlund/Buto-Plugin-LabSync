@@ -567,7 +567,7 @@ class PluginLabSync{
          wfDocument::createHtmlElement('a', 'hidden_btn_delete_remote', array('style' => 'display:none', 'onclick' => "PluginLabSync.delete_remote(this)", 'title' => 'Delete remote file.', 'class' => 'btn_delete_all_theme_no', 'data-file' => urlencode($key), 'data-dir' => urlencode(dirname($key)), 'data-exist' => $item->get('exist')))
          )),
        wfDocument::createHtmlElement('td', '('.$item->get('exist').')', array('class' => 'td_exist')),
-       wfDocument::createHtmlElement('td', ($item->get('size_diff')?'('.$item->get('size_diff').')':null) ),
+       wfDocument::createHtmlElement('td', ($item->get('size_diff')?'('.$item->get('size_diff').')':null), array('class' => 'td_sizediff') ),
        wfDocument::createHtmlElement('td', $item->get('local_size')),
        wfDocument::createHtmlElement('td', $item->get('remote_size')),
        wfDocument::createHtmlElement('td', ($item->get('local_time')?date('ymd H:i:s', $item->get('local_time')):null) ),
@@ -583,12 +583,16 @@ class PluginLabSync{
      * Count.
      */
     $local_count = 0;
+    $sizediff_count = 0;
     $remote_count = 0;
     $local_newer_count = 0;
     $theme_no_count = 0;
     foreach ($local_files as $key => $value) {
       if($value['allow'] && $value['exist']=='local'){
         $local_count++;
+      }
+      if($value['allow'] && $value['size_diff']=='sizediff'){
+        $sizediff_count++;
       }
       if($value['allow'] && $value['exist']=='remote'){
         $remote_count++;
@@ -602,6 +606,7 @@ class PluginLabSync{
     }
     $script = array();
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local').innerHTML='$local_count';");
+    $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_sizediff').innerHTML='$sizediff_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_remote').innerHTML='Remote: $remote_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_theme_no').innerHTML='$theme_no_count';");
     $script[] = wfDocument::createHtmlElement('script', "document.getElementById('badge_local_newer').innerHTML='$local_newer_count';");
