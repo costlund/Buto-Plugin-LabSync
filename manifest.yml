@@ -1,5 +1,9 @@
-version: 1.24.3
+version: 1.24.4
 history:
+  1.24.4:
+    date: '2021-05-20'
+    title: 'Execution time'
+    description: 'Change max execution time from 600 to 1200 seconds due to problem in page_read.'
   1.24.3:
     date: '2021-05-25'
     title: Versions
