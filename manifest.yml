@@ -1,5 +1,9 @@
-version: 1.24.4
+version: 1.24.5
 history:
+  1.24.5:
+    date: '2021-06-02'
+    title: Versions
+    description: 'Versions update.'
   1.24.4:
     date: '2021-05-20'
     title: 'Execution time'
@@ -160,7 +164,7 @@ plugin:
     version: 1.4.1
   -
     name: wf/bootstrapjs
-    version: 1.7.0
+    version: '1.6'
   -
     name: wf/dom
     version: '1.0'
@@ -181,7 +185,7 @@ plugin:
     version: '1.0'
   -
     name: bootstrap/navtabs_v1
-    version: 1.2.1
+    version: 1.2.0
   -
     name: php/ftp_v1
     version: 1.1.4
@@ -190,7 +194,7 @@ plugin:
     version: 1.5.0
   -
     name: theme/include
-    version: 1.8.3
+    version: 1.8.4
   -
     name: icons/octicons
     version: 1.1.1
