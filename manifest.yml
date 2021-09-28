@@ -1,5 +1,9 @@
-version: 1.24.8
+version: 1.24.9
 history:
+  1.24.9:
+    date: '2021-09-28'
+    title: Columns
+    description: 'Add field url, local_time, ftp (server, user, dir, web_folder) to table.'
   1.24.8:
     date: '2021-09-27'
     title: Versions
