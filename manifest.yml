@@ -1,5 +1,9 @@
-version: 1.24.10
+version: 1.24.11
 history:
+  1.24.11:
+    date: '2021-10-26'
+    title: Versions
+    description: 'Versions update.'
   1.24.10:
     date: '2021-09-28'
     title: Versions
@@ -175,7 +179,7 @@ plugin:
     version: '1.0'
   -
     name: form/form_v1
-    version: 1.51.7
+    version: 1.51.9
   -
     name: wf/table
     version: 1.25.0
@@ -208,7 +212,7 @@ plugin:
     version: 1.2.1
   -
     name: php/ftp_v1
-    version: 1.2.0
+    version: 1.3.0
   -
     name: git/kbjr
     version: 1.5.0
