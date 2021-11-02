@@ -1,5 +1,9 @@
-version: 1.24.11
+version: 1.25.0
 history:
+  1.25.0:
+    date: '2021-10-31'
+    title: 'Sync files'
+    description: 'Add remote param. Using it on read, files, upload, upload_capture...'
   1.24.11:
     date: '2021-10-26'
     title: Versions

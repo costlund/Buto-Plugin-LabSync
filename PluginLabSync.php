@@ -5,6 +5,7 @@ class PluginLabSync{
   private $settings = null;
   private $files_excluded = array();
   private $ftp = null;
+  private $dir = null;
   function __construct($data = array()) {
     if($data == true){$data = array();} // Buto issue.
     /**
@@ -49,6 +50,21 @@ class PluginLabSync{
      * Settings.
      */
     $this->settings = new PluginWfArray(wfArray::get($GLOBALS, 'sys/settings/plugin_modules/'.wfArray::get($GLOBALS, 'sys/class').'/settings'));
+    $this->settings->set('remote', wfSettings::getSettingsFromYmlString($this->settings->get('remote')));
+    $this->settings->set('theme', wfSettings::getSettingsFromYmlString($this->settings->get('theme')));
+    /**
+     * remote_data
+     */
+    if(wfRequest::get('remote') && $this->settings->get('remote/'.wfRequest::get('remote'))){
+      $this->settings->set('remote_data', $this->settings->get('remote/'.wfRequest::get('remote')));
+    }else{
+      $this->settings->set('remote_data', null);
+    }
+    if(!$this->settings->get('remote_data/dir')){
+      $this->dir = wfGlobals::getAppDir();
+    }else{
+      $this->dir = wfGlobals::get('host_dir').$this->settings->get('remote_data/dir');
+    }
   }
   private function set_ftp(){
     $settings = $this->getSettings();
@@ -98,17 +114,30 @@ class PluginLabSync{
    * Read files from remote host.
    */
   public function page_files(){
+    $output = new PluginWfArray();
+    $output->set('check_ip', false);
+    $output->set('success', true);
+    $output->set('files', null);
     $this->remote_host = true;
     $check_ip = $this->check_ip();
-    if(!$check_ip){
-      exit(serialize(array()));
+    $output->set('check_ip', $check_ip);
+    if(!$check_ip && !wfUser::hasRole('webmaster')){
+      $output->set('success', false);
+      exit(serialize($output->get()));
     }else{
       $this->set_files();
-      exit(serialize($this->files));
+      $output->set('files', $this->files);
+      if(wfRequest::get('output')=='yml'){
+        wfHelp::yml_dump($output->get());
+      }else if(wfRequest::get('output')=='json'){
+        exit(json_encode($output->get()));
+      }else{
+        exit(serialize($output->get()));
+      }
     }
   }
   private function set_files($path = null){
-    $dir = wfGlobals::getAppDir().$path;
+    $dir = $this->dir.$path;
     $scan = scandir($dir);
     $web_folder_name = $this->getWebFolderName();
     foreach ($scan as $key => $value) {
@@ -131,6 +160,7 @@ class PluginLabSync{
         $this->files[$xpath.'/'.$value] = $data;
       }
     }
+    return null;
   }
   private function getWebFolderName(){
     return basename(wfGlobals::getWebDir());
@@ -393,6 +423,9 @@ class PluginLabSync{
         }
       }else{
         $url = $this->getUrl('files');
+        if($settings->get('remote')){
+          $url = $url.'?remote='.$settings->get('remote');
+        }
         $ctx = stream_context_create(array('http'=> array('timeout' => 60*5)));
         $content = @file_get_contents($url, false, $ctx);
         if($content === false){
@@ -400,15 +433,18 @@ class PluginLabSync{
         }
         $remote_files = @unserialize($content);
         if($remote_files === false){
-          wfHelp::yml_dump($content, true);
+          wfHelp::yml_dump($content);
           exit("Content from url $url could not be handled!");
         }
         /**
          * 
          */
-        if(sizeof($remote_files)==0){
+        //wfHelp::yml_dump($remote_files, true);
+        if(!$remote_files['files']){
+          wfHelp::print($remote_files, true);
           exit("$url does not return any data!");
         }
+        $remote_files = $remote_files['files'];
       }
     }
     /**
@@ -640,7 +676,7 @@ class PluginLabSync{
     /**
      * Result.
      */
-    $result = new PluginWfArray(array('success' => true, 'files' => null, 'message' => null));
+    $result = new PluginWfArray(array('success' => true, 'files' => null, 'message' => null, 'remote' => wfRequest::get('remote'), 'remote_data_dir' => $this->settings->get('remote_data/dir'), 'dir' => $this->dir));
     /**
      * Check IP.
      */
@@ -653,7 +689,7 @@ class PluginLabSync{
     /**
      * Files.
      */
-    $files = wfRequest::getAll();
+    $files = wfRequest::get('files');
     try {
       /**
        * Save files and set size.
@@ -664,14 +700,14 @@ class PluginLabSync{
         /**
          * Create dir if not exist.
          */
-        $dirname = dirname(wfGlobals::getAppDir().$filename);
+        $dirname = dirname($this->dir.$filename);
         if(!wfFilesystem::fileExist($dirname)){
           mkdir($dirname, 0777, true);
         }
         /**
          * Save file.
          */
-        $size = file_put_contents(wfGlobals::getAppDir().$filename, $value['content']);
+        $size = file_put_contents($this->dir.$filename, $value['content']);
         unset($files[$key]['content']);
         $files[$key]['size'] = $size;
       }
@@ -696,7 +732,8 @@ class PluginLabSync{
       $data = $this->getUploadData();
       $url = $this->getUrl('upload_capture');
       $params = new PluginWfArray();
-      $params->set(true, array('filename' => $data->get('filename'), 'content' => $data->get('content')));
+      $params->set('files', array(array('filename' => $data->get('filename'), 'content' => $data->get('content'))));
+      $params->set('remote', $settings->get('remote'));
       wfPlugin::includeonce('server/push');
       $push = new PluginServerPush();
       $result = $push->push($url, $params->get());
@@ -733,12 +770,15 @@ class PluginLabSync{
      * Ask server for file.
      */
     $settings = $this->getSettings();
+
+    //wfHelp::yml_dump($settings, true);
+
     if(!$settings->get('ftp')){
       $filename = wfRequest::get('key');
       $url = $this->getUrl('download_capture');
       wfPlugin::includeonce('server/push');
       $push = new PluginServerPush();
-      $result = $push->push($url, array('filename' => $filename));
+      $result = $push->push($url, array('filename' => $filename, 'remote' => $settings->get('remote')));
       $result = new PluginWfArray(unserialize($result));
       if($result->get('success')){
         $filename = $this->replaceWebDir($filename);
@@ -777,7 +817,7 @@ class PluginLabSync{
     /**
      * Result.
      */
-    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'content' => null));
+    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'content' => null, 'dir' => $this->dir));
     /**
      * Check IP.
      */
@@ -790,7 +830,7 @@ class PluginLabSync{
     /**
      * Get content and put in serialize array.
      */
-    $content = file_get_contents(wfGlobals::getAppDir().$filename);
+    $content = file_get_contents($this->dir.$filename);
     $result->set('content', $content);
     exit(serialize($result->get()));
   }
@@ -826,6 +866,8 @@ class PluginLabSync{
     if(!$settings->get('ftp')){
       $filename = wfRequest::get('key');
       $url = $this->getUrl('delete_remote_do');
+      $url .= '?remote='.$settings->get('remote');
+      //wfHelp::yml_dump($url, true);
       $params = new PluginWfArray();
       $params->set('filename', $filename);
       wfPlugin::includeonce('server/push');
@@ -856,7 +898,7 @@ class PluginLabSync{
     /**
      * Result.
      */
-    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null));
+    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'dir' => $this->dir));
     /**
      * Check IP.
      */
@@ -869,10 +911,12 @@ class PluginLabSync{
     /**
      * Get content and put in serialize array.
      */
-    if(wfFilesystem::fileExist(wfGlobals::getAppDir().$filename)){
-      wfFilesystem::delete(wfGlobals::getAppDir().$filename);
+    if(wfFilesystem::fileExist($this->dir.$filename)){
+      wfFilesystem::delete($this->dir.$filename);
+      $result->set('exist', true);
     }else{
       $result->set('success', false);
+      $result->set('exist', false);
       $result->set('message', 'File does not exist remote.');
     }
     exit(serialize($result->get()));
@@ -888,6 +932,7 @@ class PluginLabSync{
       $url = $this->getUrl('delete_remote_folder_do');
       $params = new PluginWfArray();
       $params->set('filename', $filename);
+      $params->set('remote', $settings->get('remote'));
       wfPlugin::includeonce('server/push');
       $push = new PluginServerPush();
       $result = $push->push($url, $params->get());
@@ -917,7 +962,7 @@ class PluginLabSync{
     /**
      * Result.
      */
-    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null));
+    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'dir' => $this->dir));
     /**
      * Check IP.
      */
@@ -930,7 +975,7 @@ class PluginLabSync{
     /**
      * Get content and put in serialize array.
      */
-    $dirname = wfGlobals::getAppDir().$filename;
+    $dirname = $this->dir.$filename;
     if(wfFilesystem::fileExist($dirname)){
       wfFilesystem::delete_dir($dirname);
     }else{

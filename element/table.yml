@@ -8,6 +8,7 @@ data:
       name: Name
       theme: Theme
       url: Url
+      remote: Remote
       local_time: LTime
       ftp#server: Ftp server
       ftp#user: User
