@@ -7,13 +7,10 @@ data:
     field:
       name: Name
       theme: Theme
+      log#read: Sync
       url: Url
       remote: Remote
-      local_time: LTime
       ftp#server: Ftp server
-      ftp#user: User
-      ftp#dir: Dir
-      ftp#web_folder: Folder
     rs: rs:data
     datatable:
       disabled: false

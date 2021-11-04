@@ -1,5 +1,9 @@
-version: 1.26.0
+version: 1.27.0
 history:
+  1.27.0:
+    date: '2021-11-04'
+    title: 'Log'
+    description: 'Add log data.'
   1.26.0:
     date: '2021-11-04'
     title: 'Token'

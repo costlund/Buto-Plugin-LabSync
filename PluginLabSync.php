@@ -50,9 +50,10 @@ class PluginLabSync{
      * Settings.
      */
     $this->settings = new PluginWfArray(wfArray::get($GLOBALS, 'sys/settings/plugin_modules/'.wfArray::get($GLOBALS, 'sys/class').'/settings'));
-    $this->settings->set('remote', wfSettings::getSettingsFromYmlString($this->settings->get('remote')));
-    $this->settings->set('theme', wfSettings::getSettingsFromYmlString($this->settings->get('theme')));
-    $this->settings->set('token', wfSettings::getSettingsFromYmlString($this->settings->get('token')));
+    $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
+    $this->settings->set('remote', $buto_data->get('remote'));
+    $this->settings->set('theme', $buto_data->get('theme'));
+    $this->settings->set('token', $buto_data->get('token'));
     /**
      * remote_data
      */
@@ -136,6 +137,9 @@ class PluginLabSync{
     $check_ip = $this->check_ip();
     $output->set('check_ip', $check_ip);
     $token_match = $this->token_match(wfRequest::get('token'));
+    if(false){
+      $output->set('token', $this->settings->get());
+    }
     $output->set('token_match', $token_match);
     if(!$check_ip && !wfUser::hasRole('webmaster') && !$token_match){
       $output->set('success', false);
@@ -187,9 +191,8 @@ class PluginLabSync{
     $theme_active->set('has_theme', false);
     if(strlen($key)){
       $user = wfUser::getSession();
-      $settings = new PluginWfArray(wfPlugin::getModuleSettings());
+      $settings = $this->settings;
       $settings->set('theme_active', $key);
-      $settings->set('theme', wfSettings::getSettingsFromYmlString($settings->get('theme')));
       $theme_active = new PluginWfArray($settings->get("theme/".$settings->get('theme_active')));
       $theme_active->set('has_theme', false);
       /**
@@ -264,8 +267,7 @@ class PluginLabSync{
     /**
      * Create element to select theme.
      */
-    $module_settings = new PluginWfArray(wfPlugin::getModuleSettings());
-    $module_settings->set('theme', wfSettings::getSettingsFromYmlString($module_settings->get('theme')));
+    $module_settings = $this->settings;
     $element = array();
     /**
      * Table
@@ -286,9 +288,21 @@ class PluginLabSync{
     wfUser::setSession('plugin/lab/sync/theme', wfRequest::get('key'));
     exit(json_encode(array('success' => true)));
   }
+  private function log($page){
+    if(wfUser::getSession()->get('plugin/lab/sync/theme')){
+      $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
+      $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/'.$page, date('Y-m-d H:i:s'));
+      $buto_data->save();
+    }
+    return null;
+  }
   public function page_start(){
+    $this->log('start');
     wfPlugin::includeonce('wf/yml');
     $settings = $this->getSettings();
+    if($settings->get('token')){
+      $settings->set('token', '****');
+    }
     $settings->set('ftp/password', '****');
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
     $page->setByTag(array('settings' => $settings->get()));
@@ -411,6 +425,7 @@ class PluginLabSync{
    * When client ask server for list of files.
    */
   public function page_read(){
+    $this->log('read');
     $type_of_sync = wfRequest::get('type_of_sync');
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
@@ -455,10 +470,8 @@ class PluginLabSync{
         /**
          * 
          */
-        //wfHelp::yml_dump($remote_files, true);
         if(!$remote_files['files']){
           wfHelp::print($remote_files, true);
-          exit("$url does not return any data!");
         }
         $remote_files = $remote_files['files'];
       }
@@ -744,6 +757,7 @@ class PluginLabSync{
    * Method page_upload_capture() handle response.
    */
   public function page_upload(){
+    $this->log('upload');
     $settings = $this->getSettings();
     if(!$settings->get('ftp')){
       $data = $this->getUploadData();
@@ -784,6 +798,7 @@ class PluginLabSync{
    * Download file client side.
    */
   public function page_download(){
+    $this->log('download');
     /**
      * Ask server for file.
      */
@@ -881,6 +896,7 @@ class PluginLabSync{
    * Call this from local server.
    */
   public function page_delete_remote(){
+    $this->log('delete_remote');
     $settings = $this->getSettings();
     if(!$settings->get('ftp')){
       $filename = wfRequest::get('key');
@@ -949,6 +965,7 @@ class PluginLabSync{
    * Call this from local server.
    */
   public function page_delete_remote_folder(){
+    $this->log('delete_remote_folder');
     $settings = $this->getSettings();
     if(!$settings->get('ftp')){
       $filename = wfRequest::get('key');
