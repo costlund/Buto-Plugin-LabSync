@@ -52,6 +52,7 @@ class PluginLabSync{
     $this->settings = new PluginWfArray(wfArray::get($GLOBALS, 'sys/settings/plugin_modules/'.wfArray::get($GLOBALS, 'sys/class').'/settings'));
     $this->settings->set('remote', wfSettings::getSettingsFromYmlString($this->settings->get('remote')));
     $this->settings->set('theme', wfSettings::getSettingsFromYmlString($this->settings->get('theme')));
+    $this->settings->set('token', wfSettings::getSettingsFromYmlString($this->settings->get('token')));
     /**
      * remote_data
      */
@@ -110,6 +111,19 @@ class PluginLabSync{
     }
     return $check_ip;
   }
+  private function token_match($token){
+    $match = false;
+    if($this->settings->get('token')){
+      foreach($this->settings->get('token') as $v){
+        $i = new PluginWfArray($v);
+        if($i->get('value')==$token){
+          $match = true;
+          break;
+        }
+      }
+    }
+    return $match;
+  }
   /**
    * Read files from remote host.
    */
@@ -121,7 +135,9 @@ class PluginLabSync{
     $this->remote_host = true;
     $check_ip = $this->check_ip();
     $output->set('check_ip', $check_ip);
-    if(!$check_ip && !wfUser::hasRole('webmaster')){
+    $token_match = $this->token_match(wfRequest::get('token'));
+    $output->set('token_match', $token_match);
+    if(!$check_ip && !wfUser::hasRole('webmaster') && !$token_match){
       $output->set('success', false);
       exit(serialize($output->get()));
     }else{
@@ -424,7 +440,7 @@ class PluginLabSync{
       }else{
         $url = $this->getUrl('files');
         if($settings->get('remote')){
-          $url = $url.'?remote='.$settings->get('remote');
+          $url = $url.'?remote='.$settings->get('remote').'&token='.$settings->get('token');
         }
         $ctx = stream_context_create(array('http'=> array('timeout' => 60*5)));
         $content = @file_get_contents($url, false, $ctx);
@@ -674,16 +690,17 @@ class PluginLabSync{
    */
   public function page_upload_capture(){
     /**
-     * Result.
-     */
-    $result = new PluginWfArray(array('success' => true, 'files' => null, 'message' => null, 'remote' => wfRequest::get('remote'), 'remote_data_dir' => $this->settings->get('remote_data/dir'), 'dir' => $this->dir));
-    /**
      * Check IP.
      */
     $check_ip = $this->check_ip();
-    if(!$check_ip){
+    $token_match = $this->token_match(wfRequest::get('token'));
+    /**
+     * Result.
+     */
+    $result = new PluginWfArray(array('success' => true, 'files' => null, 'message' => null, 'remote' => wfRequest::get('remote'), 'check_ip' => $check_ip, 'token_match' => $token_match, 'remote_data_dir' => $this->settings->get('remote_data/dir'), 'dir' => $this->dir));
+    if(!$check_ip && !$token_match){
       $result->set('success', false);
-      $result->set('message', 'Your ip is not registred!');
+      $result->set('message', 'Your ip or token is not registred!');
       exit(serialize($result->get()));
     }
     /**
@@ -734,6 +751,7 @@ class PluginLabSync{
       $params = new PluginWfArray();
       $params->set('files', array(array('filename' => $data->get('filename'), 'content' => $data->get('content'))));
       $params->set('remote', $settings->get('remote'));
+      $params->set('token', $settings->get('token'));
       wfPlugin::includeonce('server/push');
       $push = new PluginServerPush();
       $result = $push->push($url, $params->get());
@@ -770,15 +788,12 @@ class PluginLabSync{
      * Ask server for file.
      */
     $settings = $this->getSettings();
-
-    //wfHelp::yml_dump($settings, true);
-
     if(!$settings->get('ftp')){
       $filename = wfRequest::get('key');
       $url = $this->getUrl('download_capture');
       wfPlugin::includeonce('server/push');
       $push = new PluginServerPush();
-      $result = $push->push($url, array('filename' => $filename, 'remote' => $settings->get('remote')));
+      $result = $push->push($url, array('filename' => $filename, 'remote' => $settings->get('remote'), 'token' => $settings->get('token')));
       $result = new PluginWfArray(unserialize($result));
       if($result->get('success')){
         $filename = $this->replaceWebDir($filename);
@@ -815,16 +830,20 @@ class PluginLabSync{
     $filename = wfRequest::get('filename');
     $filename = $this->replaceWebDir($filename);
     /**
-     * Result.
-     */
-    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'content' => null, 'dir' => $this->dir));
-    /**
      * Check IP.
      */
     $check_ip = $this->check_ip();
-    if(!$check_ip){
+    $token_match = $this->token_match(wfRequest::get('token'));
+    /**
+     * Result.
+     */
+    $result = new PluginWfArray(array('success' => true, 'check_ip' => $check_ip, 'token_match' => $token_match, 'filename' => $filename, 'message' => null, 'content' => null, 'dir' => $this->dir));
+    /**
+     *
+     */
+    if(!$check_ip && !$token_match){
       $result->set('success', false);
-      $result->set('message', 'Your ip is not registred!');
+      $result->set('message', 'Your ip or token is not registred!');
       exit(serialize($result->get()));
     }
     /**
@@ -866,7 +885,7 @@ class PluginLabSync{
     if(!$settings->get('ftp')){
       $filename = wfRequest::get('key');
       $url = $this->getUrl('delete_remote_do');
-      $url .= '?remote='.$settings->get('remote');
+      $url .= '?remote='.$settings->get('remote').'&token='.$settings->get('token');
       //wfHelp::yml_dump($url, true);
       $params = new PluginWfArray();
       $params->set('filename', $filename);
@@ -896,16 +915,20 @@ class PluginLabSync{
     $filename = wfRequest::get('filename');
     $filename = $this->replaceWebDir($filename);
     /**
-     * Result.
-     */
-    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'dir' => $this->dir));
-    /**
      * Check IP.
      */
     $check_ip = $this->check_ip();
-    if(!$check_ip){
+    $token_match = $this->token_match(wfRequest::get('token'));
+    /**
+     * Result.
+     */
+    $result = new PluginWfArray(array('success' => true, 'check_ip' => $check_ip, 'token_match' => $token_match, 'filename' => $filename, 'message' => null, 'dir' => $this->dir));
+    /**
+     *
+     */
+    if(!$check_ip && !$token_match){
       $result->set('success', false);
-      $result->set('message', 'Your ip is not registred!');
+      $result->set('message', 'Your ip or token is not registred!');
       exit(serialize($result->get()));
     }
     /**
@@ -933,6 +956,7 @@ class PluginLabSync{
       $params = new PluginWfArray();
       $params->set('filename', $filename);
       $params->set('remote', $settings->get('remote'));
+      $params->set('token', $settings->get('token'));
       wfPlugin::includeonce('server/push');
       $push = new PluginServerPush();
       $result = $push->push($url, $params->get());
@@ -960,16 +984,20 @@ class PluginLabSync{
     $filename = wfRequest::get('filename');
     $filename = $this->replaceWebDir($filename);
     /**
-     * Result.
-     */
-    $result = new PluginWfArray(array('success' => true, 'filename' => $filename, 'message' => null, 'dir' => $this->dir));
-    /**
      * Check IP.
      */
     $check_ip = $this->check_ip();
-    if(!$check_ip){
+    $token_match = $this->token_match(wfRequest::get('token'));
+    /**
+     * Result.
+     */
+    $result = new PluginWfArray(array('success' => true, 'check_ip' => $check_ip, 'token_match' => $token_match, 'filename' => $filename, 'message' => null, 'dir' => $this->dir));
+    /**
+     *
+     */
+    if(!$check_ip && !$token_match){
       $result->set('success', false);
-      $result->set('message', 'Your ip is not registred!');
+      $result->set('message', 'Your ip or token is not registred!');
       exit(serialize($result->get()));
     }
     /**

@@ -1,9 +1,13 @@
-version: 1.25.0
+version: 1.26.0
 history:
+  1.26.0:
+    date: '2021-11-04'
+    title: 'Token'
+    description: 'Add as an option to security.'
   1.25.0:
     date: '2021-10-31'
     title: 'Sync files'
-    description: 'Add remote param. Using it on read, files, upload, upload_capture...'
+    description: 'Add remote param. Using it on read, files, upload, upload_capture.'
   1.24.11:
     date: '2021-10-26'
     title: Versions

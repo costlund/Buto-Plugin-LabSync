@@ -11,12 +11,16 @@ plugin_modules:
       ip:
         - _your_ip_from_where_to_sync_
       remote: 'yml:/../buto_data/theme/_my_/_theme_/plugin_lab_sync.yml:remote'
+      token: 'yml:/../buto_data/theme/_my_/_theme_/plugin_lab_sync.yml:token'
 ```
-In file /../buto_data/theme/_my_/_theme_/plugin_lab_sync.yml we add param remote.
+In file /../buto_data/theme/_my_/_theme_/plugin_lab_sync.yml we add param remote and token.
 ```
 remote:
-  _any_key_value_:
+  abcdef:
     dir: /_my_domain_folder_
+token:
+  -
+    value: 123456
 ```
 
 ## Local settings
@@ -28,7 +32,8 @@ theme:
     name: My production site
     theme: _any_/_theme_
     url: 'https://sync.world.com/sync'
-    remote: 'sync'
+    remote: 'abcdef'
+    token: 123456
 ```
 
 
