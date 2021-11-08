@@ -470,7 +470,7 @@ class PluginLabSync{
         /**
          * 
          */
-        if(!$remote_files['files']){
+        if(isset($remote_files['files']) && !$remote_files['files']){
           wfHelp::print($remote_files, true);
         }
         $remote_files = $remote_files['files'];
