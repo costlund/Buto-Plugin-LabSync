@@ -289,7 +289,7 @@ class PluginLabSync{
     exit(json_encode(array('success' => true)));
   }
   private function log($page){
-    if(wfUser::getSession()->get('plugin/lab/sync/theme')){
+    if(strlen(wfUser::getSession()->get('plugin/lab/sync/theme'))){
       $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
       $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/'.$page, date('Y-m-d H:i:s'));
       $buto_data->save();
@@ -323,6 +323,7 @@ class PluginLabSync{
     wfDocument::mergeLayout($page->get());
   }
   public function page_zip(){
+    $this->log('zip');
     /**
      * Settings.
      */

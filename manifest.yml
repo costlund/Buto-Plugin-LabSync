@@ -1,5 +1,9 @@
-version: 1.27.2
+version: 1.27.3
 history:
+  1.27.3:
+    date: '2021-11-15'
+    title: 'Log'
+    description: 'Add zip to log.'
   1.27.2:
     date: '2021-11-08'
     title: 'Page read'
