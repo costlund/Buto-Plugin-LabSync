@@ -1,5 +1,9 @@
-version: 1.27.3
+version: 1.28.0
 history:
+  1.28.0:
+    date: '2021-12-01'
+    title: 'Log'
+    description: 'Improvements in logs.'
   1.27.3:
     date: '2021-11-15'
     title: 'Log'

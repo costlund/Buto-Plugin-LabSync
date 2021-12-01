@@ -55,6 +55,28 @@ class PluginLabSync{
     $this->settings->set('theme', $buto_data->get('theme'));
     $this->settings->set('token', $buto_data->get('token'));
     /**
+     * version
+     */
+    if($this->settings->get('theme')){
+      foreach($this->settings->get('theme') as $k => $v){
+        $manifest = new PluginWfYml(wfGlobals::getAppDir()."/theme/".$v['theme'].'/config/manifest.yml');
+        $this->settings->set("theme/$k/version", $manifest->get('version'));
+        if($this->settings->get("theme/$k/version") != $this->settings->get("theme/$k/log/version")){
+          $this->settings->set("theme/$k/version_diff", 'Yes');
+        }else{
+          $this->settings->set("theme/$k/version_diff", '');
+        }
+        if($this->settings->get("theme/$k/log/upload")){
+          $date1 = new DateTime(date('Y-m-d'));
+          $date2 = new DateTime(substr($this->settings->get("theme/$k/log/upload"), 0, 10));
+          $interval = $date1->diff($date2);
+          $this->settings->set("theme/$k/upload_days", $interval->days);
+        }else{
+          $this->settings->set("theme/$k/upload_days", '');
+        }
+      }
+    }
+    /**
      * remote_data
      */
     if(wfRequest::get('remote') && $this->settings->get('remote/'.wfRequest::get('remote'))){
@@ -288,10 +310,13 @@ class PluginLabSync{
     wfUser::setSession('plugin/lab/sync/theme', wfRequest::get('key'));
     exit(json_encode(array('success' => true)));
   }
-  private function log($page){
+  private function log($page, $version = null){
     if(strlen(wfUser::getSession()->get('plugin/lab/sync/theme'))){
       $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
       $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/'.$page, date('Y-m-d H:i:s'));
+      if($version){
+        $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/version', $version);
+      }
       $buto_data->save();
     }
     return null;
@@ -758,8 +783,8 @@ class PluginLabSync{
    * Method page_upload_capture() handle response.
    */
   public function page_upload(){
-    $this->log('upload');
     $settings = $this->getSettings();
+    $this->log('upload', $settings->get('manifest/version'));
     if(!$settings->get('ftp')){
       $data = $this->getUploadData();
       $url = $this->getUrl('upload_capture');
