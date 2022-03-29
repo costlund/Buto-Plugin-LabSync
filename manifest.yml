@@ -1,5 +1,9 @@
-version: 1.28.4
+version: 1.28.5
 history:
+  1.28.5:
+    date: '2022-03-29'
+    title: Versions
+    description: 'Versions update.'
   1.28.4:
     date: '2022-02-26'
     title: Versions
@@ -223,13 +227,13 @@ plugin:
     version: '1.0'
   -
     name: form/form_v1
-    version: 1.51.14
+    version: 1.52.0
   -
     name: wf/table
-    version: 1.28.1
+    version: 1.28.2
   -
     name: wf/ajax
-    version: 1.4.1
+    version: 1.4.2
   -
     name: wf/bootstrapjs
     version: 1.7.1
