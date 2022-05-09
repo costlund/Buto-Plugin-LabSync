@@ -1,5 +1,9 @@
-version: 1.28.7
+version: 1.29.0
 history:
+  1.29.0:
+    date: '2022-05-09'
+    title: Sound
+    description: 'One can click to toggle sound.'
   1.28.7:
     date: '2022-05-09'
     title: Warning

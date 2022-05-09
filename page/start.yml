@@ -164,6 +164,8 @@ content:
             attribute:
               id: progress
               class: badge badge-secondary
+              onclick: PluginLabSync.progress_click()
+              title: "Click to toggle sound!"
       -
         type: ul
         settings:

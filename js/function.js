@@ -26,10 +26,21 @@ function PluginLabSync(){
       }
     });
   }
+  this.progress_click = function(){
+    if ($("#progress").hasClass("has_text_decoration")) {
+      $("#progress").css("text-decoration", "");
+      $("#progress").removeClass("has_text_decoration");
+    }else{
+      $("#progress").css("text-decoration", "line-through");
+      $("#progress").addClass("has_text_decoration");
+    }
+  }
   this.sound = function(){
-    var audio = document.createElement("AUDIO");
-    audio.src = '/plugin/play/sound/beep.mp3';
-    audio.play();
+    if (!$("#progress").hasClass("has_text_decoration")) {
+      var audio = document.createElement("AUDIO");
+      audio.src = '/plugin/play/sound/beep.mp3';
+      audio.play();
+    }
   }
   this.delete_all_theme_no = function(btn){
     if(!confirm('Delete all visible where Theme has theme_no?')){
