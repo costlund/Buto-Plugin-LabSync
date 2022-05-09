@@ -1,5 +1,9 @@
-version: 1.28.6
+version: 1.28.7
 history:
+  1.28.7:
+    date: '2022-05-09'
+    title: Warning
+    description: 'Add alert warning: Consider connection (vpn) using ftp.'
   1.28.6:
     date: '2022-05-02'
     title: Versions

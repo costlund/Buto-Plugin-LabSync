@@ -328,11 +328,13 @@ class PluginLabSync{
     if($settings->get('token')){
       $settings->set('token', '****');
     }
-    $settings->set('ftp/password', '****');
+    if($settings->get('ftp/password')){
+      $settings->set('ftp/password', '****');
+    }
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
     $page->setByTag(array('settings' => $settings->get()));
     $page->setByTag($settings->get());
-    $page->setByTag(array('element_theme' => $this->getElementTheme()));
+    $page->setByTag(array('element_theme' => $this->getElementTheme()), 'rs', true);
     /**
      * Insert admin layout from theme.
      */

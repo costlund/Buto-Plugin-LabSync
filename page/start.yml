@@ -251,6 +251,13 @@ content:
                     innerHTML:
                       -
                         type: div
+                        settings:
+                          enabled: rs:ftp
+                        attribute: 
+                          class: alert alert-warning
+                        innerHTML: Consider connection (vpn) using ftp.
+                      -
+                        type: div
                         attribute:
                           id: start
                         innerHTML: (nothing synced yet)
