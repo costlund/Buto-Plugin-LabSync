@@ -1,5 +1,9 @@
-version: 1.29.4
+version: 1.29.5
 history:
+  1.29.5:
+    date: '2022-07-20'
+    title: Versions
+    description: 'Versions update.'
   1.29.4:
     date: '2022-06-09'
     title: I18n
@@ -246,7 +250,7 @@ plugin:
     version: 1.4.0
   -
     name: theme/analysis
-    version: 1.2.1
+    version: 1.2.2
   -
     name: server/push
     version: 1.1.0
@@ -255,10 +259,10 @@ plugin:
     version: '1.0'
   -
     name: form/form_v1
-    version: 1.52.4
+    version: 1.53.0
   -
     name: wf/table
-    version: 1.31.0
+    version: 1.31.1
   -
     name: wf/ajax
     version: 1.4.2
@@ -294,7 +298,7 @@ plugin:
     version: 1.5.0
   -
     name: theme/include
-    version: 1.10.5
+    version: 1.10.6
   -
     name: icons/octicons
     version: 1.1.1
