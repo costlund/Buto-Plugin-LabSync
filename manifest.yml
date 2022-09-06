@@ -1,5 +1,9 @@
-version: 1.29.11
+version: 1.29.12
 history:
+  1.29.12:
+    date: '2022-09-06'
+    title: Delete remote
+    description: 'Closing modal direct when click Delete remote.'
   1.29.11:
     date: '2022-08-31'
     title: Versions

@@ -162,11 +162,11 @@ function PluginLabSync(){
   this.delete_remote = function(btn){
     var td = btn.parentNode.parentNode.getElementsByClassName('td_local_newer')[0];
     td.innerHTML = '<img src="/plugin/wf/ajax/loading.gif">';
+    $('#modal_delete').modal('hide');
     $.get( "delete_remote?key="+btn.getAttribute('data-file'), function( data ) {
       data = JSON.parse(data);
       if(data.success){
         td.innerHTML = 'Remote deleted';
-        $('#modal_delete').modal('hide');
         PluginLabSync.sound();
         PluginLabSync.file_number ++;
         PluginLabSync.progress_set();
