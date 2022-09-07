@@ -1,8 +1,12 @@
-version: 1.29.12
+version: 1.29.13
 history:
+  1.29.13:
+    date: '2022-09-07'
+    title: Versions
+    description: 'Versions update.'
   1.29.12:
     date: '2022-09-06'
-    title: Delete remote
+    title: 'Delete remote'
     description: 'Closing modal direct when click Delete remote.'
   1.29.11:
     date: '2022-08-31'
@@ -287,7 +291,7 @@ plugin:
     version: '1.0'
   -
     name: form/form_v1
-    version: 1.53.0
+    version: 1.54.0
   -
     name: wf/table
     version: 1.31.1
