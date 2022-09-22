@@ -1,8 +1,2 @@
 theme: _theme_to_replace_
-cache: false
-timezone: Europe/Paris
-error_reporting: E_ALL
-display_errors: 1
-
-
-      
+# Extra params could be added for plugin lab/sync (zip/config).

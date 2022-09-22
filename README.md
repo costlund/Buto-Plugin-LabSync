@@ -68,6 +68,15 @@ plugin:
 ## ZIP export
 One could export a theme to a zip file. The file will be created in app root folder and also to be downloaded in browser.
 Files and folder start with "." except ".htaccess" are not included. If linked folders has errors warnings a zip file are corrupted.
+
+### Config
+Add extra config parameters to file /config/settings.yml.
+```
+    zip:
+      config:
+        tag: _tag_
+```
+
 ## Signin event
 Event settings is for add webmaster ip to server along with settings/ip.
 ```

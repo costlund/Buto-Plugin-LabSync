@@ -424,6 +424,15 @@ class PluginLabSync{
     wfFilesystem::copyFile(__DIR__.'/data/zip_settings.yml', $zip_settings_file);
     $zip_settings_copy = new PluginWfYml($zip_settings_file);
     $zip_settings_copy->set('theme', $settings->get('theme'));
+    /**
+     * zip/config
+     */
+    if($settings->get('zip/config')){
+      $zip_settings_copy->merge($settings->get('zip/config'));
+    }
+    /**
+     * 
+     */
     $zip_settings_copy->save();
     $zip_archive->addFile($zip_settings_file, 'config/settings.yml');
     /**
@@ -433,7 +442,13 @@ class PluginLabSync{
       $zip_archive->addFile(wfGlobals::getAppDir().$this->replaceWebDir($key), substr($this->replaceWebDir($key), 1));
     }
     $zip_archive->close();
+    /**
+     * 
+     */
     wfFilesystem::delete($zip_settings_file);
+    /**
+     * 
+     */
     header("Content-type: application/zip");
     header("Content-Disposition: attachment; filename=$download_name"); 
     header("Pragma: no-cache"); 

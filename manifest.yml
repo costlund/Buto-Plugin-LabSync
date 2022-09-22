@@ -1,5 +1,9 @@
-version: 1.29.13
+version: 1.30.0
 history:
+  1.30.0:
+    date: '2022-09-22'
+    title: Zip
+    description: 'Add extra config data via param zip/config.'
   1.29.13:
     date: '2022-09-07'
     title: Versions
