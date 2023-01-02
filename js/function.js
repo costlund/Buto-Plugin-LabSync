@@ -58,9 +58,6 @@ function PluginLabSync(){
     }
   }
   this.upload_all_localnewer = function(btn){
-    if(!confirm('Upload all visible where Local newer is (localnewer)?')){
-      return null;
-    }
     var local_newer = document.getElementById('sync_table_wrapper').getElementsByClassName('td_local_newer');
     var count = 0;
     for(i=0;i<local_newer.length;i++){
@@ -76,9 +73,6 @@ function PluginLabSync(){
     console.log(count+' files uploaded.');
   }
   this.upload_all_sizediff = function(btn){
-    if(!confirm('Upload all visible where Size diff is (sizediff)?')){
-      return null;
-    }
     var sizediff = document.getElementById('sync_table_wrapper').getElementsByClassName('td_sizediff');
     var count = 0;
     for(i=0;i<sizediff.length;i++){
@@ -94,9 +88,6 @@ function PluginLabSync(){
     console.log(count+' files uploaded.');
   }
   this.upload_all_exist_local = function(btn){
-    if(!confirm('Upload all visible where Exist is (local)?')){
-      return null;
-    }
     var local = document.getElementById('sync_table_wrapper').getElementsByClassName('td_exist');
     var count = 0;
     for(i=0;i<local.length;i++){
