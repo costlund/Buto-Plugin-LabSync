@@ -1,5 +1,9 @@
-version: 1.30.4
+version: 1.30.5
 history:
+  1.30.5:
+    date: '2023-01-02'
+    title: Confirm
+    description: 'Remove three confirms.'
   1.30.4:
     date: '2023-01-02'
     title: Versions
