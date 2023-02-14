@@ -283,11 +283,17 @@ class PluginLabSync{
       $theme_active->set('item', $item);
       $theme_active->set('plugin', $ta->data->get());
       /**
-       * 
+       * export/version
        */
       if($theme_active->get('export/folder')){
         $export_manifest = new PluginWfYml($theme_active->get('export/folder').'/theme/'.$theme_active->get('theme').'/config/manifest.yml');
         $theme_active->set('export/version', $export_manifest->get('version'));
+      }
+      /**
+       * export/rsync_script
+       */
+      if($theme_active->get('export/folder') && $theme_active->get('export/rsync_remote')){
+        $theme_active->set('export/rsync_script', 'rsync -azv --delete -e ssh '.$theme_active->get('export/folder').'/ '.$theme_active->get('export/rsync_remote'));
       }
     }
     return $theme_active;

@@ -1,5 +1,9 @@
-version: 1.31.1
+version: 1.31.2
 history:
+  1.31.2:
+    date: '2023-02-14'
+    title: Rsync
+    description: 'Generate rsync script.'
   1.31.1:
     date: '2023-02-14'
     title: Export

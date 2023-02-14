@@ -80,12 +80,27 @@ Add extra config parameters to file /config/settings.yml.
 ## Export
 Export theme to a folder.
 Could be handy if using rsync command to deploy.
-### Config
-Folder.
 ```
     export:
-      folder: _folder_
 ```
+
+### Folder
+Folder to copy files only used by current theme.
+```
+      folder: /my/export/folder
+```
+
+### Rsync remote
+If this param is set a new param export/rsync_script will be generated with full rsync script.
+```
+      rsync_remote: me@world.com:/var/www/html
+```
+Param export/rsync_script generated.
+```
+      rsync_script: rsync -azv --delete -e ssh /my/export/folder/ me@world.com:/var/www/html
+```
+
+### Config
 Add extra config parameters to file /config/settings.yml.
 ```
       config:
