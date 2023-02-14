@@ -282,6 +282,13 @@ class PluginLabSync{
        */
       $theme_active->set('item', $item);
       $theme_active->set('plugin', $ta->data->get());
+      /**
+       * 
+       */
+      if($theme_active->get('export/folder')){
+        $export_manifest = new PluginWfYml($theme_active->get('export/folder').'/theme/'.$theme_active->get('theme').'/config/manifest.yml');
+        $theme_active->set('export/version', $export_manifest->get('version'));
+      }
     }
     return $theme_active;
   }
