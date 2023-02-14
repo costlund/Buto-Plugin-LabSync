@@ -51,6 +51,9 @@ content:
                       text: Zip
                       onclick: "PluginLabSync.zip();"
                     -
+                      text: Export
+                      onclick: "PluginLabSync.export();"
+                    -
                       text: Script
                       onclick: "PluginLabSync.script();"
   -

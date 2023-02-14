@@ -349,28 +349,7 @@ class PluginLabSync{
      */
     wfDocument::mergeLayout($page->get());
   }
-  public function page_zip(){
-    $this->log('zip');
-    /**
-     * Settings.
-     */
-    $settings = $this->getSettings();
-    /**
-     * Version.
-     */
-    $version = '';
-    if($settings->get('manifest/version')){
-      $version = '_'.$settings->get('manifest/version');
-    }
-    /**
-     * Name of zip-file when download.
-     */
-    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHis').$version.'.zip';
-    $download_name = str_replace('/', '_', $download_name);
-    /**
-     * Where zip file should be put...
-     */
-    $zip_filename = wfGlobals::getAppDir().'/'.$download_name;
+  private function export_get_files($settings){
     /**
      * Local files.
      */
@@ -410,6 +389,90 @@ class PluginLabSync{
         }
       }
     }
+    return $local_files;
+  }
+  public function page_export(){
+    /**
+     * log
+     */
+    $this->log('export');
+    /**
+     * Settings.
+     */
+    $settings = $this->getSettings();
+    /**
+     * param check
+     */
+    if(!$settings->get('export/folder')){
+      exit('Param export/folder is not set!');
+    }
+    /**
+     * Local files.
+     */
+    $local_files = $this->export_get_files($settings);
+    /**
+     * Copy to export folder.
+     */
+    foreach ($local_files as $key => $value) {
+      $source = wfGlobals::getAppDir().$this->replaceWebDir($key);
+      $dest = $settings->get('export/folder').$this->replaceWebDir($key);
+      wfFilesystem::copyFile($source, $dest);
+    }
+    /**
+     * Add /config/settings.yml.
+     * Copy existing file, edit theme param, save.
+     * This file are to be deleted after zip closed.
+     */
+    $zip_settings_file = __DIR__.'/data/zip_settings_copy.yml';
+    wfFilesystem::copyFile(__DIR__.'/data/zip_settings.yml', $zip_settings_file);
+    $zip_settings_copy = new PluginWfYml($zip_settings_file);
+    $zip_settings_copy->set('theme', $settings->get('theme'));
+    /**
+     * export/config
+     */
+    if($settings->get('export/config')){
+      $zip_settings_copy->merge($settings->get('export/config'));
+    }
+    /**
+     * save
+     */
+    $zip_settings_copy->save();
+    wfFilesystem::copyFile($zip_settings_file, $settings->get('export/folder').'/config/settings.yml');
+    /**
+     * delete
+     */
+    wfFilesystem::delete($zip_settings_file);
+    /**
+     * 
+     */
+    exit('Exported '.(sizeof($local_files)+1).' files to folder '.$settings->get('export/folder').'.');
+  }
+  public function page_zip(){
+    $this->log('zip');
+    /**
+     * Settings.
+     */
+    $settings = $this->getSettings();
+    /**
+     * Version.
+     */
+    $version = '';
+    if($settings->get('manifest/version')){
+      $version = '_'.$settings->get('manifest/version');
+    }
+    /**
+     * Name of zip-file when download.
+     */
+    $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHis').$version.'.zip';
+    $download_name = str_replace('/', '_', $download_name);
+    /**
+     * Where zip file should be put...
+     */
+    $zip_filename = wfGlobals::getAppDir().'/'.$download_name;
+    /**
+     * Local files.
+     */
+    $local_files = $this->export_get_files($settings);
     /**
      * Init ZipArchive.
      */

@@ -77,6 +77,21 @@ Add extra config parameters to file /config/settings.yml.
         tag: _tag_
 ```
 
+## Export
+Export theme to a folder.
+Could be handy if using rsync command to deploy.
+### Config
+Folder.
+```
+    export:
+      folder: _folder_
+```
+Add extra config parameters to file /config/settings.yml.
+```
+      config:
+        tag: _tag_
+```
+
 ## Signin event
 Event settings is for add webmaster ip to server along with settings/ip.
 ```

@@ -203,6 +203,9 @@ function PluginLabSync(){
   this.zip = function(){
     window.open('zip');
   }
+  this.export = function(){
+    PluginWfBootstrapjs.modal({id: 'modal_export', url: 'export', lable: 'Export'});
+  }
   this.theme_select = function(e){
     /**
      * Select a theme.
