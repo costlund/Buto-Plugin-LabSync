@@ -1,5 +1,9 @@
-version: 1.31.2
+version: 1.31.3
 history:
+  1.31.3:
+    date: '2023-02-15'
+    title: Rsync
+    description: 'New param export/web_folder. Use theme settings param exclude. Add exclude params to rsync script.'
   1.31.2:
     date: '2023-02-14'
     title: Rsync

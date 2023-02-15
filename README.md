@@ -78,8 +78,10 @@ Add extra config parameters to file /config/settings.yml.
 ```
 
 ## Export
-Export theme to a folder.
-Could be handy if using rsync command to deploy.
+- Export theme to a folder.
+- Use the Export button in menu to trigger this.
+- Use rsync script generated to deploy to server.
+
 ```
     export:
 ```
@@ -88,6 +90,21 @@ Could be handy if using rsync command to deploy.
 Folder to copy files only used by current theme.
 ```
       folder: /my/export/folder
+```
+
+#### Config
+File /config/settings.yml will be created.
+Add extra config parameters.
+```
+      config:
+        tag: _tag_
+```
+
+### Web folder
+If remote host has other name for web folder.
+If not set current web folder is used.
+```
+      web_folder: public_html
 ```
 
 ### Rsync remote
@@ -100,11 +117,16 @@ Param export/rsync_script generated.
       rsync_script: rsync -azv --delete -e ssh /my/export/folder/ me@world.com:/var/www/html
 ```
 
-### Config
-Add extra config parameters to file /config/settings.yml.
+### Rsync exclude
+Exclude params are generated from theme settings exclude params.
+#### Theme settings
 ```
-      config:
-        tag: _tag_
+exclude:
+  - '/[web_folder]/data'
+```
+#### Script
+```
+      rsync_script: rsync -azv --exclude "/public_html/data" --delete -e ssh /my/export/folder/ me@world.com:/var/www/html
 ```
 
 ## Signin event

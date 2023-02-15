@@ -283,17 +283,31 @@ class PluginLabSync{
       $theme_active->set('item', $item);
       $theme_active->set('plugin', $ta->data->get());
       /**
+       * export/web_folder
+       */
+      if(!$theme_active->get('export/web_folder')){
+        $theme_active->set('export/web_folder', $this->getWebFolderName());
+      }
+      /**
        * export/version
        */
       if($theme_active->get('export/folder')){
         $export_manifest = new PluginWfYml($theme_active->get('export/folder').'/theme/'.$theme_active->get('theme').'/config/manifest.yml');
+        $export_settings = new PluginWfYml($theme_active->get('export/folder').'/theme/'.$theme_active->get('theme').'/config/settings.yml');
         $theme_active->set('export/version', $export_manifest->get('version'));
+        $theme_active->set('export/exclude', $export_settings->get('exclude'));
       }
       /**
        * export/rsync_script
        */
       if($theme_active->get('export/folder') && $theme_active->get('export/rsync_remote')){
-        $theme_active->set('export/rsync_script', 'rsync -azv --delete -e ssh '.$theme_active->get('export/folder').'/ '.$theme_active->get('export/rsync_remote'));
+        $exclude = ' ';
+        if($theme_active->get('export/exclude')){
+          foreach($theme_active->get('export/exclude') as $v){
+            $exclude .= '--exclude "'. str_replace('[web_folder]', $theme_active->get('export/web_folder'), $v) .'" ';
+          }
+        }
+        $theme_active->set('export/rsync_script', 'rsync -azv'.$exclude.'--delete -e ssh '.$theme_active->get('export/folder').'/ '.$theme_active->get('export/rsync_remote'));
       }
     }
     return $theme_active;
@@ -427,8 +441,22 @@ class PluginLabSync{
      * Copy to export folder.
      */
     foreach ($local_files as $key => $value) {
+      /**
+       * source
+       */
       $source = wfGlobals::getAppDir().$this->replaceWebDir($key);
-      $dest = $settings->get('export/folder').$this->replaceWebDir($key);
+      /**
+       * dest
+       * export/web_folder?
+       */
+      if(!$settings->get('export/web_folder')){
+        $dest = $settings->get('export/folder').$this->replaceWebDir($key);
+      }else{
+        $dest = $settings->get('export/folder').str_replace('[web_folder]', $settings->get('export/web_folder'), $key);
+      }
+      /**
+       * copy
+       */
       wfFilesystem::copyFile($source, $dest);
     }
     /**
