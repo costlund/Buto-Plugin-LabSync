@@ -1,5 +1,9 @@
-version: 1.31.3
+version: 1.32.0
 history:
+  1.32.0:
+    date: '2023-02-20'
+    title: Export
+    description: 'Delete all files and folders in export folder before copying to it.'
   1.31.3:
     date: '2023-02-15'
     title: Rsync

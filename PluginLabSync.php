@@ -434,6 +434,10 @@ class PluginLabSync{
       exit('Param export/folder is not set!');
     }
     /**
+     * Delete in dir
+     */
+    wfFilesystem::delete_in_dir($settings->get('export/folder'));
+    /**
      * Local files.
      */
     $local_files = $this->export_get_files($settings);
