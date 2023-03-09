@@ -1,5 +1,9 @@
-version: 1.32.0
+version: 1.32.1
 history:
+  1.32.1:
+    date: '2023-03-09'
+    title: Versions
+    description: 'Versions update.'
   1.32.0:
     date: '2023-02-20'
     title: Export
@@ -347,10 +351,10 @@ plugin:
     version: '1.0'
   -
     name: form/form_v1
-    version: 1.57.3
+    version: 1.58.1
   -
     name: wf/table
-    version: 1.32.1
+    version: 1.33.0
   -
     name: wf/ajax
     version: 1.4.2
@@ -377,7 +381,7 @@ plugin:
     version: '1.0'
   -
     name: bootstrap/navtabs_v1
-    version: 1.6.0
+    version: 1.7.0
   -
     name: php/ftp_v1
     version: 1.4.4
@@ -386,7 +390,7 @@ plugin:
     version: 1.6.0
   -
     name: theme/include
-    version: 1.16.3
+    version: 1.16.4
   -
     name: icons/octicons
     version: 1.1.2
