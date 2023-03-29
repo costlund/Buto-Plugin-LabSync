@@ -104,7 +104,7 @@ content:
               -
                 type: span
                 attribute:
-                  class: badge badge-primary
+                  class: badge text-bg-primary
                   id: badge_local
                 innerHTML: '&nbsp;'
           -
@@ -118,7 +118,7 @@ content:
               -
                 type: span
                 attribute:
-                  class: badge badge-primary
+                  class: badge text-bg-primary
                   id: badge_sizediff
                 innerHTML: '&nbsp;'
           -
@@ -132,7 +132,7 @@ content:
               -
                 type: span
                 attribute:
-                  class: badge badge-primary
+                  class: badge text-bg-primary
                   id: badge_local_newer
                 innerHTML: '&nbsp;'
           -
@@ -141,7 +141,7 @@ content:
           -
             type: span
             attribute:
-              class: badge badge-secondary
+              class: badge text-bg-secondary
               id: badge_remote
             innerHTML: '&nbsp;'
           -
@@ -155,7 +155,7 @@ content:
               -
                 type: span
                 attribute:
-                  class: badge badge-primary
+                  class: badge text-bg-primary
                   id: badge_theme_no
                 innerHTML: '&nbsp;'
           -
@@ -166,7 +166,7 @@ content:
             innerHTML: '&nbsp;'
             attribute:
               id: progress
-              class: badge badge-secondary
+              class: badge text-bg-secondary
               onclick: PluginLabSync.progress_click()
               title: "Click to toggle sound!"
       -

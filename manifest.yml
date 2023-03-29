@@ -1,5 +1,9 @@
-version: 1.33.1
+version: 1.33.2
 history:
+  1.33.2:
+    date: '2023-03-29'
+    title: Bootstrap
+    description: 'Badge class replace.'
   1.33.1:
     date: '2023-03-27'
     title: Versions
