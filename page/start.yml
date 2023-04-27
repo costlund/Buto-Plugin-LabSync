@@ -66,9 +66,6 @@ content:
         type: script
         innerHTML: rs:json
       -
-        type: script
-        innerHTML: console.log(app.class)
-      -
         type: p
         settings:
           disabled: rs:has_theme
@@ -270,7 +267,10 @@ content:
         type: script
         settings:
           enabled: rs:has_theme
-        innerHTML: "PluginBootstrapNavtabs_v1.nav_init({ul: 'my_navtabs', content: 'my_content', click: 0});"          
+        innerHTML: |
+          $( document ).ready(function() {
+            PluginBootstrapNavtabs_v1.nav_init({ul: 'my_navtabs', content: 'my_content', click: 0});
+          });
       -
         type: div
         attribute:
