@@ -1,8 +1,12 @@
-version: 1.34.0
+version: 1.34.1
 history:
+  1.34.1:
+    date: '2023-05-29'
+    title: Versions
+    description: 'Versions update.'
   1.34.0:
     date: '2023-04-27'
-    title: Nav init
+    title: 'Nav init'
     description: 'Wrap nav init method around JQuery ready method. Remove console.log.'
   1.33.3:
     date: '2023-04-14'
@@ -378,13 +382,13 @@ plugin:
     version: 1.59.0
   -
     name: wf/table
-    version: 1.33.2
+    version: 1.34.1
   -
     name: wf/ajax
     version: 1.4.2
   -
     name: wf/bootstrapjs
-    version: 1.13.0
+    version: 1.14.0
   -
     name: wf/dom
     version: '1.0'
@@ -405,7 +409,7 @@ plugin:
     version: '1.0'
   -
     name: bootstrap/navtabs_v1
-    version: 1.7.0
+    version: 1.8.0
   -
     name: php/ftp_v1
     version: 1.4.4
@@ -414,7 +418,7 @@ plugin:
     version: 1.6.0
   -
     name: theme/include
-    version: 1.20.0
+    version: 1.20.1
   -
     name: icons/octicons
     version: 1.1.2
