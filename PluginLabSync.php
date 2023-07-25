@@ -492,6 +492,26 @@ class PluginLabSync{
      */
     exit('Exported '.(sizeof($local_files)+1).' files to folder '.$settings->get('export/folder').'.');
   }
+  public function page_export_rsync(){
+    /**
+     * log
+     */
+    $this->log('export_rsync');
+    /**
+     * Settings.
+     */
+    $settings = $this->getSettings();
+    /**
+     * 
+     */
+    if($settings->get('export/rsync_script')){
+      wfPlugin::includeonce('php/exec');
+      $exec = new PluginPhpExec();
+      wfHelp::print($exec->exec($settings->get('export/rsync_script')));
+    }else{
+      exit('Param export/rsync_script does not exist!');
+    }
+  }
   public function page_zip(){
     $this->log('zip');
     /**

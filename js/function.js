@@ -206,6 +206,9 @@ function PluginLabSync(){
   this.export = function(){
     PluginWfBootstrapjs.modal({id: 'modal_export', url: 'export', lable: 'Export'});
   }
+  this.export_rsync = function(btn){
+    PluginWfBootstrapjs.modal({id: 'modal_export_rsync', url: 'export_rsync', lable: btn.innerHTML});
+  }
   this.theme_select = function(e){
     /**
      * Select a theme.
