@@ -37,7 +37,7 @@ class PluginLabSync{
     /**
      * Layout path.
      */
-    wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/lab/sync/layout');
+    wfGlobals::setSys('layout_path', '/plugin/lab/sync/layout');
     /**
      * Memory.
      */
@@ -68,7 +68,7 @@ class PluginLabSync{
         }
         if($this->settings->get("theme/$k/log/upload")){
           $date1 = new DateTime(date('Y-m-d'));
-          $date2 = new DateTime(substr($this->settings->get("theme/$k/log/upload"), 0, 10));
+          $date2 = new DateTime(wfPhpfunc::substr($this->settings->get("theme/$k/log/upload"), 0, 10));
           $interval = $date1->diff($date2);
           $this->settings->set("theme/$k/upload_days", $interval->days);
         }else{
@@ -183,15 +183,15 @@ class PluginLabSync{
     $scan = scandir($dir);
     $web_folder_name = $this->getWebFolderName();
     foreach ($scan as $key => $value) {
-      if(substr($value, 0, 1)=='.' && $value!='.htaccess'){
+      if(wfPhpfunc::substr($value, 0, 1)=='.' && $value!='.htaccess'){
         continue;
       }
       if(is_dir($dir.'/'.$value)){
         $this->set_files($path.'/'.$value);
       }else{
         $xpath = $path;
-        if(substr($path, 0, strlen($web_folder_name)+1) == '/'.$web_folder_name){
-          $xpath = '/[web_folder]'.substr($path, strlen($web_folder_name)+1);
+        if(wfPhpfunc::substr($path, 0, wfPhpfunc::strlen($web_folder_name)+1) == '/'.$web_folder_name){
+          $xpath = '/[web_folder]'.substr($path, wfPhpfunc::strlen($web_folder_name)+1);
         }
         $data = null;
         if($this->remote_host){
@@ -211,7 +211,7 @@ class PluginLabSync{
     $key = wfUser::getSession()->get('plugin/lab/sync/theme');
     $theme_active = new PluginWfArray();
     $theme_active->set('has_theme', false);
-    if(strlen($key)){
+    if(wfPhpfunc::strlen($key)){
       $user = wfUser::getSession();
       $settings = $this->settings;
       $settings->set('theme_active', $key);
@@ -226,7 +226,7 @@ class PluginLabSync{
       /**
        * 
        */
-      if(strlen($user->get('plugin/lab/sync/theme'))){
+      if(wfPhpfunc::strlen($user->get('plugin/lab/sync/theme'))){
         $theme_active->set('has_theme', true);
       }
       /**
@@ -304,7 +304,7 @@ class PluginLabSync{
         $exclude = ' ';
         if($theme_active->get('export/exclude')){
           foreach($theme_active->get('export/exclude') as $v){
-            $exclude .= '--exclude "'. str_replace('[web_folder]', $theme_active->get('export/web_folder'), $v) .'" ';
+            $exclude .= '--exclude "'. wfPhpfunc::str_replace('[web_folder]', $theme_active->get('export/web_folder'), $v) .'" ';
           }
         }
         $theme_active->set('export/rsync_script', 'rsync -azv'.$exclude.'--delete -e ssh '.$theme_active->get('export/folder').'/ '.$theme_active->get('export/rsync_remote'));
@@ -338,7 +338,7 @@ class PluginLabSync{
     exit(json_encode(array('success' => true)));
   }
   private function log($page, $version = null){
-    if(strlen(wfUser::getSession()->get('plugin/lab/sync/theme'))){
+    if(wfPhpfunc::strlen(wfUser::getSession()->get('plugin/lab/sync/theme'))){
       $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
       $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/'.$page, date('Y-m-d H:i:s'));
       if($version){
@@ -529,7 +529,7 @@ class PluginLabSync{
      * Name of zip-file when download.
      */
     $download_name = 'ButoTheme_'.$settings->get('theme').'_'.date('ymdHis').$version.'.zip';
-    $download_name = str_replace('/', '_', $download_name);
+    $download_name = wfPhpfunc::str_replace('/', '_', $download_name);
     /**
      * Where zip file should be put...
      */
@@ -567,7 +567,7 @@ class PluginLabSync{
      * Add files to zip archive.
      */
     foreach ($local_files as $key => $value) {
-      $zip_archive->addFile(wfGlobals::getAppDir().$this->replaceWebDir($key), substr($this->replaceWebDir($key), 1));
+      $zip_archive->addFile(wfGlobals::getAppDir().$this->replaceWebDir($key), wfPhpfunc::substr($this->replaceWebDir($key), 1));
     }
     $zip_archive->close();
     /**
@@ -585,7 +585,7 @@ class PluginLabSync{
     exit;
   }
   private function match_wildcard( $wildcard_pattern, $haystack ) {
-     $regex = str_replace(
+     $regex = wfPhpfunc::str_replace(
        array("\*", "\?"), // wildcard chars
        array('.*','.'),   // regexp chars
        preg_quote($wildcard_pattern)
@@ -960,10 +960,10 @@ class PluginLabSync{
   }
   private function replaceWebDirFtp($filename){
     $settings = $this->getSettings();
-    return str_replace('[web_folder]', $settings->get('ftp/web_folder'), $filename);
+    return wfPhpfunc::str_replace('[web_folder]', $settings->get('ftp/web_folder'), $filename);
   }
   private function replaceWebDir($filename){
-    return str_replace('[web_folder]', $this->getWebFolderName(), $filename);
+    return wfPhpfunc::str_replace('[web_folder]', $this->getWebFolderName(), $filename);
   }
   /**
    * Download file client side.
@@ -1215,10 +1215,10 @@ class PluginLabSync{
     }
   }
   private function get_sub_folder($folder_folder){
-    return substr($folder_folder, 0, strpos($folder_folder, '/'));
+    return wfPhpfunc::substr($folder_folder, 0, strpos($folder_folder, '/'));
   }
   private function handel_remote_get_url_origin($url){
-    if(substr($url, strlen($url)-4)!='.git'){
+    if(wfPhpfunc::substr($url, wfPhpfunc::strlen($url)-4)!='.git'){
       $url .= '.git';
     }
     return $url;
