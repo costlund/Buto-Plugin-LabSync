@@ -15,6 +15,7 @@ data:
       url: Url
       remote: Remote
       ftp#server: Ftp server
+      export#folder: Export folder
     rs: rs:data
     datatable:
       disabled: false

@@ -80,6 +80,7 @@ Add extra config parameters to file /config/settings.yml.
 ## Export
 - Export theme to a folder.
 - Use the Export button in menu to trigger this.
+- Exclude files with the exclude param in theme settings.
 - Use rsync script generated to deploy to server.
 
 ```
@@ -119,6 +120,7 @@ Param export/rsync_script generated.
 
 ### Rsync exclude
 Exclude params are generated from theme settings exclude params.
+
 #### Theme settings
 ```
 exclude:

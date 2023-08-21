@@ -358,8 +358,16 @@ class PluginLabSync{
     if($settings->get('ftp/password')){
       $settings->set('ftp/password', '****');
     }
+    /**
+     * 
+     */
+    $theme_settings = new PluginWfYml(wfGlobals::getAppDir().'/theme/'.$settings->get('theme').'/config/settings.yml');
+    /**
+     * 
+     */
     $page = new PluginWfYml(__DIR__.'/page/start.yml');
     $page->setByTag(array('settings' => $settings->get()));
+    $page->setByTag(array('theme_settings_exclude' => array('exclude' => $theme_settings->get('exclude'))));
     $page->setByTag($settings->get());
     $page->setByTag(array('element_theme' => $this->getElementTheme()), 'rs', true);
     /**
@@ -405,7 +413,20 @@ class PluginLabSync{
       }
     }
     /**
-     * Exclude
+     * Exclude, theme settings.
+     */
+    $theme_settings = new PluginWfYml(wfGlobals::getAppDir().'/theme/'.$settings->get('theme').'/config/settings.yml');
+    if($theme_settings->get('exclude')){
+      foreach ($local_files as $key => $value) {
+        foreach ($theme_settings->get('exclude') as $value2) {
+          if($this->match_wildcard($value2, $key)){
+            unset($local_files[$key]);
+          }
+        }
+      }
+    }
+    /**
+     * Exclude, lab/sync settings for this theme.
      */
     if($settings->get('exclude')){
       foreach ($local_files as $key => $value) {

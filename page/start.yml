@@ -236,6 +236,19 @@ content:
                             rs: rs:settings
                             class:
                               table: table-sm table-striped
+                      -
+                        type: div
+                        innerHTML: Theme settings
+                      -
+                        type: widget
+                        data:
+                          plugin: wf/table
+                          method: render_one
+                          data:
+                            i18n: false
+                            rs: rs:theme_settings_exclude
+                            class:
+                              table: table-sm table-striped
           -
             type: div
             attribute:
