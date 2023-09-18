@@ -79,9 +79,13 @@ Add extra config parameters to file /config/settings.yml.
 
 ## Export
 - Export theme to a folder.
-- Use the Export button in menu to trigger this.
 - Exclude files with the exclude param in theme settings.
 - Use rsync script generated to deploy to server.
+
+### Flow in export folder
+- Use the Export button in menu to trigger this.
+- Delete all folder but not hiddens like .git folder.
+- Copy theme and plugins to folder.
 
 ```
     export:
