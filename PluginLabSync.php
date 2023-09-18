@@ -301,7 +301,7 @@ class PluginLabSync{
        * export/rsync_script
        */
       if($theme_active->get('export/folder') && $theme_active->get('export/rsync_remote')){
-        $exclude = ' ';
+        $exclude = ' --exclude ".git" ';
         if($theme_active->get('export/exclude')){
           foreach($theme_active->get('export/exclude') as $v){
             $exclude .= '--exclude "'. wfPhpfunc::str_replace('[web_folder]', $theme_active->get('export/web_folder'), $v) .'" ';
@@ -455,9 +455,12 @@ class PluginLabSync{
       exit('Param export/folder is not set!');
     }
     /**
-     * Delete in dir
+     * Delete folders in dir (not hidden folders like .git).
      */
-    wfFilesystem::delete_in_dir($settings->get('export/folder'));
+    $export_folder = wfFilesystem::getScandir($settings->get('export/folder'));
+    foreach($export_folder as $k => $v){
+      wfFilesystem::delete_in_dir($settings->get('export/folder').'/'.$v);
+    }
     /**
      * Local files.
      */

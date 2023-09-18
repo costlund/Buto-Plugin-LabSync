@@ -1,5 +1,9 @@
-version: 1.37.1
+version: 1.37.2
 history:
+  1.37.2:
+    date: '2023-09-18'
+    title: Git
+    description: 'Add exclude git folder to rsync command. When copy to export folder hidden folders are excluded.'
   1.37.1:
     date: '2023-09-11'
     title: Versions
