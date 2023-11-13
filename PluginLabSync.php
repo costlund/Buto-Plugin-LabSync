@@ -293,9 +293,9 @@ class PluginLabSync{
        */
       if($theme_active->get('export/folder')){
         $export_manifest = new PluginWfYml($theme_active->get('export/folder').'/theme/'.$theme_active->get('theme').'/config/manifest.yml');
-        $export_settings = new PluginWfYml($theme_active->get('export/folder').'/theme/'.$theme_active->get('theme').'/config/settings.yml');
+        $theme_settings = new PluginWfYml(wfGlobals::getAppDir().'/theme/'.$theme_active->get('theme').'/config/settings.yml');
         $theme_active->set('export/version', $export_manifest->get('version'));
-        $theme_active->set('export/exclude', $export_settings->get('exclude'));
+        $theme_active->set('export/exclude', $theme_settings->get('exclude'));
       }
       /**
        * export/rsync_script

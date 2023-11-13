@@ -1,5 +1,9 @@
-version: 1.37.3
+version: 1.37.4
 history:
+  1.37.4:
+    date: '2023-11-13'
+    title: Export exclude
+    description: 'Set param export/exclude from theme settings param exclude.'
   1.37.3:
     date: '2023-09-27'
     title: Versions
