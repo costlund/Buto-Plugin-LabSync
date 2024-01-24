@@ -24,6 +24,7 @@ class PluginLabSync{
     wfPlugin::enable('icons/octicons');
     wfPlugin::enable('wf/table');
     wfPlugin::enable('bootstrap/navtabs_v1');
+    wfPlugin::enable('copy/clipboard');
     /**
      * Only webmaster if not reading files.
      */

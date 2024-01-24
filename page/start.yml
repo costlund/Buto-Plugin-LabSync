@@ -227,6 +227,22 @@ content:
                       class: col-md-12
                     innerHTML:
                       -
+                        type: div
+                        innerHTML:
+                          -
+                            type: widget
+                            data:
+                              plugin: copy/clipboard
+                              method: button
+                              data:
+                                id:  span_rsync_script
+                                text: Copy rsync command
+                          - 
+                            type: span
+                            innerHTML: rs:settings/export/rsync_script
+                            attribute:
+                              id: span_rsync_script
+                      -
                         type: widget
                         data:
                           plugin: wf/table

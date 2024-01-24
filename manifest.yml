@@ -1,5 +1,9 @@
-version: 1.37.4
+version: 1.37.5
 history:
+  1.37.5:
+    date: '2024-01-24'
+    title: Rsync
+    description: 'Add button Copy rsync command.'
   1.37.4:
     date: '2023-11-13'
     title: Export exclude
