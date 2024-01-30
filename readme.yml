@@ -1,0 +1,169 @@
+readme:
+  name: Buto-Plugin-LabSync
+  description: |
+    Sync files between development host and production host using rsync, zip, ftp or http.
+  item:
+    -
+      name: Settings
+      item:
+        -
+          name: Theme
+          description: |
+            - Param admin_layout is optional.
+            - Theme could be yml data or file.
+            - Param ip is to protect this page by ip number (only http method).
+            - Param data_file is to store ip for last sign in by a webmaster account (only http method). One has to set the signin event to run this.
+
+            ```
+            plugin_modules:
+              sync:
+                plugin: 'lab/sync'
+                settings:
+                  admin_layout: /theme/[theme]/layout/main_bs4.yml
+                  theme: 'yml:/../buto_data/theme/[theme]/plugin_lab_sync.yml:theme'
+                  ip:
+                    - 127.0.0.1
+                    - '::1'
+                  data_file: '/../buto_data/theme/my/theme/plugin_lab_sync.yml'
+            ```
+            Extra folders.
+            In theme /config/settings.yml one could add extra folders for a theme via parameter external_folders.
+            ```
+            plugin:
+              lab:
+                sync:
+                  data:
+                    external_folders:
+                      - '/[web_folder]/_any_folder_/*'
+            ```
+            ```
+            exclude:
+              - '/[web_folder]/data'
+            ```
+
+
+
+        -
+          name: plugin_lab_sync.yml
+          description: |
+            - Set param local_time if files on development host are newer than production host because of copy issue.
+            - One could exclude files and folders.
+
+            ```
+            theme:
+              -
+                name: 'My home page'
+                local_time: '2019-10-09 16:32:44'
+                theme: _my_/_theme_
+                exclude:
+                  - /[web_folder]/data/*
+                ftp: ...
+            ```
+        -
+          name: FTP
+          description: |
+            - Param ftp is for using the ftp method.
+            - Param dir should be empty if ftp account are restricted to the application folder. Otherwice set the folder.
+            - Param web_folder must be set to the Apache root folder.
+
+            ```
+            theme:
+              -
+                ftp:
+                  server: ftp.world.com
+                  user: _user_
+                  password: _password_
+                  dir: '/_app_folder_'
+                  web_folder: public_html
+            ```
+        -
+          name: HTTP
+          description: |
+            Set the url param to where to sync with http.
+            ```
+            theme:
+              -
+                url: 'http://skaf.demo.stenbergit.net/sync'
+            ```
+        -
+          name: ZIP
+          description: |
+            - One could export a theme to a zip file.
+            - One has to set param zip/folder.
+            - Files and folder start with "." except ".htaccess" are not included. 
+            - If linked folders has errors warnings the zip file is going to be corrupted.
+
+            Add extra config parameters to file /config/settings.yml.
+            ```
+                zip:
+                  config:
+                    tag: _tag_
+                  folder: /my/folder
+            ```
+            Signin event.
+            Event settings is for add webmaster ip to server along with settings/ip.
+            ```
+            events:
+              signin:
+                -
+                  plugin: 'lab/sync'
+                  method: 'signin'
+            ```
+
+
+
+    -
+      name: Usage
+      item:
+        -
+          name: Export
+          description: |
+
+            - Export theme to a folder.
+            - Exclude files with the exclude param in theme settings.
+            - Use rsync script generated to deploy to server.
+
+            Flow in export folder.
+            - Use the Export button in menu to trigger this.
+            - Delete all folder but not hiddens like .git folder.
+            - Copy theme and plugins to folder.
+
+            ```
+                export:
+            ```
+
+            Folder to copy files only used by current theme.
+            ```
+                  folder: /my/export/folder
+            ```
+            File /config/settings.yml will be created.
+            Add extra config parameters.
+            ```
+                  config:
+                    tag: _tag_
+            ```
+            Web folder.
+            If remote host has other name for web folder.
+            If not set current web folder is used.
+            ```
+                  web_folder: public_html
+            ```
+            Rsync remote.
+            If this param is set a new param export/rsync_script will be generated with full rsync script.
+            ```
+                  rsync_remote: me@world.com:/var/www/html
+            ```
+            Param export/rsync_script generated.
+            ```
+                  rsync_script: rsync -azv --delete -e ssh /my/export/folder/ me@world.com:/var/www/html
+            ```
+            Rsync exclude.
+            Exclude params are generated from theme settings exclude params.
+
+
+    -
+      name: Pages
+    -
+      name: Widgets
+    -
+      name: Methods

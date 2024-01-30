@@ -558,7 +558,11 @@ class PluginLabSync{
     /**
      * Where zip file should be put...
      */
-    $zip_filename = wfGlobals::getAppDir().'/'.$download_name;
+    if(!$settings->get('zip/folder')){
+      exit("Param zip/folder must be set!");
+    }else{
+      $zip_filename = $settings->get('zip/folder').'/'.$download_name;
+    }
     /**
      * Local files.
      */
@@ -602,12 +606,7 @@ class PluginLabSync{
     /**
      * 
      */
-    header("Content-type: application/zip");
-    header("Content-Disposition: attachment; filename=$download_name"); 
-    header("Pragma: no-cache"); 
-    header("Expires: 0"); 
-    readfile("$zip_filename");
-    exit;
+    exit("Zip file created at folder $zip_filename!");
   }
   private function match_wildcard( $wildcard_pattern, $haystack ) {
      $regex = wfPhpfunc::str_replace(

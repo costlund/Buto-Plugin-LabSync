@@ -201,7 +201,7 @@ function PluginLabSync(){
     }
   }
   this.zip = function(){
-    window.open('zip');
+    PluginWfBootstrapjs.modal({id: 'modal_zip', url: 'zip', lable: 'Zip'});
   }
   this.export = function(){
     PluginWfBootstrapjs.modal({id: 'modal_export', url: 'export', lable: 'Export'});

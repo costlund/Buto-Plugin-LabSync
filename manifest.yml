@@ -1,5 +1,9 @@
-version: 1.37.5
+version: 1.37.6
 history:
+  1.37.6:
+    date: '2024-01-30'
+    title: Zip folder
+    description: 'Add param zip/folder.'
   1.37.5:
     date: '2024-01-24'
     title: Rsync
