@@ -308,7 +308,7 @@ class PluginLabSync{
             $exclude .= '--exclude "'. wfPhpfunc::str_replace('[web_folder]', $theme_active->get('export/web_folder'), $v) .'" ';
           }
         }
-        $theme_active->set('export/rsync_script', 'rsync -azv'.$exclude.'--delete -e ssh '.$theme_active->get('export/folder').'/ '.$theme_active->get('export/rsync_remote'));
+        $theme_active->set('export/rsync_script', 'rsync -azv --stats'.$exclude.'--delete -e ssh '.$theme_active->get('export/folder').'/ '.$theme_active->get('export/rsync_remote'));
       }
     }
     return $theme_active;

@@ -1,5 +1,9 @@
-version: 1.37.6
+version: 1.37.7
 history:
+  1.37.7:
+    date: '2024-02-08'
+    title: Rsync
+    description: 'Add stats to rsync command.'
   1.37.6:
     date: '2024-01-30'
     title: Zip folder
