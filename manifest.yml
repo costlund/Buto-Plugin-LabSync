@@ -1,5 +1,9 @@
-version: 1.37.7
+version: 1.37.8
 history:
+  1.37.8:
+    date: '2024-05-22'
+    title: List
+    description: 'Remove data and only focus on rsync usage. Add param export/version from export theme manifest file.'
   1.37.7:
     date: '2024-02-08'
     title: Rsync

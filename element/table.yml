@@ -8,14 +8,8 @@ data:
       name: Name
       theme: Theme
       version: Version
-      log#version: LVersion
-      version_diff: VDiff
-      log#upload: LUpload
-      upload_days: UDays
-      url: Url
-      remote: Remote
-      ftp#server: Ftp server
-      export#folder: Export folder
+      export#version: EVersion
+      export#folder: EFolder
     rs: rs:data
     datatable:
       disabled: false

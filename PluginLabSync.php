@@ -75,6 +75,15 @@ class PluginLabSync{
         }else{
           $this->settings->set("theme/$k/upload_days", '');
         }
+        /**
+         * export/version
+         */
+        $this->settings->set("theme/$k/export/version", null);
+        if($this->settings->get("theme/$k/export/folder")){
+          $temp = $this->settings->get("theme/$k/export/folder").'/theme/'.$this->settings->get("theme/$k/theme").'/config/manifest.yml';
+          $export_manifest = new PluginWfYml($temp);
+          $this->settings->set("theme/$k/export/version", $export_manifest->get('version'));
+        }
       }
     }
     /**
