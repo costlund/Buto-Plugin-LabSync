@@ -347,14 +347,24 @@ class PluginLabSync{
     wfUser::setSession('plugin/lab/sync/theme', wfRequest::get('key'));
     exit(json_encode(array('success' => true)));
   }
+  /**
+   * Not in usage since 260409.
+   */
   private function log($page, $version = null){
-    if(wfPhpfunc::strlen(wfUser::getSession()->get('plugin/lab/sync/theme'))){
-      $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
-      $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/'.$page, date('Y-m-d H:i:s'));
-      if($version){
-        $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/version', $version);
+    if(false){
+      /**
+       * Cancel this for now.
+       * 260409.
+       * Remove?
+       */
+      if(wfPhpfunc::strlen(wfUser::getSession()->get('plugin/lab/sync/theme'))){
+        $buto_data = new PluginWfYml(wfGlobals::getThemeButoDataDir().'/plugin_lab_sync.yml');
+        $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/'.$page, date('Y-m-d H:i:s'));
+        if($version){
+          $buto_data->set('theme/'.wfUser::getSession()->get('plugin/lab/sync/theme').'/log/version', $version);
+        }
+        $buto_data->save();
       }
-      $buto_data->save();
     }
     return null;
   }
