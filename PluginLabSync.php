@@ -194,6 +194,9 @@ class PluginLabSync{
     $web_folder_name = $this->getWebFolderName();
     foreach ($scan as $key => $value) {
       if(wfPhpfunc::substr($value, 0, 1)=='.' && $value!='.htaccess'){
+        /**
+         * Skip files starting with . (dot) except .htaccess.
+         */
         continue;
       }
       if(is_dir($dir.'/'.$value)){
@@ -457,6 +460,17 @@ class PluginLabSync{
         }
       }
     }
+    /**
+     * /theme/(theme)/public_root
+     */
+    foreach ($local_files as $key => $value) {
+      if( strstr($key, '/theme/'.$settings->get('theme').'/public_root')  ){
+        $local_files[$key]['dest'] = '/[web_folder]'.substr($key, strlen('/theme/'.$settings->get('theme').'/public_root'));
+      }
+    }
+    /**
+     * 
+     */
     return $local_files;
   }
   public function page_export(){
@@ -489,18 +503,26 @@ class PluginLabSync{
      * Copy to export folder.
      */
     foreach ($local_files as $key => $value) {
+      $i = new PluginWfArray($value);
       /**
        * source
        */
       $source = wfGlobals::getAppDir().$this->replaceWebDir($key);
       /**
+       * 
+       */
+      $key_dest = $key;
+      if($i->get('dest')){
+        $key_dest = $i->get('dest');
+      }
+      /**
        * dest
        * export/web_folder?
        */
       if(!$settings->get('export/web_folder')){
-        $dest = $settings->get('export/folder').$this->replaceWebDir($key);
+        $dest = $settings->get('export/folder').$this->replaceWebDir($key_dest);
       }else{
-        $dest = $settings->get('export/folder').str_replace('[web_folder]', $settings->get('export/web_folder'), $key);
+        $dest = $settings->get('export/folder').str_replace('[web_folder]', $settings->get('export/web_folder'), $key_dest);
       }
       /**
        * copy

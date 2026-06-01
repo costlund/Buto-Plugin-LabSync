@@ -159,8 +159,11 @@ readme:
             ```
             Rsync exclude.
             Exclude params are generated from theme settings exclude params.
-
-
+          item:
+            -
+              name: public_root
+              description: |
+                - Files in folder /theme/(theme)/public_root will be exported to web root folder.
     -
       name: Pages
     -

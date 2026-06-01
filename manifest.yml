@@ -1,5 +1,9 @@
-version: 1.37.9
+version: 1.38.0
 history:
+  1.38.0:
+    date: '2026-06-01'
+    title: Public root folder
+    description: 'Add files to web root from folder /theme/(theme)/public_root.'
   1.37.9:
     date: '2026-04-09'
     title: Log

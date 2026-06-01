@@ -8,9 +8,13 @@
 
 
 
+
+
 <a name="key_0_0"></a>
 
 ### Theme
+
+
 
 <ul>
 <li>Param admin_layout is optional.</li>
@@ -43,6 +47,8 @@ In theme /config/settings.yml one could add extra folders for a theme via parame
 
 ### plugin_lab_sync.yml
 
+
+
 <ul>
 <li>Set param local_time if files on development host are newer than production host because of copy issue.</li>
 <li>One could exclude files and folders.</li>
@@ -59,6 +65,8 @@ In theme /config/settings.yml one could add extra folders for a theme via parame
 <a name="key_0_2"></a>
 
 ### FTP
+
+
 
 <ul>
 <li>Param ftp is for using the ftp method.</li>
@@ -78,6 +86,8 @@ In theme /config/settings.yml one could add extra folders for a theme via parame
 
 ### HTTP
 
+
+
 <p>Set the url param to where to sync with http.</p>
 <pre><code>theme:
   -
@@ -86,6 +96,8 @@ In theme /config/settings.yml one could add extra folders for a theme via parame
 <a name="key_0_4"></a>
 
 ### ZIP
+
+
 
 <ul>
 <li>One could export a theme to a zip file.</li>
@@ -112,9 +124,13 @@ Event settings is for add webmaster ip to server along with settings/ip.</p>
 
 
 
+
+
 <a name="key_1_0"></a>
 
 ### Export
+
+
 
 <ul>
 <li>Export theme to a folder.</li>
@@ -146,9 +162,21 @@ If this param is set a new param export/rsync_script will be generated with full
 <p>Rsync exclude.
 Exclude params are generated from theme settings exclude params.</p>
 
+<a name="key_1_0_0"></a>
+
+#### public_root
+
+
+
+<ul>
+<li>Files in folder /theme/(theme)/public_root will be exported to web root folder.</li>
+</ul>
+
 <a name="key_2"></a>
 
 ## Pages
+
+
 
 
 
@@ -158,9 +186,13 @@ Exclude params are generated from theme settings exclude params.</p>
 
 
 
+
+
 <a name="key_4"></a>
 
 ## Methods
+
+
 
 
 
